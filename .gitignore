@@ -33,3 +33,5 @@ docs/
 # ignore datatables-test
 datatables-test/
 
+# ignore planning
+planning/
