@@ -38,7 +38,7 @@ class GridSheet {
      * @param {string} [options.tableSelector] - CSS selector for table
      * @param {Object} [options.emptyTable] - Empty table mode configuration
      * @param {boolean} [options.emptyTable.enabled=false] - Enable empty table mode
-     * @param {string} [options.emptyTable.saveMode='direct'] - 'direct' or 'batch'
+     * @param {string} [options.emptyTable.saveMode='direct'] - 'direct', 'batch', or 'basic'
      * @param {string} [options.emptyTable.storageKey] - Key for localStorage
      * @param {Object} [options.endpoints] - Endpoint configurations
      * @param {Object} [options.endpoints.save] - Save endpoint config
@@ -83,7 +83,7 @@ class GridSheet {
         this.dataTableOptions = options.dataTableOptions || { keys: true, paging: true, order: [] };
 
         // Parameters for empty table (nested object for extensibility)
-        // emptyTable: { enabled: true, initialRows: 5, saveMode: 'direct'|'batch', storageKey: 'myTable' }
+        // emptyTable: { enabled: true, initialRows: 5, saveMode: 'direct'|'batch'|'basic', storageKey: 'myTable' }
         this.emptyTable = options.emptyTable || { enabled: false, initialRows: 1, saveMode: 'direct' };
         // Normalize: if only boolean is given, convert to object
         if (typeof this.emptyTable === 'boolean') {
@@ -92,7 +92,7 @@ class GridSheet {
         // Set defaults
         this.emptyTable.enabled = this.emptyTable.enabled || false;
         this.emptyTable.initialRows = this.emptyTable.initialRows || 1;
-        this.emptyTable.saveMode = this.emptyTable.saveMode || 'direct'; // 'direct' = save immediately, 'batch' = save to localStorage first
+        this.emptyTable.saveMode = this.emptyTable.saveMode || 'direct'; // 'direct' = save immediately, 'batch' = save to localStorage first, 'basic' = UI-only (no persistence)
         this.emptyTable.storageKey = this.emptyTable.storageKey || 'GridSheet_data';
         this.emptyTable.saveButtonText = this.emptyTable.saveButtonText || 'Save';
         this.emptyTable.showClearButton = this.emptyTable.showClearButton !== undefined ? this.emptyTable.showClearButton : false;
@@ -1068,6 +1068,14 @@ class GridSheet {
 
         if (this.emptyTable.enabled && this.emptyTable.saveMode === 'batch') {
             return this._saveNewRowBatch(rowNode, fieldName, newValue);
+        } else if (this.emptyTable.enabled && this.emptyTable.saveMode === 'basic') {
+            // Basic mode: save locally with temp ID, no server call
+            const isFilled = this.isRowRequiredFieldsFilled(rowNode);
+            if (rowNode && isFilled) {
+                this.saveNewRow(rowNode);
+                return true;
+            }
+            return false;
         } else {
             const isFilled = this.isRowRequiredFieldsFilled(rowNode);
 
@@ -5555,6 +5563,7 @@ class GridSheet {
      * Behavior based on mode:
      * - Direct mode: Fetch to update endpoint immediately
      * - Batch mode: Save to localStorage, send on "Save All"
+     * - Basic mode: UI-only update, no persistence
      * 
      * @param {string} fieldName - Name of field/column to update
      * @param {string|number} rowId - Row ID from database or temp_xxx for new row
@@ -5581,6 +5590,11 @@ class GridSheet {
                 console.log('updateCell: field not in allowedFields, skipping:', fieldName);
                 return;
             }
+        }
+
+        // ========== BASIC MODE: UI-only, no persistence ==========
+        if (this.emptyTable.enabled && this.emptyTable.saveMode === 'basic') {
+            return;
         }
 
         // ========== BATCH MODE: Update localStorage ==========
@@ -5736,6 +5750,11 @@ class GridSheet {
             return;
         }
 
+        // BASIC MODE: UI-only, no persistence
+        if (this.emptyTable.enabled && this.emptyTable.saveMode === 'basic') {
+            return;
+        }
+
         // BATCH MODE: Update localStorage
         if (this.emptyTable.enabled && this.emptyTable.saveMode === 'batch') {
             if (rowId.startsWith('temp_')) {
@@ -5829,6 +5848,11 @@ class GridSheet {
 
         let updateConf = this.endpoints.update || {};
         let endpointUrl = updateConf.endpoint || '';
+
+        // BASIC MODE: UI-only, no persistence
+        if (this.emptyTable.enabled && this.emptyTable.saveMode === 'basic') {
+            return;
+        }
 
         // BATCH MODE: Just log, data already tracked
         if (this.emptyTable.enabled && this.emptyTable.saveMode === 'batch') {
@@ -5971,6 +5995,20 @@ class GridSheet {
             if (result === false) return; // Cancel save process
         }
 
+        // ========== BASIC MODE: UI-only, assign temp ID ==========
+        if (this.emptyTable.enabled && this.emptyTable.saveMode === 'basic') {
+            const tempId = 'temp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            rowNode.removeAttribute('data-new-row');
+            rowNode.setAttribute('data-id', tempId);
+            this.emptyRowExists = false;
+            this.renumberRows();
+
+            if (this.isOnLastPage() && !this.isAddingEmptyRow && !this.hasEmptyRow()) {
+                setTimeout(() => this.addEmptyRow(), 0);
+            }
+            return;
+        }
+
         // ========== BATCH MODE: Save to localStorage ==========
         if (this.emptyTable.enabled && this.emptyTable.saveMode === 'batch') {
             // Check if this row already has temp_id (already saved before)
@@ -6101,6 +6139,21 @@ class GridSheet {
         // If only 1 row, use single save
         if (rowNodes.length === 1) {
             return this.saveNewRow(rowNodes[0]);
+        }
+
+        // BASIC MODE: Assign temp IDs to all rows, no server call
+        if (this.emptyTable.enabled && this.emptyTable.saveMode === 'basic') {
+            rowNodes.forEach(rowNode => {
+                const tempId = 'temp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                rowNode.removeAttribute('data-new-row');
+                rowNode.setAttribute('data-id', tempId);
+            });
+            this.emptyRowExists = false;
+            this.renumberRows();
+            if (this.isOnLastPage() && !this.isAddingEmptyRow && !this.hasEmptyRow()) {
+                setTimeout(() => this.addEmptyRow(), 0);
+            }
+            return;
         }
 
         let saveConf = this.endpoints.save || {};
