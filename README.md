@@ -16,7 +16,7 @@ GridSheet is a powerful DataTables extension that brings Excel-like interactive 
 - **Context Menu**: Built-in right-click menu tailored for grid manipulations (insert, delete, clear).
 - **Formula Columns**: Automatically calculate subtotal/totals based on other column values.
 - **Built-in Validation**: Native support for Text, Number, Currency, Date, Percentage, Email types with automatic error highlighting.
-- **Dual Modes**: Supports *Direct Save* (save on edit) and *Batch Save* (edit locally, save all at once).
+- **Triple Modes**: Supports *Direct Save* (save on edit), *Batch Save* (edit locally, save all), and *Basic Mode* (UI-only, no persistence).
 - **Theming**: Fully customizable CSS variables with 5 pre-built themes and automatic Dark Mode support.
 
 ## Interactive Documentation & Live Examples

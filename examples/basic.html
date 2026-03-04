@@ -39,10 +39,9 @@
                         <th>Check-in</th>
                         <th>Active</th>
                         <th>Salary</th>
-                        <th>Score</th>
+                        <th>Increase (%)</th>
+                        <th>New Salary</th>
                         <th>Notes</th>
-                        <th>Invoice</th>
-                        <th>Created</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,10 +53,9 @@
                         <td>09:00</td>
                         <td>true</td>
                         <td>120000</td>
-                        <td>85</td>
+                        <td>10</td>
+                        <td></td>
                         <td>Senior developer with 10 years experience</td>
-                        <td>INV-2024-00001</td>
-                        <td>2024-01-15</td>
                     </tr>
                     <tr data-id="2">
                         <td>Daniel August</td>
@@ -67,10 +65,9 @@
                         <td>08:30</td>
                         <td>false</td>
                         <td>65000</td>
-                        <td>72</td>
+                        <td>5</td>
+                        <td></td>
                         <td>Junior frontend developer</td>
-                        <td>INV-2024-00002</td>
-                        <td>2024-02-20</td>
                     </tr>
                     <tr data-id="3">
                         <td>Ferguso Sutrisno</td>
@@ -80,10 +77,9 @@
                         <td>10:15</td>
                         <td>true</td>
                         <td>160000</td>
-                        <td>95</td>
+                        <td>15</td>
+                        <td></td>
                         <td>Team lead, manages 5 developers</td>
-                        <td>INV-2023-00003</td>
-                        <td>2023-06-10</td>
                     </tr>
                     <tr data-id="4">
                         <td>John Williams</td>
@@ -93,10 +89,9 @@
                         <td>09:45</td>
                         <td>true</td>
                         <td>160000</td>
-                        <td>88</td>
+                        <td>0</td>
+                        <td></td>
                         <td>Backend specialist</td>
-                        <td>INV-2023-00004</td>
-                        <td>2023-08-15</td>
                     </tr>
                     <tr data-id="5">
                         <td>Robert Clark</td>
@@ -106,10 +101,9 @@
                         <td>07:30</td>
                         <td>true</td>
                         <td>160000</td>
-                        <td>78</td>
+                        <td>8</td>
+                        <td></td>
                         <td>DevOps engineer</td>
-                        <td>INV-2024-00005</td>
-                        <td>2024-01-05</td>
                     </tr>
                 </tbody>
             </table>
@@ -122,6 +116,7 @@
                 <li>No <code>endpoints</code> configuration required.</li>
                 <li>Changes are applied directly to the DataTables internal data.</li>
                 <li>Pasting multiple rows generates temporary IDs automatically.</li>
+                <li>Supports <strong>Formula Columns</strong> locally (e.g., New Salary = Salary + Increase%).</li>
                 <li>Ideal for scenarios where you want a "Spreadsheet UI" but handle data yourself.</li>
             </ul>
         </div>
@@ -147,11 +142,15 @@
                     3: { name: 'birthdate', type: 'date', format: { format: 'DD/MM/YYYY' } },
                     4: { name: 'checkin', type: 'time' },
                     5: { name: 'active', type: 'checkbox' },
-                    6: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', decimalSeparator: ',', decimalPlaces: 0, prefix: '$' } },
-                    7: { name: 'score', type: 'percentage', format: { suffix: '%' } },
-                    8: { name: 'notes', type: 'textarea' },
-                    9: { name: 'invoice_code', type: 'readonly', readonly: true },
-                    10: { name: 'created_at', type: 'readonly', readonly: true }
+                    6: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', decimalSeparator: '.', decimalPlaces: 0, prefix: '$' } },
+                    7: { name: 'increase_pct', type: 'percentage', format: { suffix: '%' } },
+                    8: { name: 'new_salary', type: 'formula', formula: 'salary + (salary * increase_pct / 100)', format: 'currency' },
+                    9: { name: 'notes', type: 'textarea' }
+                },
+
+                // Disable footer
+                footer: {
+                    enabled: false
                 },
 
                 enableColumnNumber: true,
