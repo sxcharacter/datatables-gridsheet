@@ -1,4 +1,3 @@
-垂直
 <!DOCTYPE html>
 <html>
 
@@ -33,38 +32,84 @@
             <table id="basicModeExample" class="datatables-gridsheet" style="width:100%;">
                 <thead>
                     <tr>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Stock</th>
-                        <th>Price</th>
-                        <th>Status</th>
-                        <th>Last Updated</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Office</th>
+                        <th>Birthdate</th>
+                        <th>Check-in</th>
+                        <th>Active</th>
+                        <th>Salary</th>
+                        <th>Score</th>
+                        <th>Notes</th>
+                        <th>Invoice</th>
+                        <th>Created</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Ultra Wireless Headphones</td>
-                        <td>Electronics</td>
-                        <td>45</td>
-                        <td>129.99</td>
-                        <td>In Stock</td>
-                        <td>2024-03-01</td>
+                    <tr data-id="1">
+                        <td>Christopher Morrison</td>
+                        <td>chris@gmail.com</td>
+                        <td>New York</td>
+                        <td>15/05/1992</td>
+                        <td>09:00</td>
+                        <td>true</td>
+                        <td>120000</td>
+                        <td>85</td>
+                        <td>Senior developer with 10 years experience</td>
+                        <td>INV-2024-00001</td>
+                        <td>2024-01-15</td>
                     </tr>
-                    <tr>
-                        <td>Mechanical Gaming Keyboard</td>
-                        <td>Electronics</td>
-                        <td>12</td>
-                        <td>89.50</td>
-                        <td>Low Stock</td>
-                        <td>2024-03-02</td>
+                    <tr data-id="2">
+                        <td>Daniel August</td>
+                        <td>daniel@gmail.com</td>
+                        <td>London</td>
+                        <td>20/08/1995</td>
+                        <td>08:30</td>
+                        <td>false</td>
+                        <td>65000</td>
+                        <td>72</td>
+                        <td>Junior frontend developer</td>
+                        <td>INV-2024-00002</td>
+                        <td>2024-02-20</td>
                     </tr>
-                    <tr>
-                        <td>Ergonomic Office Chair</td>
-                        <td>Furniture</td>
-                        <td>8</td>
-                        <td>249.00</td>
-                        <td>In Stock</td>
-                        <td>2024-03-03</td>
+                    <tr data-id="3">
+                        <td>Ferguso Sutrisno</td>
+                        <td>sutrisno@gmail.com</td>
+                        <td>Tokyo</td>
+                        <td>10/03/1988</td>
+                        <td>10:15</td>
+                        <td>true</td>
+                        <td>160000</td>
+                        <td>95</td>
+                        <td>Team lead, manages 5 developers</td>
+                        <td>INV-2023-00003</td>
+                        <td>2023-06-10</td>
+                    </tr>
+                    <tr data-id="4">
+                        <td>John Williams</td>
+                        <td>john.w@gmail.com</td>
+                        <td>Tokyo</td>
+                        <td>25/11/1990</td>
+                        <td>09:45</td>
+                        <td>true</td>
+                        <td>160000</td>
+                        <td>88</td>
+                        <td>Backend specialist</td>
+                        <td>INV-2023-00004</td>
+                        <td>2023-08-15</td>
+                    </tr>
+                    <tr data-id="5">
+                        <td>Robert Clark</td>
+                        <td>robert.c@gmail.com</td>
+                        <td>Tokyo</td>
+                        <td>08/07/1993</td>
+                        <td>07:30</td>
+                        <td>true</td>
+                        <td>160000</td>
+                        <td>78</td>
+                        <td>DevOps engineer</td>
+                        <td>INV-2024-00005</td>
+                        <td>2024-01-05</td>
                     </tr>
                 </tbody>
             </table>
@@ -96,12 +141,17 @@
                 },
 
                 columns: {
-                    0: { name: 'product', type: 'text' },
-                    1: { name: 'category', type: 'select', options: ['Electronics', 'Furniture', 'Clothing', 'Food'] },
-                    2: { name: 'stock', type: 'number' },
-                    3: { name: 'price', type: 'currency', format: { prefix: '$', decimalPlaces: 2 } },
-                    4: { name: 'status', type: 'text' },
-                    5: { name: 'updated_at', type: 'date' }
+                    0: { name: 'name', type: 'text' },
+                    1: { name: 'email', type: 'email' },
+                    2: { name: 'office', type: 'select', options: ['New York', 'London', 'Tokyo', 'San Francisco', 'Jakarta'] },
+                    3: { name: 'birthdate', type: 'date', format: { format: 'DD/MM/YYYY' } },
+                    4: { name: 'checkin', type: 'time' },
+                    5: { name: 'active', type: 'checkbox' },
+                    6: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', decimalSeparator: ',', decimalPlaces: 0, prefix: '$' } },
+                    7: { name: 'score', type: 'percentage', format: { suffix: '%' } },
+                    8: { name: 'notes', type: 'textarea' },
+                    9: { name: 'invoice_code', type: 'readonly', readonly: true },
+                    10: { name: 'created_at', type: 'readonly', readonly: true }
                 },
 
                 enableColumnNumber: true,
@@ -110,7 +160,8 @@
                 dataTableOptions: {
                     keys: true,
                     paging: true,
-                    pageLength: 10
+                    pageLength: 10,
+                    order: []
                 }
             });
         });
