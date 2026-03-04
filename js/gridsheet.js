@@ -121,7 +121,7 @@ class GridSheet {
         this.footer.label = this.footer.label !== undefined ? this.footer.label : 'Total';
 
         /**
-         * Column Configuration (v1.1.0+)
+         * Column Configuration
          * Centralized column config in JavaScript instead of HTML data-* attributes
          * columns: { 0: { name: 'field', type: 'text', ... }, 1: { ... } }
          * Index 0 = first data column (No. column excluded if enableColumnNumber is true)
