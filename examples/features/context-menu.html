@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Context Menu & Row Management</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Context Menu & Row Management <span class="badge">User Guide</span></h1>
+            <p>Guide to row operations and context menu configuration</p>
+        </div>
+        <div class="nav-section">
+            <a href="copy-paste.html" class="nav-link">Copy & Paste</a>
+            <a href="selection.html" class="nav-link">Selection</a>
+            <a href="keyboard.html" class="nav-link">Keyboard</a>
+            <a href="context-menu.html" class="nav-link active">Context Menu</a>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Context Menu Options</h2>
+                <p>Right-click any cell or row to access common actions</p>
+            </div>
+            <div class="section-content">
+                <p>GridSheet provides a built-in context menu with several key actions:</p>
+                <ul style="margin: 15px 0 15px 25px;">
+                    <li><strong>Copy</strong>: Copy selected cell content or selected rows.</li>
+                    <li><strong>Paste</strong>: Paste data from clipboard starting at selected cell.</li>
+                    <li><strong>Clear Row</strong>: Resets data in all cells of the selected row(s) but keeps the UI row
+                        intact.</li>
+                    <li><strong>Delete Row</strong>: Removes the row from the UI and triggers a delete operation.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Clear Row vs. Delete Row</h2>
+                <p>Understanding the difference in data handling</p>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <tr>
+                        <th style="width: 25%;">Feature</th>
+                        <th style="width: 37.5%;">Clear Row</th>
+                        <th style="width: 37.5%;">Delete Row</th>
+                    </tr>
+                    <tr>
+                        <td><strong>UI Impact</strong></td>
+                        <td>Cells become empty, row remains visible.</td>
+                        <td>Row is completely removed from table.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Direct Mode</strong></td>
+                        <td>Triggers <code>update</code> endpoint with empty values.</td>
+                        <td>Triggers <code>delete</code> endpoint.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Batch Mode</strong></td>
+                        <td>Marked as "edited" with empty values in localStore.</td>
+                        <td>Marked as "deleted" in localStore.</td>
+                    </tr>
+                </table>
+                <div class="tip" style="margin-top: 20px;">
+                    <strong>Pro Tip:</strong> Use <strong>Clear Row</strong> if you want to keep the row index and
+                    table structure but reset the data. Use <strong>Delete Row</strong> for permanent removal.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Configuration: allowDeleteRow</h2>
+                <p>Restrict or enable row deletion</p>
+            </div>
+            <div class="section-content">
+                <p>You can control whether the "Delete Row" option appears in the context menu using the
+                    <code>allowDeleteRow</code> option.
+                </p>
+                <div class="code-block" style="margin-top: 15px;">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> GridSheet({
+    <span class="property">tableSelector</span>: <span class="string">'#myTable'</span>,
+    <span class="property">allowDeleteRow</span>: <span class="keyword">false</span> <span class="comment">// "Delete Row" will be hidden from context menu</span>
+});</pre>
+                </div>
+                <table class="param-table" style="margin-top: 20px;">
+                    <tr>
+                        <th>Option</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Outcome</th>
+                    </tr>
+                    <tr>
+                        <td><code>true</code></td>
+                        <td>Boolean</td>
+                        <td>Default</td>
+                        <td>Shows both "Clear Row" and "Delete Row".</td>
+                    </tr>
+                    <tr>
+                        <td><code>false</code></td>
+                        <td>Boolean</td>
+                        <td>-</td>
+                        <td>Hides "Delete Row". ONLY "Clear Row" is visible.</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Keyboard Shortcuts</h2>
+                <p>Quick cell clearing using the keyboard</p>
+            </div>
+            <div class="section-content">
+                <ul style="margin-left: 25px;">
+                    <li><kbd>Delete</kbd> or <kbd>Backspace</kbd>: Clears the currently selected cell(s) without
+                        removing the row.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Formats Reference</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Formats <span class="badge">Developer Docs</span></h1>
+            <p>Display format configuration for currency, percentage, and date</p>
+        </div>
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link">Configuration</a>
+            <a href="column-types.html" class="nav-link">Column Types</a>
+            <a href="formats.html" class="nav-link active">Formats</a>
+            <a href="validation.html" class="nav-link">Validation</a>
+            <a href="endpoints.html" class="nav-link">Endpoints</a>
+            <a href="formula.html" class="nav-link">Formula</a>
+            <a href="theming.html" class="nav-link">Themes</a>
+            <a href="language.html" class="nav-link">Language</a>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Currency Format</h2>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">thousandSeparator</span></td>
+                        <td>'.'</td>
+                        <td>Thousand separator</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">decimalSeparator</span></td>
+                        <td>','</td>
+                        <td>Decimal separator</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">decimalPlaces</span></td>
+                        <td>0</td>
+                        <td>Number of decimal places</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">suffix</span></td>
+                        <td>''</td>
+                        <td>Suffix</td>
+                    </tr>
+                </table>
+                <div class="code-block">
+                    <pre><span class="comment">// v1.1.0+ - Format is inline in column config:</span>
+columns: {
+    0: { 
+        <span class="property">name</span>: <span class="string">'salary'</span>, 
+        <span class="property">type</span>: <span class="string">'currency'</span>, 
+        <span class="property">format</span>: {
+            <span class="property">thousandSeparator</span>: <span class="string">'.'</span>,
+            <span class="property">prefix</span>: <span class="string">'$ '</span>
+        }
+    }
+}</pre>
+                </div>
+                <div class="example-box">
+                    <p>Input: <code>120000</code></p>
+                    <p class="result">$ 50.000.000</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Percentage Format</h2>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre><span class="comment">// v1.1.0+ - Format is inline in column config:</span>
+columns: {
+    0: { 
+        <span class="property">name</span>: <span class="string">'score'</span>, 
+        <span class="property">type</span>: <span class="string">'percentage'</span>, 
+        <span class="property">format</span>: { <span class="property">suffix</span>: <span class="string">'%'</span> }
+    }
+}</pre>
+                </div>
+                <div class="example-box">
+                    <p>Input: <code>85</code></p>
+                    <p class="result">85%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Date Format</h2>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <tr>
+                        <th>Token</th>
+                        <th>Example</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>DD</code></td>
+                        <td>01, 15, 31</td>
+                        <td>2-digit Day</td>
+                    </tr>
+                    <tr>
+                        <td><code>MM</code></td>
+                        <td>01, 06, 12</td>
+                        <td>2-digit Month</td>
+                    </tr>
+                    <tr>
+                        <td><code>YYYY</code></td>
+                        <td>2024, 2025</td>
+                        <td>4-digit Year</td>
+                    </tr>
+                </table>
+                <div class="code-block">
+                    <pre><span class="comment">// v1.1.0+ - Format is inline in column config:</span>
+<span class="property">columns</span>: {
+    <span class="comment">// Custom Format</span>
+    0: { <span class="property">name</span>: <span class="string">'birthdate'</span>, <span class="property">type</span>: <span class="string">'date'</span>, <span class="property">format</span>: { <span class="property">format</span>: <span class="string">'DD/MM/YYYY'</span> } },
+    
+    <span class="comment">// ISO Format</span>
+    1: { <span class="property">name</span>: <span class="string">'joined'</span>, <span class="property">type</span>: <span class="string">'date'</span>, <span class="property">format</span>: { <span class="property">format</span>: <span class="string">'YYYY-MM-DD'</span> } }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Live Demo</h2>
+            </div>
+            <div class="section-content">
+                <div class="table-container">
+                    <table id="demoTable" class="datatables-gridsheet" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Salary</th>
+                                <th>Score</th>
+                                <th>Birthdate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-id="1">
+                                <td>John Doe</td>
+                                <td>120000</td>
+                                <td>85</td>
+                                <td>15/05/1992</td>
+                            </tr>
+                            <tr data-id="2">
+                                <td>Jane Smith</td>
+                                <td>160000</td>
+                                <td>92</td>
+                                <td>20/08/1995</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            new GridSheet({
+                tableSelector: '#demoTable',
+                enableColumnNumber: true,
+
+                // Column configuration (v1.1.0+) - format inline per column
+                columns: {
+                    0: { name: 'name', type: 'text' },
+                    1: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', prefix: '$' } },
+                    2: { name: 'score', type: 'percentage', format: { suffix: '%' } },
+                    3: { name: 'birthdate', type: 'date', format: { format: 'DD/MM/YYYY' } }
+                },
+
+                dataTableOptions: { keys: true, paging: false },
+                endpoints: { update: { endpoint: '../endpoints/update.php' } }
+            });
+        });
+    </script>
+</body>
+
+</html>

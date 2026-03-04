@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../datatables-gridsheet/gridsheet-logo.png">
+    <title>GridSheet Demo - Batch Save Mode</title>
+    <link rel="stylesheet" href="./vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../css/gridsheet.css">
+    <link rel="stylesheet" href="../custom/theme-emerald.css">
+    <script src="./vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="./vendor/datatables/datatables.js"></script>
+    <script src="./vendor/datatables-keytable/keytable.js"></script>
+    <script src="../js/gridsheet.js"></script>
+    <script src="../custom/gridsheet.lang.js"></script>
+    <link rel="stylesheet" href="demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>GridSheet Demo <span class="mode-badge">Batch Save</span></h1>
+            <p>All column types supported by GridSheet with batch save mode</p>
+            <p class="mode-desc"><strong>Batch Save:</strong> Changes are saved temporarily in the browser
+                (localStorage).
+                Click "Save" button to send all changes at once to the server. Suitable for bulk data entry
+                or when connection is unstable.</p>
+        </div>
+
+        <!-- Collapsible Info Box -->
+        <details class="info-box">
+            <summary>
+                <span class="summary-text">&#9776; Column Types & Interaction Guide</span>
+                <span class="summary-arrow">▼</span>
+            </summary>
+            <div class="info-content">
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h4>Column Types:</h4>
+                        <ul>
+                            <li><code>text</code> Standard text input</li>
+                            <li><code>textarea</code> Multi-line text</li>
+                            <li><code>email</code> Email with validation</li>
+                            <li><code>number</code> Numeric input</li>
+                            <li><code>currency</code> Currency format</li>
+                            <li><code>percentage</code> Percentage format</li>
+                            <li><code>date</code> Date picker</li>
+                            <li><code>time</code> Time picker</li>
+                            <li><code>select</code> Searchable dropdown</li>
+                            <li><code>checkbox</code> Toggle true/false</li>
+                            <li><code>readonly</code> Display only</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h4>Keyboard Shortcuts:</h4>
+                        <ul>
+                            <li><code>Enter</code> Enter edit mode</li>
+                            <li><code>Escape</code> Cancel edit</li>
+                            <li><code>Tab</code> Save & move</li>
+                            <li><code>Space</code> Toggle checkbox</li>
+                            <li><code>Delete</code> Clear cell content</li>
+                            <li><code>Ctrl+C</code> Copy selection</li>
+                            <li><code>Ctrl+V</code> Paste</li>
+                            <li><code>Right-click</code> Context menu</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div class="table-container">
+            <table id="batchExample" class="datatables-gridsheet" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Office</th>
+                        <th>Birthdate</th>
+                        <th>Check-in</th>
+                        <th>Active</th>
+                        <th>Salary</th>
+                        <th>Score</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-id="1">
+                        <td>Christopher Morrison</td>
+                        <td>chris@gmail.com</td>
+                        <td>New York</td>
+                        <td>15/05/1992</td>
+                        <td>09:00</td>
+                        <td>true</td>
+                        <td>120000</td>
+                        <td>85</td>
+                        <td>Senior developer with 10 years experience</td>
+                    </tr>
+                    <tr data-id="2">
+                        <td>Daniel August</td>
+                        <td>daniel@gmail.com</td>
+                        <td>London</td>
+                        <td>20/08/1995</td>
+                        <td>08:30</td>
+                        <td>false</td>
+                        <td>65000</td>
+                        <td>72</td>
+                        <td>Junior frontend developer</td>
+                    </tr>
+                    <tr data-id="3">
+                        <td>Arthur Stewart</td>
+                        <td>arthur@gmail.com</td>
+                        <td>New York</td>
+                        <td>15/05/1992</td>
+                        <td>09:00</td>
+                        <td>true</td>
+                        <td>120000</td>
+                        <td>85</td>
+                        <td>Senior developer with 10 years experience</td>
+                    </tr>
+                    <tr data-id="4">
+                        <td>Albert Johnson</td>
+                        <td>albert@gmail.com</td>
+                        <td>New York</td>
+                        <td>21/05/1995</td>
+                        <td>07:00</td>
+                        <td>true</td>
+                        <td>95000</td>
+                        <td>82</td>
+                        <td>Junior backend developer</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Demo: Batch Save Mode with All Column Types
+            const gridsheet = new GridSheet({
+                tableSelector: '#batchExample',
+
+                // Column configuration (v1.1.0+)
+                columns: {
+                    0: { name: 'name', type: 'text' },
+                    1: { name: 'email', type: 'email' },
+                    2: {
+                        name: 'office', type: 'select', options: [
+                            { id: 'NY', text: 'New York' },
+                            { id: 'LON', text: 'London' },
+                            { id: 'TOK', text: 'Tokyo' },
+                            { id: 'JKT', text: 'Jakarta' },
+                            { id: 'KL', text: 'Kuala Lumpur Malaysia' },
+                            { id: 'SYD', text: 'Sydney' }
+                        ]
+                    },
+                    3: { name: 'birthdate', type: 'date', format: { format: 'DD/MM/YYYY' } },
+                    4: { name: 'checkin', type: 'time' },
+                    5: { name: 'active', type: 'checkbox' },
+                    6: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', prefix: '$', decimalPlaces: 0 } },
+                    7: { name: 'score', type: 'percentage', format: { suffix: '%' } },
+                    8: { name: 'notes', type: 'textarea' }
+                },
+
+                // ========== BATCH MODE ==========
+                emptyTable: {
+                    enabled: true,
+                    initialRows: 2,
+                    saveMode: 'batch', // Changes saved to localStorage first
+                    storageKey: 'demo_batch_full', // Unique key for localStorage
+                    saveButtonText: 'Save All',
+                    showSaveButton: true, // Text for save button
+                    showClearButton: true, // Show clear button
+                    autoRestore: false,
+                },
+
+                enableColumnNumber: true,
+                allowAddEmptyRow: true,
+                allowDeleteRow: true,
+                dataTableOptions: {
+                    keys: true,
+                    paging: true,
+                    pageLength: 10,
+                    order: []
+                },
+
+                extraHeaders: {
+                    'Authorization': 'demo-token',
+                },
+
+                endpoints: {
+                    // Batch Mode: Only batch endpoint is needed
+                    // All insert/update/delete operations are sent together when "Save All" is clicked
+                    batch: {
+                        endpoint: 'endpoints/batch.php',
+                        preSave: function (payload) {
+                            console.log('Pre-save batch:', payload);
+                            // Payload structure (consistent):
+                            // { 
+                            //   operation: 'batch',
+                            //   data: { insert: [...], update: [...], delete: [...] },
+                            //   meta: { timestamp, hasErrors, validationErrors, rowCount, insertCount, updateCount, deleteCount, fieldCount }
+                            // }
+
+                            // Check for validation errors
+                            if (payload.meta.hasErrors) {
+                                const errors = payload.meta.validationErrors;
+                                const errorMessages = errors.map(e =>
+                                    `${e.field}: "${e.value}" is invalid for type ${e.type}`
+                                ).join('\n');
+
+                                alert(`Found ${errors.length} validation errors:\n\n${errorMessages}\n\nPlease fix before saving.`);
+                                return false; // Block save, auto-scroll to first error cell
+                            }
+
+                            // Show confirmation using meta counts
+                            const msg = `Save ${payload.meta.insertCount} new, ${payload.meta.updateCount} edited, ${payload.meta.deleteCount} deleted rows?`;
+                            return confirm(msg);
+                        },
+                        postSave: function (result) {
+                            console.log('Batch saved:', result);
+                            // Response structure: 
+                            // { status: 'ok', data: { inserted: [{tempId, id}, ...], updated: N, deleted: N } }
+                            if (result.status === 'ok') {
+                                const data = result.data || {};
+                                const insertedCount = data.inserted?.length || 0;
+                                const updatedCount = data.updated || 0;
+                                const deletedCount = data.deleted || 0;
+                                alert(`Saved successfully!\n\n✅ ${insertedCount} inserted\n✏️ ${updatedCount} updated\n🗑️ ${deletedCount} deleted`);
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

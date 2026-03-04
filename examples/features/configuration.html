@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Configuration Reference</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn">← Back to Home</a>
+            <h1>Configuration Reference <span class="badge">Developer Docs</span></h1>
+            <p>Complete guide to all configuration parameters during GridSheet initialization</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link active">Configuration</a>
+            <a href="column-types.html" class="nav-link">Column Types</a>
+            <a href="formats.html" class="nav-link">Formats</a>
+            <a href="validation.html" class="nav-link">Validation</a>
+            <a href="endpoints.html" class="nav-link">Endpoints</a>
+            <a href="formula.html" class="nav-link">Formula</a>
+            <a href="theming.html" class="nav-link">Themes</a>
+            <a href="language.html" class="nav-link">Language</a>
+            <a href="context-menu.html" class="nav-link">Context Menu</a>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Quick Start</h2>
+                <p>Minimal configuration to get started</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">JavaScript</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> <span class="property">GridSheet</span>({
+    <span class="property">tableSelector</span>: <span class="string">'#myTable'</span>,
+    <span class="comment">// Column Configuration (v1.1.0+)</span>
+    <span class="property">columns</span>: {
+        0: { <span class="property">name</span>: <span class="string">'name'</span>, <span class="property">type</span>: <span class="string">'text'</span> },
+        1: { <span class="property">name</span>: <span class="string">'email'</span>, <span class="property">type</span>: <span class="string">'email'</span> },
+        2: { <span class="property">name</span>: <span class="string">'office'</span>, <span class="property">type</span>: <span class="string">'select'</span>, <span class="property">options</span>: <span class="string">'api/offices.php'</span> }
+    },
+    <span class="property">endpoints</span>: {
+        <span class="property">save</span>: { <span class="property">endpoint</span>: <span class="string">'api/save.php'</span> },
+        <span class="property">update</span>: { <span class="property">endpoint</span>: <span class="string">'api/update.php'</span> },
+        <span class="property">delete</span>: { <span class="property">endpoint</span>: <span class="string">'api/delete.php'</span> },
+        <span class="property">batch</span>: { <span class="property">endpoint</span>: <span class="string">'api/batch.php'</span> }
+    }
+});</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Options -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Core Options</h2>
+                <p>Main parameters that are required/frequently used</p>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">tableSelector</span></td>
+                            <td><span class="param-type">String</span></td>
+                            <td><span class="param-default">-</span></td>
+                            <td>CSS selector for table element. <strong>Required.</strong></td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">columns</span></td>
+                            <td><span class="param-type">Object</span></td>
+                            <td><span class="param-default">null</span></td>
+                            <td><strong>v1.1.0+</strong> Column config object. See <a href="column-types.html">Column
+                                    Types</a>.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">allowedFields</span></td>
+                            <td><span class="param-type">Array</span></td>
+                            <td><span class="param-default">null</span></td>
+                            <td><em style='color:#999'>Deprecated.</em> Use columns instead. Auto-generated from
+                                columns.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">enableColumnNumber</span></td>
+                            <td><span class="param-type">Boolean</span></td>
+                            <td><span class="param-default">false</span></td>
+                            <td>Show automatic row number column on the left.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">allowAddEmptyRow</span></td>
+                            <td><span class="param-type">Boolean</span></td>
+                            <td><span class="param-default">false</span></td>
+                            <td>Automatically add empty row after saving a new row.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">allowDeleteRow</span></td>
+                            <td><span class="param-type">Boolean</span></td>
+                            <td><span class="param-default">true</span></td>
+                            <td>Enable "Delete Row" option in context menu. If false, only "Clear Row" appears.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- emptyTable Options -->
+        <div class="section">
+            <div class="section-header">
+                <h2>emptyTable Options</h2>
+                <p>Configuration for table starting empty</p>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Default</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="param-name">emptyTable.enabled</span></td>
+                            <td><span class="param-type">Boolean</span></td>
+                            <td><span class="param-default">false</span></td>
+                            <td>Enable empty table mode.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">emptyTable.saveMode</span></td>
+                            <td><span class="param-type">String</span></td>
+                            <td><span class="param-default">'direct'</span></td>
+                            <td><code>'direct'</code> = save directly to server, <code>'batch'</code> = save to
+                                localStorage first.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">emptyTable.initialRows</span></td>
+                            <td><span class="param-type">Number</span></td>
+                            <td><span class="param-default">1</span></td>
+                            <td>Number of empty rows on initial load.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">emptyTable.storageKey</span></td>
+                            <td><span class="param-type">String</span></td>
+                            <td><span class="param-default">'gridsheet_data'</span></td>
+                            <td>Key for localStorage (batch mode only).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">emptyTable.showSaveButton</span></td>
+                            <td><span class="param-type">Boolean</span></td>
+                            <td><span class="param-default">false</span></td>
+                            <td>Enable built-in Save button in batch mode.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">emptyTable.showClearButton</span></td>
+                            <td><span class="param-type">Boolean</span></td>
+                            <td><span class="param-default">false</span></td>
+                            <td>Enable built-in Clear/Reset button in batch mode.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">emptyTable.saveButtonText</span></td>
+                            <td><span class="param-type">String</span></td>
+                            <td><span class="param-default">'Save'</span></td>
+                            <td>Text label for the built-in Save button.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="param-name">emptyTable.autoRestore</span></td>
+                            <td><span class="param-type">Boolean</span></td>
+                            <td><span class="param-default">false</span></td>
+                            <td>Auto-restore pending data from localStorage on page load without showing confirmation
+                                modal (batch mode only).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="code-header">
+                    <span class="code-title">Example: Batch Mode</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="property">emptyTable</span>: {
+    <span class="property">enabled</span>: <span class="boolean">true</span>,
+    <span class="property">saveMode</span>: <span class="string">'batch'</span>,
+    <span class="property">initialRows</span>: <span class="value">10</span>,
+    <span class="property">storageKey</span>: <span class="string">'myapp_pending_data'</span>,
+    <span class="property">showSaveButton</span>: <span class="boolean">true</span>,
+    <span class="property">showClearButton</span>: <span class="boolean">true</span>,
+    <span class="property">saveButtonText</span>: <span class="string">'Submit Data'</span>,
+    <span class="property">autoRestore</span>: <span class="boolean">true</span>       <span class="comment">// Auto-restore without modal dialog</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- formats Options -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Format Configuration</h2>
+                <p>Formats are now defined inline per column in the <code>columns</code> config (v1.1.0+)</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Complete Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="comment">// v1.1.0+ - Format is inline per column:</span>
+<span class="property">columns</span>: {
+    0: { <span class="property">name</span>: <span class="string">'salary'</span>, <span class="property">type</span>: <span class="string">'currency'</span>, 
+         <span class="property">format</span>: { <span class="property">thousandSeparator</span>: <span class="string">'.'</span>, <span class="property">prefix</span>: <span class="string">'$ '</span> } },
+    1: { <span class="property">name</span>: <span class="string">'score'</span>, <span class="property">type</span>: <span class="string">'percentage'</span>, 
+         <span class="property">format</span>: { <span class="property">suffix</span>: <span class="string">'%'</span> } },
+    2: { <span class="property">name</span>: <span class="string">'birthdate'</span>, <span class="property">type</span>: <span class="string">'date'</span>, 
+         <span class="property">format</span>: { <span class="property">format</span>: <span class="string">'DD/MM/YYYY'</span> } }
+}</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>Tip:</strong> See <a href="formats.html">Formats</a> page for more
+                    detail and interactive examples.
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Options -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Footer Configuration</h2>
+                <p>Add aggregate summary rows (sum, avg, count, min, max) at the bottom</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="property">footer</span>: {
+    <span class="property">enabled</span>: <span class="boolean">true</span>,
+    <span class="property">label</span>: <span class="string">'Total'</span>  <span class="comment">// Label displayed in the first column</span>
+}
+
+<span class="comment">// Note: You must also set data-footer attribute on table headers</span>
+<span class="comment">// &lt;th data-name="qty" data-footer="sum"&gt;Qty&lt;/th&gt;</span></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- dataTableOptions -->
+        <div class="section">
+            <div class="section-header">
+                <h2>dataTableOptions</h2>
+                <p>Options passed to DataTables</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="property">dataTableOptions</span>: {
+    <span class="property">keys</span>: <span class="boolean">true</span>,          <span class="comment">// Enable KeyTable (required for keyboard nav)</span>
+    <span class="property">paging</span>: <span class="boolean">true</span>,        <span class="comment">// Enable pagination</span>
+    <span class="property">pageLength</span>: <span class="value">10</span>,      <span class="comment">// Rows per page</span>
+    <span class="property">order</span>: [],            <span class="comment">// Default sort (empty = no sort)</span>
+    <span class="property">scrollX</span>: <span class="boolean">true</span>,       <span class="comment">// Horizontal scroll</span>
+    <span class="property">searching</span>: <span class="boolean">true</span>      <span class="comment">// Search box</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Language Options -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Language / i18n</h2>
+                <p>Override specific labels or set the default language inline</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="comment">// Override specific labels</span>
+<span class="property">language</span>: {
+    <span class="property">saveAll</span>: <span class="string">'Simpan Data'</span>,
+    <span class="property">copyRow</span>: <span class="string">'Salin Baris'</span>,
+    <span class="property">reset</span>: <span class="string">'Kosongkan'</span>
+}
+
+<span class="comment">// Or use predefined language object:</span>
+<span class="comment">// language: GridSheetLang.id</span></pre>
+                </div>
+                <div class="tip">
+                    <strong>Tip:</strong> See <a href="language.html">Language documentation</a> for full list of
+                    translatable keys.
+                </div>
+            </div>
+        </div>
+
+        <!-- selectOptions -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Select Options</h2>
+                <p>Options are now defined inline per column in the <code>columns</code> config (v1.1.0+)</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="comment">// v1.1.0+ - Options are inline per column:</span>
+<span class="property">columns</span>: {
+    0: { <span class="property">name</span>: <span class="string">'office'</span>, <span class="property">type</span>: <span class="string">'select'</span>, 
+         <span class="property">options</span>: <span class="string">'api/offices.php'</span> },       <span class="comment">// Endpoint URL</span>
+    1: { <span class="property">name</span>: <span class="string">'status'</span>, <span class="property">type</span>: <span class="string">'select'</span>, 
+         <span class="property">options</span>: [<span class="string">'Active'</span>, <span class="string">'Inactive'</span>] }   <span class="comment">// Static array</span>
+}
+
+<span class="comment">// Expected response from endpoint:</span>
+<span class="comment">// ["New York", "Tokyo", "London", "Paris"]</span></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- extraHeaders -->
+        <div class="section">
+            <div class="section-header">
+                <h2>extraHeaders</h2>
+                <p>Custom headers for all requests (auth token, etc)</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="property">extraHeaders</span>: {
+    <span class="string">'Authorization'</span>: <span class="string">'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'</span>,
+    <span class="string">'X-CSRF-Token'</span>: <span class="string">'abc123'</span>,
+    <span class="string">'X-Custom-Header'</span>: <span class="string">'value'</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Example -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Full Configuration Example</h2>
+                <p>Complete example with all options</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Complete Example</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> <span class="property">GridSheet</span>({
+    <span class="comment">// Required</span>
+    <span class="property">tableSelector</span>: <span class="string">'#myTable'</span>,
+    
+    <span class="comment">// Core Options</span>
+    <span class="property">enableColumnNumber</span>: <span class="boolean">true</span>,
+    <span class="property">allowAddEmptyRow</span>: <span class="boolean">true</span>,
+    <span class="comment">// Column Configuration (v1.1.0+)</span>
+    <span class="property">columns</span>: { 0: { name: 'name' }, 1: { name: 'email' } },  <span class="comment">// See Column Types docs</span>
+    
+    <span class="comment">// Empty Table Mode</span>
+    <span class="property">emptyTable</span>: {
+        <span class="property">enabled</span>: <span class="boolean">false</span>,
+        <span class="property">saveMode</span>: <span class="string">'direct'</span>,
+        <span class="property">showSaveButton</span>: <span class="boolean">true</span>,
+        <span class="property">showClearButton</span>: <span class="boolean">true</span>
+    },
+    
+    <span class="comment">// Footer Default Option</span>
+    <span class="property">footer</span>: {
+        <span class="property">enabled</span>: <span class="boolean">true</span>,
+        <span class="property">label</span>: <span class="string">'Total'</span>
+    },
+
+    <span class="comment">// Language Setting / Override</span>
+    <span class="property">language</span>: {
+        <span class="property">saveAll</span>: <span class="string">'Submit Data'</span>
+    },
+    
+    <span class="comment">// DataTables Options</span>
+    <span class="property">dataTableOptions</span>: {
+        <span class="property">keys</span>: <span class="boolean">true</span>,
+        <span class="property">paging</span>: <span class="boolean">true</span>,
+        <span class="property">pageLength</span>: <span class="value">10</span>
+    },
+    
+    <span class="comment">// Auth Headers</span>
+    <span class="property">extraHeaders</span>: {
+        <span class="string">'Authorization'</span>: <span class="string">'Bearer token'</span>
+    },
+    
+    <span class="comment">// Endpoints</span>
+    <span class="property">endpoints</span>: {
+        <span class="property">save</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/save.php'</span>,
+            <span class="property">preSave</span>: <span class="keyword">function</span>(payload) {
+                <span class="keyword">if</span> (!payload.name) <span class="keyword">return</span> <span class="boolean">false</span>;
+            },
+            <span class="property">postSave</span>: <span class="keyword">function</span>(result) {
+                console.log(<span class="string">'Saved:'</span>, result);
+            }
+        },
+        <span class="property">update</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/update.php'</span>
+        },
+        <span class="property">delete</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/delete.php'</span>
+        },
+        <span class="property">batch</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/batch.php'</span>,
+            <span class="property">preSave</span>: <span class="keyword">function</span>(payload) {
+                console.log(<span class="string">'Sending batch update...'</span>);
+            },
+            <span class="property">postSave</span>: <span class="keyword">function</span>(result) {
+                alert(<span class="string">'Batch update successful!'</span>);
+            }
+        }
+    }
+});</pre>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.section-content').querySelector('.code-block pre');
+            const text = codeBlock.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

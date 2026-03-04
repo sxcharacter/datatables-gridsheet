@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Validation & Callbacks</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Validation & Callbacks <span class="badge">Developer Docs</span></h1>
+            <p>Guide to preSave, postSave callbacks and validation</p>
+        </div>
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link">Configuration</a>
+            <a href="column-types.html" class="nav-link">Column Types</a>
+            <a href="formats.html" class="nav-link">Formats</a>
+            <a href="validation.html" class="nav-link active">Validation</a>
+            <a href="endpoints.html" class="nav-link">Endpoints</a>
+            <a href="formula.html" class="nav-link">Formula</a>
+            <a href="theming.html" class="nav-link">Themes</a>
+            <a href="language.html" class="nav-link">Language</a>
+            <a href="context-menu.html" class="nav-link">Context Menu</a>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Built-in Validation</h2>
+                <p>Automatic validation based on column type</p>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <tr>
+                        <th>Column Type</th>
+                        <th>Automatic Validation</th>
+                    </tr>
+                    <tr>
+                        <td><code>email</code></td>
+                        <td>Valid email format (xxx@xxx.xxx)</td>
+                    </tr>
+                    <tr>
+                        <td><code>number</code></td>
+                        <td>Numbers only</td>
+                    </tr>
+                    <tr>
+                        <td><code>currency</code></td>
+                        <td>Number format with separators</td>
+                    </tr>
+                    <tr>
+                        <td><code>date</code></td>
+                        <td>Date format according to configuration</td>
+                    </tr>
+                    <tr>
+                        <td><code>time</code></td>
+                        <td>Time format HH:mm</td>
+                    </tr>
+                </table>
+                <div class="tip">
+                    <strong>Tip:</strong> If validation fails, <code>meta.hasErrors: true</code> and
+                    <code>meta.validationErrors[]</code> will contain error details.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Required Fields & allowEmpty</h2>
+                <p>Control which columns are mandatory</p>
+            </div>
+            <div class="section-content">
+                <p>By default, GridSheet considers all columns mandatory (must be filled). Use
+                    <code>allowEmpty: true</code> to make a column optional.
+                </p>
+                <div class="code-block" style="margin-top: 15px;">
+                    <pre><span class="property">columns</span>: {
+    <span class="value">0</span>: { <span class="property">name</span>: <span class="string">'username'</span>, <span class="property">type</span>: <span class="string">'text'</span> }, <span class="comment">// Required</span>
+    <span class="value">1</span>: { 
+        <span class="property">name</span>: <span class="string">'notes'</span>, 
+        <span class="property">type</span>: <span class="string">'textarea'</span>, 
+        <span class="property">allowEmpty</span>: <span class="keyword">true</span> <span class="comment">// Optional: row considered "filled" even if empty</span>
+    }
+}</pre>
+                </div>
+                <div class="tip">
+                    <strong>Note:</strong> Checkbox and Readonly columns are automatically considered
+                    optional/filled.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>preSave Callback</h2>
+                <p>Called before data is sent to server</p>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 12px;">Use for custom validation. Return <code>false</code> to
+                    cancel save.</p>
+                <div class="code-block">
+                    <pre><span class="property">endpoints</span>: {
+    <span class="property">save</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/save.php'</span>,
+        <span class="property">preSave</span>: <span class="keyword">function</span>(payload) {
+            <span class="comment">// Consistent payload structure:</span>
+            <span class="comment">// payload.operation = 'insert' | 'insert_batch'</span>
+            <span class="comment">// payload.data = { row: {...} } or { rows: [...] }</span>
+            <span class="comment">// payload.meta = { timestamp, hasErrors, validationErrors, ... }</span>
+            
+            <span class="comment">// Check built-in validation</span>
+            <span class="keyword">if</span> (payload.meta.hasErrors) {
+                console.log(<span class="string">'Errors:'</span>, payload.meta.validationErrors);
+                <span class="keyword">return</span> <span class="keyword">false</span>;  <span class="comment">// Cancel save</span>
+            }
+            
+            <span class="comment">// Custom validation - check salary in row data</span>
+            <span class="keyword">const</span> salary = payload.data?.row?.salary;
+            <span class="keyword">if</span> (salary && parseFloat(salary) < <span class="value">1000000</span>) {
+                alert(<span class="string">'Minimum salary $ 1.000.000'</span>);
+                <span class="keyword">return</span> <span class="keyword">false</span>;  <span class="comment">// Cancel save</span>
+            }
+            
+            <span class="comment">// Return true or undefined to proceed with save</span>
+        }
+    },
+    <span class="property">update</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/update.php'</span>,
+        <span class="property">preSave</span>: <span class="keyword">function</span>(payload) {
+            <span class="comment">// payload.operation = 'update' | 'update_batch'</span>
+            <span class="comment">// payload.data = { id, fields: {...} } or { rows: [...] }</span>
+            
+            <span class="keyword">if</span> (payload.meta.hasErrors) {
+                <span class="keyword">return</span> <span class="keyword">false</span>;
+            }
+            
+            <span class="comment">// Access field values via payload.data.fields</span>
+            <span class="keyword">const</span> salary = payload.data?.fields?.salary;
+            <span class="keyword">if</span> (salary && parseFloat(salary) < <span class="value">1000000</span>) {
+                alert(<span class="string">'Minimum salary $ 1.000.000'</span>);
+                <span class="keyword">return</span> <span class="keyword">false</span>;
+            }
+        }
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Payload Structure</h2>
+                <p>Consistent structure across all operations</p>
+            </div>
+            <div class="section-content">
+                <h3 style="margin-bottom: 12px; color: #0891b2;">Core Structure</h3>
+                <div class="code-block">
+                    <pre><span class="comment">// All payloads follow this structure:</span>
+{
+    <span class="property">operation</span>: <span class="string">'insert'</span> | <span class="string">'insert_batch'</span> | <span class="string">'update'</span> | <span class="string">'update_batch'</span> | <span class="string">'delete'</span> | <span class="string">'batch'</span>,
+    <span class="property">data</span>: { ... },    <span class="comment">// Operation-specific data</span>
+    <span class="property">meta</span>: { ... }     <span class="comment">// Metadata including validation</span>
+}</pre>
+                </div>
+
+                <h3 style="margin: 20px 0 12px; color: #0891b2;">Meta Properties (Common)</h3>
+                <table class="param-table">
+                    <tr>
+                        <th>Property</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">timestamp</span></td>
+                        <td>Number</td>
+                        <td>Operation timestamp (ms)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">hasErrors</span></td>
+                        <td>Boolean</td>
+                        <td>True if validation failed</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">validationErrors</span></td>
+                        <td>Array</td>
+                        <td>List of validation errors (empty if none)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">rowCount</span></td>
+                        <td>Number</td>
+                        <td>Number of rows affected</td>
+                    </tr>
+                </table>
+
+                <h3 style="margin: 20px 0 12px; color: #0891b2;">Contextual Properties</h3>
+                <table class="param-table">
+                    <tr>
+                        <th>Property</th>
+                        <th>Available In</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">tempId</span></td>
+                        <td>insert</td>
+                        <td>Temporary ID for new row</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">fieldCount</span></td>
+                        <td>insert, update, batch</td>
+                        <td>Number of fields</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">rowIndex</span></td>
+                        <td>insert, update, delete</td>
+                        <td>Visual row index (for scrolling)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">colIndex</span></td>
+                        <td>update (single cell)</td>
+                        <td>Column index</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">insertCount</span></td>
+                        <td>batch</td>
+                        <td>Number of rows to insert</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">updateCount</span></td>
+                        <td>batch</td>
+                        <td>Number of rows to update</td>
+                    </tr>
+                    <tr>
+                        <td><span class="param-name">deleteCount</span></td>
+                        <td>batch</td>
+                        <td>Number of rows to delete</td>
+                    </tr>
+                </table>
+
+                <h3 style="margin: 20px 0 12px; color: #0891b2;">Example Payloads</h3>
+                <div class="code-block">
+                    <pre><span class="comment">// INSERT (new row)</span>
+{
+    <span class="property">operation</span>: <span class="string">'insert'</span>,
+    <span class="property">data</span>: {
+        <span class="property">row</span>: { <span class="property">name</span>: <span class="string">'John'</span>, <span class="property">email</span>: <span class="string">'john@test.com'</span> }
+    },
+    <span class="property">meta</span>: {
+        <span class="property">timestamp</span>: <span class="value">1704567890000</span>,
+        <span class="property">hasErrors</span>: <span class="keyword">false</span>,
+        <span class="property">validationErrors</span>: [],
+        <span class="property">rowCount</span>: <span class="value">1</span>,
+        <span class="property">tempId</span>: <span class="string">'temp_123'</span>,
+        <span class="property">fieldCount</span>: <span class="value">2</span>,
+        <span class="property">rowIndex</span>: <span class="value">5</span>
+    }
+}
+
+<span class="comment">// UPDATE (single cell)</span>
+{
+    <span class="property">operation</span>: <span class="string">'update'</span>,
+    <span class="property">data</span>: {
+        <span class="property">id</span>: <span class="string">'123'</span>,
+        <span class="property">fields</span>: { <span class="property">salary</span>: <span class="value">120000</span> }
+    },
+    <span class="property">meta</span>: {
+        <span class="property">timestamp</span>: <span class="value">1704567890000</span>,
+        <span class="property">hasErrors</span>: <span class="keyword">false</span>,
+        <span class="property">validationErrors</span>: [],
+        <span class="property">rowCount</span>: <span class="value">1</span>,
+        <span class="property">fieldCount</span>: <span class="value">1</span>,
+        <span class="property">rowIndex</span>: <span class="value">5</span>,
+        <span class="property">colIndex</span>: <span class="value">3</span>
+    }
+}
+
+<span class="comment">// BATCH (Save All)</span>
+{
+    <span class="property">operation</span>: <span class="string">'batch'</span>,
+    <span class="property">data</span>: {
+        <span class="property">insert</span>: [{ <span class="property">_tempId</span>: <span class="string">'temp_1'</span>, ... }],
+        <span class="property">update</span>: [{ <span class="property">id</span>: <span class="string">'5'</span>, <span class="property">fields</span>: {...} }],
+        <span class="property">delete</span>: [<span class="string">'10'</span>, <span class="string">'11'</span>]
+    },
+    <span class="property">meta</span>: {
+        <span class="property">timestamp</span>: <span class="value">1704567890000</span>,
+        <span class="property">hasErrors</span>: <span class="keyword">false</span>,
+        <span class="property">validationErrors</span>: [],
+        <span class="property">rowCount</span>: <span class="value">4</span>,
+        <span class="property">insertCount</span>: <span class="value">1</span>,
+        <span class="property">updateCount</span>: <span class="value">1</span>,
+        <span class="property">deleteCount</span>: <span class="value">2</span>,
+        <span class="property">fieldCount</span>: <span class="value">5</span>
+    }
+}</pre>
+                </div>
+
+                <h3 style="margin: 20px 0 12px; color: #0891b2;">Validation Error Structure</h3>
+                <div class="code-block">
+                    <pre><span class="comment">// Each item in validationErrors[]</span>
+{
+    <span class="property">rowId</span>: <span class="string">'temp_123'</span>,     <span class="comment">// Row ID (temp or real)</span>
+    <span class="property">rowIndex</span>: <span class="value">2</span>,           <span class="comment">// Visual row index</span>
+    <span class="property">field</span>: <span class="string">'email'</span>,        <span class="comment">// Field name</span>
+    <span class="property">colIndex</span>: <span class="value">3</span>,           <span class="comment">// Column index</span>
+    <span class="property">value</span>: <span class="string">'invalid'</span>,      <span class="comment">// The invalid value</span>
+    <span class="property">type</span>: <span class="string">'email'</span>,         <span class="comment">// Column data-type</span>
+    <span class="property">errorType</span>: <span class="string">'format'</span>   <span class="comment">// 'format' | 'empty' | 'type'</span>
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>postSave Callback</h2>
+                <p>Called after server response</p>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre><span class="property">endpoints</span>: {
+    <span class="property">save</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/save.php'</span>,
+        <span class="property">postSave</span>: <span class="keyword">function</span>(result) {
+            <span class="comment">// result = response from server</span>
+            console.log(<span class="string">'Server response:'</span>, result);
+            
+            <span class="keyword">if</span> (result.success) {
+                <span class="comment">// Show success notification</span>
+                showToast(<span class="string">'Data saved successfully!'</span>);
+            } <span class="keyword">else</span> {
+                <span class="comment">// Handle server error</span>
+                alert(<span class="string">'Error: '</span> + result.message);
+            }
+        }
+    }
+}</pre>
+                </div>
+                <div class="tip">
+                    <strong>Tip:</strong> Use postSave to update UI, refresh data, or show notifications.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Delete Confirmation</h2>
+                <p>Use preDelete callback for delete operations</p>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre><span class="property">endpoints</span>: {
+    <span class="property">delete</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/delete.php'</span>,
+        <span class="comment">// preDelete receives rowId, not payload</span>
+        <span class="property">preDelete</span>: <span class="keyword">function</span>(rowId) {
+            <span class="comment">// Confirm delete</span>
+            <span class="keyword">if</span> (!confirm(<span class="string">'Delete row '</span> + rowId + <span class="string">'?'</span>)) {
+                <span class="keyword">return</span> <span class="keyword">false</span>;  <span class="comment">// Cancel delete</span>
+            }
+        },
+        <span class="property">postDelete</span>: <span class="keyword">function</span>(result, rowId) {
+            console.log(<span class="string">'Deleted row'</span>, rowId, <span class="string">':'</span>, result);
+        }
+    }
+}</pre>
+                </div>
+                <div class="tip">
+                    <strong>Note:</strong> Delete uses <code>preDelete</code>/<code>postDelete</code>
+                    instead of preSave/postSave.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Full Example</h2>
+                <p>Complete endpoint configuration with new payload structure</p>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> GridSheet({
+    <span class="property">tableSelector</span>: <span class="string">'#myTable'</span>,
+    <span class="property">endpoints</span>: {
+        <span class="property">save</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/save.php'</span>,
+            <span class="property">preSave</span>: <span class="keyword">function</span>(payload) {
+                <span class="comment">// Check validation errors</span>
+                <span class="keyword">if</span> (payload.meta.hasErrors) {
+                    console.log(<span class="string">'Errors:'</span>, payload.meta.validationErrors);
+                    <span class="keyword">return</span> <span class="keyword">false</span>;
+                }
+                <span class="comment">// Custom validation on row data</span>
+                <span class="keyword">if</span> (!payload.data.row?.name) {
+                    alert(<span class="string">'Name is required!'</span>);
+                    <span class="keyword">return</span> <span class="keyword">false</span>;
+                }
+            },
+            <span class="property">postSave</span>: (result) => console.log(<span class="string">'Saved:'</span>, result)
+        },
+        <span class="property">update</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/update.php'</span>,
+            <span class="property">preSave</span>: (payload) => !payload.meta.hasErrors,
+            <span class="property">postSave</span>: (result) => console.log(<span class="string">'Updated:'</span>, result)
+        },
+        <span class="property">delete</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/delete.php'</span>,
+            <span class="property">preDelete</span>: (rowId) => confirm(<span class="string">'Delete row '</span> + rowId + <span class="string">'?'</span>),
+            <span class="property">postDelete</span>: (result, rowId) => console.log(<span class="string">'Deleted:'</span>, rowId)
+        },
+        <span class="comment">// Batch Mode only</span>
+        <span class="property">batch</span>: {
+            <span class="property">endpoint</span>: <span class="string">'api/batch.php'</span>,
+            <span class="property">preSave</span>: <span class="keyword">function</span>(payload) {
+                <span class="keyword">if</span> (payload.meta.hasErrors) {
+                    alert(<span class="string">'Please fix errors first!'</span>);
+                    <span class="keyword">return</span> <span class="keyword">false</span>;
+                }
+                <span class="keyword">return</span> confirm(
+                    <span class="string">'Save '</span> + payload.meta.insertCount + <span class="string">' new, '</span> +
+                    payload.meta.updateCount + <span class="string">' updated, '</span> +
+                    payload.meta.deleteCount + <span class="string">' deleted?'</span>
+                );
+            },
+            <span class="property">postSave</span>: (result) => console.log(<span class="string">'Batch saved:'</span>, result)
+        }
+    }
+});</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

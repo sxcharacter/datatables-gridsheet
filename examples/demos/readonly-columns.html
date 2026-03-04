@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Readonly & Server-Field Auto Update</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn">← Back to Home</a>
+            <h1>
+                Readonly & Server-Field Auto Update
+                <span class="mode-badge">Demo</span>
+            </h1>
+            <p>Readonly columns with automatic server-field population</p>
+            <div class="mode-desc">
+                <strong>Features:</strong>
+                Readonly columns cannot be edited by users, but can be auto-populated from server response
+                using <code>data-server-field</code> attribute. Perfect for ID, timestamps, invoice codes, etc.
+            </div>
+        </div>
+
+        <details class="info-box">
+            <summary>
+                <span class="summary-text">&#9776; Readonly Column Types</span>
+                <span class="summary-arrow">▼</span>
+            </summary>
+            <div class="info-content">
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color editable"></div>
+                        <span>Editable - user can edit</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color readonly"></div>
+                        <span>Readonly - cannot be edited</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color server-field"></div>
+                        <span>Server-Field - auto-updated from server</span>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h4>Editable Columns</h4>
+                        <ul>
+                            <li><code>name</code> - Employee Name (text)</li>
+                            <li><code>email</code> - Email (email validation)</li>
+                            <li><code>department</code> - Department (select)</li>
+                            <li><code>salary</code> - Salary (currency format)</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h4>Readonly + Server-Field</h4>
+                        <ul>
+                            <li><code>employee_id</code> - Auto-generated ID from server</li>
+                            <li><code>invoice_code</code> - Invoice code (e.g., INV-2026-00001)</li>
+                            <li><code>created_at</code> - Timestamp when row created</li>
+                            <li><code>created_by</code> - Username who created</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details class="info-box">
+            <summary>
+                <span class="summary-text">&#9776; Developer Guide: How to Use</span>
+                <span class="summary-arrow">▼</span>
+            </summary>
+            <div class="info-content">
+                <h4>1. HTML Setup - Add <code>data-server-field</code> attribute:</h4>
+                <div class="code-block">
+                    <pre><span class="comment">&lt;!-- Basic readonly (no auto-update) --&gt;</span>
+<span class="tag">&lt;th</span> <span class="attr">data-type</span>=<span class="value">"readonly"</span><span class="tag">&gt;</span>Static Text<span class="tag">&lt;/th&gt;</span>
+
+<span class="comment">&lt;!-- Readonly with server-field auto-update --&gt;</span>
+<span class="tag">&lt;th</span> <span class="attr">data-type</span>=<span class="value">"readonly"</span> <span class="attr">data-server-field</span>=<span class="value">"id"</span><span class="tag">&gt;</span>ID<span class="tag">&lt;/th&gt;</span>
+<span class="tag">&lt;th</span> <span class="attr">data-type</span>=<span class="value">"readonly"</span> <span class="attr">data-server-field</span>=<span class="value">"invoice_code"</span><span class="tag">&gt;</span>Invoice<span class="tag">&lt;/th&gt;</span>
+<span class="tag">&lt;th</span> <span class="attr">data-type</span>=<span class="value">"readonly"</span> <span class="attr">data-server-field</span>=<span class="value">"created_at"</span> <span class="attr">data-format</span>=<span class="value">"date"</span><span class="tag">&gt;</span>Created<span class="tag">&lt;/th&gt;</span>
+<span class="tag">&lt;th</span> <span class="attr">data-type</span>=<span class="value">"readonly"</span> <span class="attr">data-server-field</span>=<span class="value">"total"</span> <span class="attr">data-format</span>=<span class="value">"currency"</span><span class="tag">&gt;</span>Total<span class="tag">&lt;/th&gt;</span></pre>
+                </div>
+
+                <h4>2. Server Response - Include the field values:</h4>
+                <div class="code-block">
+                    <pre><span class="comment">// PHP Example</span>
+echo json_encode([
+    <span class="value">'status'</span> => <span class="value">'ok'</span>,
+    <span class="value">'data'</span> => [
+        <span class="value">'id'</span> => $newId,
+        <span class="value">'tempId'</span> => $meta[<span class="value">'tempId'</span>],
+        <span class="comment">// These will auto-populate data-server-field columns:</span>
+        <span class="value">'invoice_code'</span> => <span class="value">'INV-2026-'</span> . str_pad($newId, 5, <span class="value">'0'</span>, STR_PAD_LEFT),
+        <span class="value">'created_at'</span> => date(<span class="value">'Y-m-d H:i:s'</span>),
+        <span class="value">'created_by'</span> => $_SESSION[<span class="value">'username'</span>] ?? <span class="value">'system'</span>
+    ]
+]);</pre>
+                </div>
+
+                <div class="tip-box">
+                    <strong>Tip:</strong> The <code>data-server-field</code> value must match the key in the server
+                    response.
+                    Use <code>data-format</code> to apply formatting (currency, date, percentage, number).
+                </div>
+
+                <h4>3. Supported Formats:</h4>
+                <div class="info-grid">
+                    <div class="info-section">
+                        <ul>
+                            <li><code>date</code> - Formats as configured date display</li>
+                            <li><code>currency</code> - Adds prefix, thousand separator</li>
+                            <li><code>percentage</code> - Adds % suffix</li>
+                            <li><code>number</code> - Thousand separator only</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div class="table-container">
+            <p style="margin-bottom: 12px; font-size: 13px; color: #666;">
+                <strong>Try it:</strong> Add a new row by filling the empty row at the bottom.
+                After saving, the ID, Invoice, Created, and Created By columns will be auto-populated!
+            </p>
+            <table id="readonlyDemo" class="datatables-gridsheet" style="width:100%;">
+                <thead>
+                    <tr>
+                        <!-- Readonly + Server-Field columns -->
+                        <th>Employee ID</th>
+
+                        <!-- Editable columns -->
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Salary</th>
+
+                        <!-- Readonly + Server-Field with formatting -->
+                        <th>Invoice</th>
+                        <th>Created</th>
+                        <th>Created By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-id="1">
+                        <td>EMP-001</td>
+                        <td>John Doe</td>
+                        <td>john@company.com</td>
+                        <td>Engineering</td>
+                        <td>160000</td>
+                        <td>INV-2024-00001</td>
+                        <td>2024-01-01</td>
+                        <td>admin</td>
+                    </tr>
+                    <tr data-id="2">
+                        <td>EMP-002</td>
+                        <td>Jane Smith</td>
+                        <td>jane@company.com</td>
+                        <td>Marketing</td>
+                        <td>65000000</td>
+                        <td>INV-2024-00002</td>
+                        <td>2024-03-15</td>
+                        <td>admin</td>
+                    </tr>
+                    <tr data-id="3">
+                        <td>EMP-003</td>
+                        <td>Bob Wilson</td>
+                        <td>bob@company.com</td>
+                        <td>Finance</td>
+                        <td>70000000</td>
+                        <td>INV-2024-00003</td>
+                        <td>2024-06-01</td>
+                        <td>manager</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const gridsheet = new GridSheet({
+                tableSelector: '#readonlyDemo',
+                enableColumnNumber: true,
+                allowAddEmptyRow: true,
+
+                // Column configuration (v1.1.0+)
+                columns: {
+                    0: { name: 'employee_id', type: 'readonly', serverField: 'employee_id', readonly: true },
+                    1: { name: 'name', type: 'text' },
+                    2: { name: 'email', type: 'email' },
+                    3: {
+                        name: 'department', type: 'select', options: [
+                            { id: 'ENG', text: 'Engineering' },
+                            { id: 'MKT', text: 'Marketing' },
+                            { id: 'FIN', text: 'Finance' },
+                            { id: 'HR', text: 'HR' },
+                            { id: 'SAL', text: 'Sales' },
+                            { id: 'IT', text: 'IT' }
+                        ]
+                    },
+                    4: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', prefix: '$', decimalPlaces: 0 } },
+                    5: { name: 'invoice_code', type: 'readonly', serverField: 'invoice_code', readonly: true },
+                    6: { name: 'created_at', type: 'readonly', serverField: 'created_at', format: { format: 'dd/mm/yyyy' }, readonly: true },
+                    7: { name: 'created_by', type: 'readonly', serverField: 'created_by', readonly: true }
+                },
+
+                dataTableOptions: {
+                    keys: true,
+                    paging: true,
+                    pageLength: 10,
+                    order: []
+                },
+
+                endpoints: {
+                    // Save new row (Direct Mode)
+                    save: {
+                        endpoint: '../endpoints/save-readonly-demo.php',
+                        preSave: function (payload) {
+                            console.log('preSave payload:', payload);
+                            // Check validation
+                            if (payload.meta.hasErrors) {
+                                alert('Please fix validation errors first');
+                                return false;
+                            }
+                        },
+                        postSave: function (result) {
+                            console.log('Server response:', result);
+                            // Notice: Server-Field columns auto-updated!
+                            // No manual DOM manipulation needed
+                        }
+                    },
+
+                    // Update existing row
+                    update: {
+                        endpoint: '../endpoints/update.php',
+                        preSave: function (payload) {
+                            if (payload.meta.hasErrors) {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

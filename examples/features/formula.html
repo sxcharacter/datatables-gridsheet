@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Formula Columns</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn">← Back to Home</a>
+            <h1>Formula Columns <span class="badge">Developer Docs</span></h1>
+            <p>Auto-calculated columns based on other column values within the same row</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link">Configuration</a>
+            <a href="column-types.html" class="nav-link">Column Types</a>
+            <a href="formats.html" class="nav-link">Formats</a>
+            <a href="validation.html" class="nav-link">Validation</a>
+            <a href="endpoints.html" class="nav-link">Endpoints</a>
+            <a href="formula.html" class="nav-link active">Formula</a>
+            <a href="theming.html" class="nav-link">Themes</a>
+            <a href="language.html" class="nav-link">Language</a>
+        </div>
+
+        <!-- Overview -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Overview</h2>
+                <p>Formula columns automatically calculate values based on other columns</p>
+            </div>
+            <div class="section-content">
+                <p>Key features:</p>
+                <ul style="margin: 12px 0; padding-left: 24px;">
+                    <li><strong>Auto-calculation</strong> - Values update automatically when source columns change</li>
+                    <li><strong>Readonly</strong> - Formula cells cannot be edited directly</li>
+                    <li><strong>Tooltip</strong> - Hover over formula cells to see the formula</li>
+                    <li><strong>Error handling</strong> - Shows error codes like Excel (#DIV/0!, #REF!, etc.)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Basic Usage -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Basic Usage</h2>
+                <p>Define formula columns using the `columns` option in the GridSheet constructor</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">JavaScript</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="property">columns</span>: {
+    <span class="comment">// Source columns</span>
+    0: { <span class="property">name</span>: <span class="string">'qty'</span>, <span class="property">type</span>: <span class="string">'number'</span> },
+    1: { <span class="property">name</span>: <span class="string">'price'</span>, <span class="property">type</span>: <span class="string">'currency'</span>, <span class="property">format</span>: { <span class="property">prefix</span>: <span class="string">'$'</span> } },
+
+    <span class="comment">// Formula column</span>
+    2: { 
+        <span class="property">type</span>: <span class="string">'formula'</span>,
+        <span class="property">formula</span>: <span class="string">'qty * price'</span>,
+        <span class="property">format</span>: { <span class="property">prefix</span>: <span class="string">'$'</span> }
+    }
+}</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>Note:</strong> Formula columns do not require a <code>name</code> as they represent
+                    calculated values,
+                    but you can provide one if you want to reference them in other formulas.
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Table -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Live Demo</h2>
+                <p>Try editing Qty or Price and watch the formula columns auto-update</p>
+            </div>
+            <div class="section-content">
+                <div class="table-container">
+                    <table id="formulaTable" class="datatables-gridsheet" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th></th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Discount</th>
+                                <th>Subtotal</th>
+                                <th>Disc. Amount</th>
+                                <th style="min-width: 100px;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-id="1">
+                                <td>1</td>
+                                <td>Laptop</td>
+                                <td data-raw-value="2">2</td>
+                                <td data-raw-value="45000">45000</td>
+                                <td data-raw-value="10">10</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr data-id="2">
+                                <td>2</td>
+                                <td>Monitor</td>
+                                <td data-raw-value="3">3</td>
+                                <td data-raw-value="3500000">3500000</td>
+                                <td data-raw-value="5">5</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr data-id="3">
+                                <td>3</td>
+                                <td>Keyboard</td>
+                                <td data-raw-value="5">5</td>
+                                <td data-raw-value="500000">500000</td>
+                                <td data-raw-value="0">0</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supported Functions -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Supported Operators & Functions</h2>
+                <p>Phase 1 supported operators and functions</p>
+            </div>
+            <div class="section-content">
+                <h3 style="margin-bottom: 12px;">Operators</h3>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Example</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>+</code></td>
+                            <td><code>price + tax</code></td>
+                            <td>Addition</td>
+                        </tr>
+                        <tr>
+                            <td><code>-</code></td>
+                            <td><code>price - discount</code></td>
+                            <td>Subtraction</td>
+                        </tr>
+                        <tr>
+                            <td><code>*</code></td>
+                            <td><code>qty * price</code></td>
+                            <td>Multiplication</td>
+                        </tr>
+                        <tr>
+                            <td><code>/</code></td>
+                            <td><code>total / qty</code></td>
+                            <td>Division</td>
+                        </tr>
+                        <tr>
+                            <td><code>()</code></td>
+                            <td><code>(price + tax) * qty</code></td>
+                            <td>Grouping</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin: 24px 0 12px;">Functions</h3>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Function</th>
+                            <th>Syntax</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>SUM</code></td>
+                            <td><code>SUM(a, b, c)</code></td>
+                            <td><code>SUM(price, tax, shipping)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>ROUND</code></td>
+                            <td><code>ROUND(value, decimals)</code></td>
+                            <td><code>ROUND(total, 2)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>CONCAT</code></td>
+                            <td><code>CONCAT(a, b, ...)</code></td>
+                            <td><code>CONCAT(first, ' ', last)</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Error Codes -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Error Codes</h2>
+                <p>Standard Excel-like error codes</p>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Error</th>
+                            <th>Cause</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code style="color: #dc3545;">#DIV/0!</code></td>
+                            <td>Division by zero</td>
+                            <td><code>price / 0</code></td>
+                        </tr>
+                        <tr>
+                            <td><code style="color: #dc3545;">#REF!</code></td>
+                            <td>Invalid column reference</td>
+                            <td><code>unknown_field * 2</code></td>
+                        </tr>
+                        <tr>
+                            <td><code style="color: #dc3545;">#VALUE!</code></td>
+                            <td>Invalid value type</td>
+                            <td><code>"text" * 5</code></td>
+                        </tr>
+                        <tr>
+                            <td><code style="color: #dc3545;">#ERROR</code></td>
+                            <td>Syntax error</td>
+                            <td><code>price * + qty</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer Totals Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Footer Totals</h2>
+                <p>Display aggregate values (SUM, AVG, COUNT) at the bottom of your table</p>
+            </div>
+            <div class="section-content">
+                <h3 style="margin-bottom: 12px;">Configuration</h3>
+                <div class="code-header">
+                    <span class="code-title">JavaScript</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="comment">// Enable footer in constructor</span>
+new GridSheet({
+    tableSelector: '#myTable',
+    <span class="attr">footer</span>: {
+        <span class="attr">enabled</span>: <span class="string">true</span>,      <span class="comment">// Show footer row</span>
+        <span class="attr">label</span>: <span class="string">'Total'</span>       <span class="comment">// Label in first column</span>
+    }
+});</pre>
+                </div>
+
+                <h3 style="margin: 24px 0 12px;">Column Configuration</h3>
+                <div class="code-block">
+                    <pre><span class="comment">// Define footer aggregation in columns config</span>
+<span class="property">columns</span>: {
+    0: { <span class="property">name</span>: <span class="string">'qty'</span>, <span class="property">type</span>: <span class="string">'number'</span>, <span class="property">footer</span>: <span class="string">'sum'</span> },
+    1: { <span class="property">name</span>: <span class="string">'price'</span>, <span class="property">type</span>: <span class="string">'currency'</span>, <span class="property">footer</span>: <span class="string">'avg'</span> },
+    2: { <span class="property">name</span>: <span class="string">'item'</span>, <span class="property">type</span>: <span class="string">'text'</span>, <span class="property">footer</span>: <span class="string">'count'</span> }
+}</pre>
+                </div>
+
+                <h3 style="margin: 24px 0 12px;">Aggregate Functions</h3>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Function</th>
+                            <th>Description</th>
+                            <th>Output Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>sum</code></td>
+                            <td>Total of all values in column</td>
+                            <td>$ 50.000.000</td>
+                        </tr>
+                        <tr>
+                            <td><code>avg</code></td>
+                            <td>Average with 2 decimal places</td>
+                            <td>$ 6.333.333,33</td>
+                        </tr>
+                        <tr>
+                            <td><code>count</code></td>
+                            <td>Number of non-empty rows</td>
+                            <td>3</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="tip" style="margin-top: 16px;">
+                    <strong>Tip:</strong> Footer totals automatically update when any cell value changes,
+                    including formula columns!
+                </div>
+            </div>
+        </div>
+
+        <!-- CONCAT Example -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Text CONCAT Example</h2>
+                <p>Combine text values from multiple columns</p>
+            </div>
+            <div class="section-content">
+                <div class="table-container">
+                    <table id="concatTable" class="datatables-gridsheet" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Full Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-id="1">
+                                <td>John</td>
+                                <td>Doe</td>
+                                <td></td>
+                            </tr>
+                            <tr data-id="2">
+                                <td>Jane</td>
+                                <td>Smith</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Initialize formula table
+        const formulaGrid = new GridSheet({
+            tableSelector: '#formulaTable',
+            // Note: Not using enableColumnNumber since table already has No. column
+
+            // Column configuration (v1.1.0+)
+            columns: {
+                0: { name: 'no', type: 'readonly' },
+                1: { name: 'item', type: 'text' },
+                2: { name: 'qty', type: 'number', footer: 'sum' },
+                3: { name: 'price', type: 'currency', footer: 'avg', format: { thousandSeparator: ',', prefix: '$', decimalPlaces: 0 } },
+                4: { name: 'discount', type: 'percentage', format: { suffix: '%' } },
+                5: { name: 'subtotal', type: 'formula', formula: 'qty * price', format: { thousandSeparator: ',', prefix: '$' }, footer: 'sum' },
+                6: { name: 'disc_amount', type: 'formula', formula: '(qty * price) * (discount / 100)', format: { thousandSeparator: ',', prefix: '$' }, footer: 'sum' },
+                7: { name: 'total', type: 'formula', formula: '(qty * price) - ((qty * price) * (discount / 100))', format: { thousandSeparator: ',', prefix: '$' }, footer: 'sum' }
+            },
+
+            footer: {
+                enabled: true,
+                label: 'Total'
+            },
+            dataTableOptions: {
+                keys: true,
+                paging: false,
+                ordering: false
+            }
+        });
+
+        // Initialize CONCAT table
+        const concatGrid = new GridSheet({
+            tableSelector: '#concatTable',
+            enableColumnNumber: true,
+            // Column configuration
+            columns: {
+                0: { name: 'first_name', type: 'text' },
+                1: { name: 'last_name', type: 'text' },
+                2: { name: 'full_name', type: 'formula', formula: "CONCAT(first_name, ' ', last_name)" }
+            },
+            dataTableOptions: {
+                keys: true,
+                paging: false,
+                ordering: false
+            }
+        });
+
+        // Copy code function
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.section-content').querySelector('.code-block pre');
+            const text = codeBlock.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

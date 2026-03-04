@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Formula & Footer Demo</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>
+                Formula & Footer Totals
+                <span class="mode-badge">Demo</span>
+            </h1>
+            <p>Auto-calculated columns with footer aggregate functions (SUM, AVG, COUNT)</p>
+            <div class="mode-desc">
+                <strong>Features:</strong>
+                Formula columns calculate values automatically based on other columns.
+                Footer row displays aggregate totals that update in real-time.
+            </div>
+        </div>
+
+        <details class="info-box">
+            <summary>
+                <span class="summary-text">&#9776; Column Legend</span>
+                <span class="summary-arrow">▼</span>
+            </summary>
+            <div class="info-content">
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color editable"></div>
+                        <span>Editable - user can edit</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color readonly"></div>
+                        <span>Formula - auto-calculated (readonly)</span>
+                    </div>
+                </div>
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h4>Editable Columns</h4>
+                        <ul>
+                            <li><code>item</code> - Product name (text)</li>
+                            <li><code>qty</code> - Quantity (number)</li>
+                            <li><code>price</code> - Unit price (currency)</li>
+                            <li><code>discount</code> - Discount percentage</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h4>Formula Columns</h4>
+                        <ul>
+                            <li><code>Subtotal</code> = Qty × Price</li>
+                            <li><code>Disc. Amount</code> = Subtotal × Discount%</li>
+                            <li><code>Total</code> = Subtotal - Disc. Amount</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <details class="info-box">
+            <summary>
+                <span class="summary-text">&#9776; Footer Aggregates</span>
+                <span class="summary-arrow">▼</span>
+            </summary>
+
+            <div class="info-content">
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h4>Aggregate Functions</h4>
+                        <ul>
+                            <li><code>sum</code> - Total of all values</li>
+                            <li><code>avg</code> - Average (2 decimal places)</li>
+                            <li><code>count</code> - Number of non-empty rows</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h4>Footer in This Table</h4>
+                        <ul>
+                            <li><strong>Qty</strong> - SUM</li>
+                            <li><strong>Price</strong> - AVG</li>
+                            <li><strong>Subtotal, Disc. Amount, Total</strong> - SUM</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div class="table-container">
+            <p style="margin-bottom: 12px; font-size: 13px; color: #666;">
+                <strong>Try it:</strong> Edit Qty or Price values and watch the formula columns auto-calculate.
+                Add new rows at the bottom and see the footer totals update instantly!
+            </p>
+            <table id="formulaDemo" class="datatables-gridsheet" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th style="min-width: 120px;">Subtotal</th>
+                        <th style="min-width: 120px;">Disc. Amount</th>
+                        <th style="min-width: 120px;">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-id="1">
+                        <td>Laptop</td>
+                        <td>2</td>
+                        <td>$ 15.000.000</td>
+                        <td>10%</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr data-id="2">
+                        <td>Monitor</td>
+                        <td>3</td>
+                        <td>$ 3.500.000</td>
+                        <td>5%</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr data-id="3">
+                        <td>Keyboard</td>
+                        <td>5</td>
+                        <td>$ 500.000</td>
+                        <td>0%</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const gridsheet = new GridSheet({
+                tableSelector: '#formulaDemo',
+                enableColumnNumber: true,
+                allowAddEmptyRow: true,
+
+                // Column configuration (v1.1.0+)
+                columns: {
+                    0: { name: 'item', type: 'text' },
+                    1: { name: 'qty', type: 'number', footer: 'sum' },
+                    2: { name: 'price', type: 'currency', footer: 'avg', format: { thousandSeparator: ',', prefix: '$', decimalPlaces: 0 } },
+                    3: { name: 'discount', type: 'percentage', format: { suffix: '%' } },
+                    4: { name: 'subtotal', type: 'formula', formula: 'qty * price', format: 'currency', footer: 'sum' },
+                    5: { name: 'disc_amount', type: 'formula', formula: 'subtotal * (discount / 100)', format: 'currency', footer: 'sum' },
+                    6: { name: 'total', type: 'formula', formula: 'subtotal - disc_amount', format: 'currency', footer: 'sum' }
+                },
+
+                // Enable footer totals
+                footer: {
+                    enabled: true,
+                    label: 'Total'
+                },
+
+                dataTableOptions: {
+                    keys: true,
+                    paging: false,
+                    ordering: false
+                },
+
+                emptyTable: {
+                    enabled: true,
+                    initialRows: 3,
+                    saveMode: 'direct'
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "datatables-gridsheet",
+  "version": "1.0.0",
+  "description": "GridSheet - DataTables extension for interactive Excel-like editing with copy/paste support",
+  "main": "js/gridsheet.js",
+  "scripts": {},
+  "devDependencies": {
+    "@types/node": "^20.10.0"
+  },
+  "author": "sxcharacter@gmail.com",
+  "license": "MIT",
+  "keywords": [
+    "datatables",
+    "gridsheet",
+    "excel-like",
+    "spreadsheet",
+    "copy-paste",
+    "table-editor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sxcharacter/gridsheet"
+  },
+  "files": [
+    "js/gridsheet.js",
+    "css/gridsheet.css",
+    "custom/",
+    "docs/"
+  ]
+}

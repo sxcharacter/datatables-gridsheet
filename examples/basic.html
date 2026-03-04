@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../datatables-gridsheet/gridsheet-logo.png">
+    <title>GridSheet Demo - Real-time Sync Mode</title>
+    <link rel="stylesheet" href="./vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../css/gridsheet.css">
+    <link rel="stylesheet" href="../custom/theme-emerald.css">
+    <script src="./vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="./vendor/datatables/datatables.js"></script>
+    <script src="./vendor/datatables-keytable/keytable.js"></script>
+    <script src="../js/gridsheet.js"></script>
+
+    <link rel="stylesheet" href="demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../index.html" class="back-btn"><span>&#10094;</span> Back to Home</a>
+            <h1>GridSheet Demo <span class="mode-badge">Real-time Sync</span></h1>
+            <p>All column types supported by GridSheet with automatic save mode</p>
+            <p class="mode-desc"><strong>Real-time Sync:</strong> Every change is immediately saved to the server
+                without
+                needing to click a Save button. Suitable for frequently changing data requiring high consistency.</p>
+        </div>
+
+        <!-- Collapsible Info Box -->
+        <details class="info-box">
+            <summary>
+                <span class="summary-text">&#9776; Column Types & Interaction Guide</span>
+                <span class="summary-arrow">▼</span>
+            </summary>
+            <div class="info-content">
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h4>Column Types:</h4>
+                        <ul>
+                            <li><code>text</code> Standard text input</li>
+                            <li><code>textarea</code> Multi-line text</li>
+                            <li><code>email</code> Email with validation</li>
+                            <li><code>number</code> Numeric input</li>
+                            <li><code>currency</code> Currency format</li>
+                            <li><code>percentage</code> Percentage format</li>
+                            <li><code>date</code> Date picker</li>
+                            <li><code>time</code> Time picker</li>
+                            <li><code>select</code> Searchable dropdown</li>
+                            <li><code>checkbox</code> Toggle true/false</li>
+                            <li><code>readonly</code> Display only</li>
+                        </ul>
+                    </div>
+                    <div class="info-section">
+                        <h4>Keyboard Shortcuts:</h4>
+                        <ul>
+                            <li><code>Enter</code> Enter edit mode</li>
+                            <li><code>Escape</code> Cancel edit</li>
+                            <li><code>Tab</code> Save & move</li>
+                            <li><code>Space</code> Toggle checkbox</li>
+                            <li><code>Delete</code> Clear cell content</li>
+                            <li><code>Ctrl+C</code> Copy selection</li>
+                            <li><code>Ctrl+V</code> Paste</li>
+                            <li><code>Right-click</code> Context menu</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </details>
+
+        <div class="table-container">
+            <table id="basicExample" class="datatables-gridsheet" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Office</th>
+                        <th>Birthdate</th>
+                        <th>Check-in</th>
+                        <th>Active</th>
+                        <th>Salary</th>
+                        <th>Score</th>
+                        <th>Notes</th>
+                        <th>Invoice</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-id="1">
+                        <td>Christopher Morrison</td>
+                        <td>chris@gmail.com</td>
+                        <td>New York</td>
+                        <td>15/05/1992</td>
+                        <td>09:00</td>
+                        <td>true</td>
+                        <td>120000</td>
+                        <td>85</td>
+                        <td>Senior developer with 10 years experience</td>
+                        <td>INV-2024-00001</td>
+                        <td>2024-01-15</td>
+                    </tr>
+                    <tr data-id="2">
+                        <td>Daniel August</td>
+                        <td>daniel@gmail.com</td>
+                        <td>London</td>
+                        <td>20/08/1995</td>
+                        <td>08:30</td>
+                        <td>false</td>
+                        <td>65000</td>
+                        <td>72</td>
+                        <td>Junior frontend developer</td>
+                        <td>INV-2024-00002</td>
+                        <td>2024-02-20</td>
+                    </tr>
+                    <tr data-id="3">
+                        <td>Ferguso Sutrisno</td>
+                        <td>sutrisno@gmail.com</td>
+                        <td>Tokyo</td>
+                        <td>10/03/1988</td>
+                        <td>10:15</td>
+                        <td>true</td>
+                        <td>160000</td>
+                        <td>95</td>
+                        <td>Team lead, manages 5 developers</td>
+                        <td>INV-2023-00003</td>
+                        <td>2023-06-10</td>
+                    </tr>
+                    <tr data-id="4">
+                        <td>John Williams</td>
+                        <td>john.w@gmail.com</td>
+                        <td>Tokyo</td>
+                        <td>25/11/1990</td>
+                        <td>09:45</td>
+                        <td>true</td>
+                        <td>160000</td>
+                        <td>88</td>
+                        <td>Backend specialist</td>
+                        <td>INV-2023-00004</td>
+                        <td>2023-08-15</td>
+                    </tr>
+                    <tr data-id="5">
+                        <td>Robert Clark</td>
+                        <td>robert.c@gmail.com</td>
+                        <td>Tokyo</td>
+                        <td>08/07/1993</td>
+                        <td>07:30</td>
+                        <td>true</td>
+                        <td>160000</td>
+                        <td>78</td>
+                        <td>DevOps engineer</td>
+                        <td>INV-2024-00005</td>
+                        <td>2024-01-05</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            function postSaveCommon(result) {
+                console.log('Saved to server:', result);
+            }
+
+            // Demo: Direct Save Mode with All Column Types
+            const gridsheet = new GridSheet({
+                tableSelector: '#basicExample',
+
+                // Column configuration (v1.1.0+)
+                columns: {
+                    0: { name: 'name', type: 'text' },
+                    1: { name: 'email', type: 'email' },
+                    2: { name: 'office', type: 'select', options: 'endpoints/office.php' },
+                    3: { name: 'birthdate', type: 'date', format: { format: 'DD/MM/YYYY' } },
+                    4: { name: 'checkin', type: 'time' },
+                    5: { name: 'active', type: 'checkbox' },
+                    6: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', decimalSeparator: ',', decimalPlaces: 0, prefix: '$' } },
+                    7: { name: 'score', type: 'percentage', format: { suffix: '%' } },
+                    8: { name: 'notes', type: 'textarea' },
+                    9: { name: 'invoice_code', type: 'readonly', serverField: 'invoice_code', readonly: true },
+                    10: { name: 'created_at', type: 'readonly', serverField: 'created_at', readonly: true }
+                },
+
+                // Direct save mode (not batch)
+                emptyTable: {
+                    enabled: false,
+                    saveMode: 'direct'
+                },
+
+                enableColumnNumber: true,
+                allowAddEmptyRow: true,
+
+                dataTableOptions: {
+                    keys: true,
+                    paging: true,
+                    pageLength: 10,
+                    order: []
+                },
+
+                extraHeaders: {
+                    'Authorization': 'demo-token',
+                },
+
+                endpoints: {
+                    // Direct Mode: Insert new row
+                    save: {
+                        endpoint: 'endpoints/save.php',
+                        preSave: function (payload) {
+                            console.log('Pre-save:', payload);
+                            // Payload structure (consistent):
+                            // { operation: 'insert', data: { row }, meta: { timestamp, hasErrors, validationErrors, rowCount, tempId, fieldCount, rowIndex } }
+                            // { operation: 'insert_batch', data: { rows }, meta: { timestamp, hasErrors, validationErrors, rowCount, fieldCount } }
+
+                            // Check built-in validation
+                            if (payload.meta.hasErrors) {
+                                console.log('Validation errors:', payload.meta.validationErrors);
+                                return false;
+                            }
+                        },
+                        postSave: postSaveCommon
+                    },
+                    // Direct Mode: Update cell/row
+                    update: {
+                        endpoint: 'endpoints/update.php',
+                        preSave: function (payload) {
+                            console.log('Pre-save update:', payload);
+                            // Payload structure (consistent):
+                            // { operation: 'update', data: { id, fields }, meta: { timestamp, hasErrors, validationErrors, rowCount, fieldCount, rowIndex, colIndex } }
+                            // { operation: 'update_batch', data: { rows }, meta: { timestamp, hasErrors, validationErrors, rowCount, fieldCount } }
+
+                            // Check built-in validation
+                            if (payload.meta.hasErrors) {
+                                console.log('Validation errors:', payload.meta.validationErrors);
+                                return false;
+                            }
+
+                            // Custom business logic example - check salary in fields
+                            if (payload.data?.fields?.salary) {
+                                const salary = parseFloat(payload.data.fields.salary);
+                                if (salary < 1000000) {
+                                    alert('Salary minimum $ 1.000.000');
+                                    return false;
+                                }
+                            }
+                        },
+                        postSave: postSaveCommon
+                    },
+                    // Direct Mode: Delete row
+                    delete: {
+                        endpoint: 'endpoints/delete.php',
+                        preDelete: function (rowId) {
+                            console.log('Pre-delete row:', rowId);
+                            return confirm('Delete this row?');
+                        },
+                        postDelete: function (result, rowId) {
+                            console.log('Deleted row', rowId, ':', result);
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

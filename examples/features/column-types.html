@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Column Types Reference</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Column Types <span class="badge">Developer Docs</span></h1>
+            <p>Complete guide to all column types supported by GridSheet</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link">Configuration</a>
+            <a href="column-types.html" class="nav-link active">Column Types</a>
+            <a href="formats.html" class="nav-link">Formats</a>
+            <a href="validation.html" class="nav-link">Validation</a>
+            <a href="endpoints.html" class="nav-link">Endpoints</a>
+            <a href="formula.html" class="nav-link">Formula</a>
+            <a href="theming.html" class="nav-link">Themes</a>
+            <a href="language.html" class="nav-link">Language</a>
+        </div>
+
+        <!-- Overview -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Overview</h2>
+                <p>Column types are defined in the <code>columns</code> config object (v1.1.0+) or via data-type HTML
+                    attribute (legacy)</p>
+            </div>
+            <div class="section-content">
+                <div class="tip" style="margin-bottom: 20px;">
+                    Define columns in JavaScript instead of HTML attributes:
+                    <pre style="margin-top: 10px; background: rgba(0,0,0,0.05); padding: 12px; border-radius: 6px;">columns: {
+    0: { name: 'name', type: 'text' },
+    1: { name: 'email', type: 'email' },
+    2: { name: 'salary', type: 'currency', format: { prefix: '$' } }
+}</pre>
+                </div>
+                <div class="type-grid">
+                    <!-- Text -->
+                    <div class="type-card">
+                        <h3><code>text</code> Text Input</h3>
+                        <p>Standard text input for names, addresses, etc.</p>
+                        <div class="example"><code>{ name: 'name', type: 'text' }</code></div>
+                    </div>
+
+                    <!-- Textarea -->
+                    <div class="type-card">
+                        <h3><code>textarea</code> Multi-line Text</h3>
+                        <p>Long text input with a popup editor.</p>
+                        <div class="example"><code>{ name: 'notes', type: 'textarea' }</code></div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="type-card">
+                        <h3><code>email</code> Email</h3>
+                        <p>Email input with automatic format validation.</p>
+                        <div class="example"><code>{ name: 'email', type: 'email' }</code></div>
+                    </div>
+
+                    <!-- Number -->
+                    <div class="type-card">
+                        <h3><code>number</code> Number</h3>
+                        <p>Numeric input (integer/decimal).</p>
+                        <div class="example"><code>{ name: 'age', type: 'number' }</code></div>
+                    </div>
+
+                    <!-- Currency -->
+                    <div class="type-card">
+                        <h3><code>currency</code> Currency</h3>
+                        <p>Currency format. See <a href="formats.html">Formats</a>.</p>
+                        <div class="example"><code>{ name: 'salary', type: 'currency', format: {...} }</code></div>
+                    </div>
+
+                    <!-- Percentage -->
+                    <div class="type-card">
+                        <h3><code>percentage</code> Percentage</h3>
+                        <p>Percentage format with % suffix.</p>
+                        <div class="example"><code>{ name: 'score', type: 'percentage', format: {...} }</code></div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="type-card">
+                        <h3><code>date</code> Date</h3>
+                        <p>Date picker with configurable format.</p>
+                        <div class="example"><code>{ name: 'birthdate', type: 'date', format: {...} }</code></div>
+                    </div>
+
+                    <!-- Time -->
+                    <div class="type-card">
+                        <h3><code>time</code> Time</h3>
+                        <p>Time picker with HH:mm format.</p>
+                        <div class="example"><code>{ name: 'checkin', type: 'time' }</code></div>
+                    </div>
+
+                    <!-- Select -->
+                    <div class="type-card">
+                        <h3><code>select</code> Dropdown</h3>
+                        <p>Searchable dropdown. Options from endpoint or array.</p>
+                        <div class="example"><code>{ name: 'office', type: 'select', options: [...] }</code></div>
+                    </div>
+
+                    <!-- Checkbox -->
+                    <div class="type-card">
+                        <h3><code>checkbox</code> Checkbox</h3>
+                        <p>Toggle true/false with visual checkbox.</p>
+                        <div class="example"><code>{ name: 'active', type: 'checkbox' }</code></div>
+                    </div>
+
+                    <!-- Readonly -->
+                    <div class="type-card">
+                        <h3><code>readonly</code> Read Only</h3>
+                        <p>Display only, cannot be edited.</p>
+                        <div class="example"><code>{ name: 'created_at', type: 'readonly', readonly: true }</code></div>
+                    </div>
+
+                    <!-- Formula -->
+                    <div class="type-card">
+                        <h3><code>formula</code> Formula</h3>
+                        <p>Auto-calculated column. See <a href="formula.html">Formula</a>.</p>
+                        <div class="example"><code>{ type: 'formula', formula: 'qty * price' }</code></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column Properties -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Column Properties</h2>
+                <p>Properties that can be set in each column config object</p>
+            </div>
+            <div class="section-content">
+                <table class="attr-table">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>name</code></td>
+                            <td>Yes</td>
+                            <td>Field name sent to server on save/update</td>
+                        </tr>
+                        <tr>
+                            <td><code>type</code></td>
+                            <td>No</td>
+                            <td>Column type (text, email, currency, etc). Default: text</td>
+                        </tr>
+                        <tr>
+                            <td><code>format</code></td>
+                            <td>No</td>
+                            <td>Format options for currency, percentage, date types</td>
+                        </tr>
+                        <tr>
+                            <td><code>options</code></td>
+                            <td>No</td>
+                            <td>For select type: endpoint URL or static array</td>
+                        </tr>
+                        <tr>
+                            <td><code>readonly</code></td>
+                            <td>No</td>
+                            <td>If true, column cannot be edited</td>
+                        </tr>
+                        <tr>
+                            <td><code>formula</code></td>
+                            <td>No</td>
+                            <td>For formula type: calculation expression</td>
+                        </tr>
+                        <tr>
+                            <td><code>footer</code></td>
+                            <td>No</td>
+                            <td>Footer aggregation: 'sum', 'avg', 'count', 'min', 'max'</td>
+                        </tr>
+                        <tr>
+                            <td><code>serverField</code></td>
+                            <td>No</td>
+                            <td>For readonly columns auto-updated from server response</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Live Demo -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Live Demo</h2>
+                <p>Try all column types interactively</p>
+            </div>
+            <div class="section-content">
+                <div class="table-container">
+                    <table id="demoTable" class="datatables-gridsheet" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>Name (text)</th>
+                                <th>Email</th>
+                                <th>Office (select)</th>
+                                <th>Birthdate (date)</th>
+                                <th>Check-in (time)</th>
+                                <th>Active (checkbox)</th>
+                                <th>Salary (currency)</th>
+                                <th>Score (percentage)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-id="1">
+                                <td>John Doe</td>
+                                <td>john@example.com</td>
+                                <td>New York</td>
+                                <td>15/05/1992</td>
+                                <td>09:00</td>
+                                <td>true</td>
+                                <td>120000</td>
+                                <td>85</td>
+                            </tr>
+                            <tr data-id="2">
+                                <td>Jane Smith</td>
+                                <td>jane@example.com</td>
+                                <td>Tokyo</td>
+                                <td>20/08/1995</td>
+                                <td>08:30</td>
+                                <td>false</td>
+                                <td>35000000</td>
+                                <td>92</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const gridsheet = new GridSheet({
+                tableSelector: '#demoTable',
+                enableColumnNumber: true,
+
+                // Column configuration (v1.1.0+)
+                columns: {
+                    0: { name: 'name', type: 'text' },
+                    1: { name: 'email', type: 'email' },
+                    2: {
+                        name: 'office', type: 'select', options: [
+                            { id: 'NY', text: 'New York' },
+                            { id: 'LON', text: 'London' },
+                            { id: 'TOK', text: 'Tokyo' },
+                            { id: 'JKT', text: 'Jakarta' },
+                            { id: 'KL', text: 'Kuala Lumpur' },
+                            { id: 'SYD', text: 'Sydney' }
+                        ]
+                    },
+                    3: { name: 'birthdate', type: 'date', format: { format: 'DD/MM/YYYY' } },
+                    4: { name: 'checkin', type: 'time' },
+                    5: { name: 'active', type: 'checkbox' },
+                    6: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', prefix: '$' } },
+                    7: { name: 'score', type: 'percentage', format: { suffix: '%' } }
+                },
+
+                dataTableOptions: { keys: true, paging: false, order: [] },
+                endpoints: {
+                    update: { endpoint: '../endpoints/update.php' }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

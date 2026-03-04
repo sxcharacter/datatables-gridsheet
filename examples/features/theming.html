@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Theme & Dark Mode Guide</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Theme & Dark Mode Guide <span class="badge">Developer Docs</span></h1>
+            <p>Complete guide to theming GridSheet and implementing dark mode</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link">Configuration</a>
+            <a href="column-types.html" class="nav-link">Column Types</a>
+            <a href="formats.html" class="nav-link">Formats</a>
+            <a href="validation.html" class="nav-link">Validation</a>
+            <a href="endpoints.html" class="nav-link">Endpoints</a>
+            <a href="formula.html" class="nav-link">Formula</a>
+            <a href="theming.html" class="nav-link active">Themes</a>
+            <a href="language.html" class="nav-link">Language</a>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Quick Start</h2>
+                <p>Apply a theme in 2 simple steps</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">HTML - Include CSS Files</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="comment">&lt;!-- 1. Core GridSheet CSS (required) --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"gridsheet/css/gridsheet.css"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- 2. Theme CSS (choose one) --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"gridsheet/custom/theme-ocean.css"</span><span class="tag">&gt;</span></pre>
+                </div>
+
+                <div class="tip">
+                    <strong>That's it!</strong> The theme file includes both light and dark mode styles.
+                    Dark mode is automatically activated based on system preference or <code>data-theme="dark"</code>
+                    attribute.
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Themes -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Available Themes</h2>
+                <p>Pre-built themes included with GridSheet</p>
+            </div>
+            <div class="section-content">
+                <div class="theme-grid">
+                    <!-- Classic -->
+                    <div class="theme-card">
+                        <div class="theme-preview"
+                            style="background: linear-gradient(135deg, #34A853 0%, #2D9249 100%);">
+                            Classic Green
+                        </div>
+                        <div class="theme-info">
+                            <h3>Classic</h3>
+                            <p>Google Sheets inspired, familiar feel</p>
+                            <code>theme-classic.css</code>
+                        </div>
+                    </div>
+
+                    <!-- Ocean -->
+                    <div class="theme-card">
+                        <div class="theme-preview"
+                            style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">
+                            Ocean Blue
+                        </div>
+                        <div class="theme-info">
+                            <h3>Ocean</h3>
+                            <p>Professional blue tones, clean and modern</p>
+                            <code>theme-ocean.css</code>
+                        </div>
+                    </div>
+
+                    <!-- Emerald -->
+                    <div class="theme-card">
+                        <div class="theme-preview"
+                            style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                            Emerald Green
+                        </div>
+                        <div class="theme-info">
+                            <h3>Emerald</h3>
+                            <p>Fresh and natural green feel</p>
+                            <code>theme-emerald.css</code>
+                        </div>
+                    </div>
+
+                    <!-- Clean -->
+                    <div class="theme-card">
+                        <div class="theme-preview"
+                            style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); color: #64748b;">
+                            Clean White
+                        </div>
+                        <div class="theme-info">
+                            <h3>Clean</h3>
+                            <p>Minimal white header, subtle accents</p>
+                            <code>theme-clean.css</code>
+                        </div>
+                    </div>
+
+                    <!-- Slate -->
+                    <div class="theme-card">
+                        <div class="theme-preview"
+                            style="background: linear-gradient(135deg, #64748b 0%, #475569 100%);">
+                            Slate
+                        </div>
+                        <div class="theme-info">
+                            <h3>Slate</h3>
+                            <p>Professional neutral slate tones</p>
+                            <code>theme-slate.css</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dark Mode -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Dark Mode Implementation</h2>
+                <p>Three ways to enable dark mode</p>
+            </div>
+            <div class="section-content">
+                <h3 style="margin-bottom: 12px;">1. Automatic (System Preference)</h3>
+                <p style="margin-bottom: 16px; color: #5f6368;">
+                    Dark mode is automatically enabled when user's OS is set to dark mode. No code needed!
+                </p>
+
+                <h3 style="margin-bottom: 12px;">2. Manual Toggle with data-theme</h3>
+                <div class="code-header">
+                    <span class="code-title">JavaScript - Toggle Dark Mode</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="comment">// Toggle dark mode</span>
+<span class="keyword">function</span> <span class="property">toggleDarkMode</span>() {
+    <span class="keyword">const</span> html = document.documentElement;
+    <span class="keyword">const</span> currentTheme = html.getAttribute(<span class="string">'data-theme'</span>);
+    
+    <span class="keyword">if</span> (currentTheme === <span class="string">'dark'</span>) {
+        html.setAttribute(<span class="string">'data-theme'</span>, <span class="string">'light'</span>);
+    } <span class="keyword">else</span> {
+        html.setAttribute(<span class="string">'data-theme'</span>, <span class="string">'dark'</span>);
+    }
+}</pre>
+                </div>
+
+                <h3 style="margin-bottom: 12px; margin-top: 24px;">3. Force Dark Mode on Load</h3>
+                <div class="code-header">
+                    <span class="code-title">HTML - Force Dark Mode</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="tag">&lt;html</span> <span class="attr">data-theme</span>=<span class="string">"dark"</span><span class="tag">&gt;</span>
+  ...
+<span class="tag">&lt;/html&gt;</span></pre>
+                </div>
+
+                <div class="info">
+                    <strong>Priority:</strong> <code>data-theme</code> attribute takes precedence over system
+                    preference.
+                    If <code>data-theme="light"</code>, light mode is used even if OS is dark.
+                </div>
+            </div>
+        </div>
+
+        <!-- Theme File Structure -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Theme File Structure</h2>
+                <p>Understanding theme CSS organization</p>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="file-name">:root { }</span></td>
+                            <td>CSS variables for light mode colors (primary, selection, borders, etc)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="file-name">Table Styling</span></td>
+                            <td>Header, rows, cells, hover states, focus states</td>
+                        </tr>
+                        <tr>
+                            <td><span class="file-name">Selection Styling</span></td>
+                            <td>Row selection, column selection, cell range selection</td>
+                        </tr>
+                        <tr>
+                            <td><span class="file-name">Context Menu</span></td>
+                            <td>Right-click menu styling</td>
+                        </tr>
+                        <tr>
+                            <td><span class="file-name">@media (prefers-color-scheme: dark)</span></td>
+                            <td>Automatic dark mode styles based on OS preference</td>
+                        </tr>
+                        <tr>
+                            <td><span class="file-name">[data-theme="dark"]</span></td>
+                            <td>Manual dark mode styles via HTML attribute</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- CSS Variables -->
+        <div class="section">
+            <div class="section-header">
+                <h2>CSS Variables Reference</h2>
+                <p>Customize theme by overriding these variables</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">CSS - Main Variables</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="property">:root</span> {
+    <span class="comment">/* Primary Colors */</span>
+    <span class="attr">--dt-primary</span>: <span class="value">#0ea5e9</span>;           <span class="comment">/* Main accent color */</span>
+    <span class="attr">--dt-primary-hover</span>: <span class="value">#0284c7</span>;     <span class="comment">/* Hover state */</span>
+    <span class="attr">--dt-primary-light</span>: <span class="value">rgba(14, 165, 233, 0.08)</span>;
+
+    <span class="comment">/* Selection Colors */</span>
+    <span class="attr">--dt-bg-selected</span>: <span class="value">#e0f2fe</span>;       <span class="comment">/* Selected cell bg (light) */</span>
+    <span class="attr">--dt-bg-selected-dark</span>: <span class="value">#bae6fd</span>; <span class="comment">/* Darker selection */</span>
+
+    <span class="comment">/* Design Tokens */</span>
+    <span class="attr">--gs-header-bg</span>: <span class="value">#0ea5e9</span>;         <span class="comment">/* Table header background */</span>
+    <span class="attr">--gs-header-text</span>: <span class="value">#ffffff</span>;       <span class="comment">/* Table header text */</span>
+    <span class="attr">--gs-row-hover</span>: <span class="value">#f0f9ff</span>;         <span class="comment">/* Row hover background */</span>
+    <span class="attr">--gs-row-stripe</span>: <span class="value">#f8fafc</span>;        <span class="comment">/* Alternating row color */</span>
+    <span class="attr">--gs-border-color</span>: <span class="value">#e2e8f0</span>;      <span class="comment">/* Table borders */</span>
+    <span class="attr">--gs-border-radius</span>: <span class="value">12px</span>;        <span class="comment">/* Table corner radius */</span>
+}</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>Quick Customization:</strong> To change the primary color, just override
+                    <code>--dt-primary</code> and related variables in your own CSS file.
+                </div>
+            </div>
+        </div>
+
+        <!-- Creating Custom Theme -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Creating a Custom Theme</h2>
+                <p>Step-by-step guide to create your own theme</p>
+            </div>
+            <div class="section-content">
+                <h3 style="margin-bottom: 12px;">Step 1: Copy an existing theme</h3>
+                <div class="code-block">
+                    <pre><span class="comment"># Copy ocean theme as starting point</span>
+cp custom/theme-ocean.css custom/theme-mycompany.css</pre>
+                </div>
+
+                <h3 style="margin-bottom: 12px; margin-top: 24px;">Step 2: Replace colors</h3>
+                <p style="margin-bottom: 12px; color: #5f6368;">
+                    Use find & replace to change the primary color throughout the file:
+                </p>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Ocean Color</th>
+                            <th>Replace With</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>#0ea5e9</code></td>
+                            <td>Your primary color</td>
+                            <td>Primary / accent</td>
+                        </tr>
+                        <tr>
+                            <td><code>#0284c7</code></td>
+                            <td>Darker variant</td>
+                            <td>Hover states</td>
+                        </tr>
+                        <tr>
+                            <td><code>#38bdf8</code></td>
+                            <td>Lighter variant</td>
+                            <td>Light accent</td>
+                        </tr>
+                        <tr>
+                            <td><code>#1e3a4d</code></td>
+                            <td>Dark tint of your color</td>
+                            <td>Dark mode selection</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 style="margin-bottom: 12px; margin-top: 24px;">Step 3: Update header comment</h3>
+                <div class="code-block">
+                    <pre><span class="comment">/**
+ * GridSheet Theme: My Company
+ * Corporate branding colors
+ * 
+ * Usage:
+ * &lt;link rel="stylesheet" href="gridsheet/custom/theme-mycompany.css"&gt;
+ */</span></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Link -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Live Demo</h2>
+                <p>See themes in action</p>
+            </div>
+            <div class="section-content">
+                <p style="margin-bottom: 16px;">
+                    Try the interactive theme demo with light/dark mode toggle:
+                </p>
+                <a href="../demos/themes.html" class="demo-link-btn">
+                    View Theme Demo →
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.section-content').querySelector('.code-block pre');
+            const text = codeBlock.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

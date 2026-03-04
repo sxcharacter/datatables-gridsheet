@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Custom Validation Demo</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Custom Validation <span class="mode-badge">Demo</span></h1>
+            <p>Example of custom validation using preSave callback</p>
+            <div class="mode-desc">
+                <strong>Demo:</strong> Try editing data to violate the validation rules below. Save will be cancelled
+                and an error will appear.
+            </div>
+        </div>
+
+        <div class="rules-box">
+            <h3>Validation Rules:</h3>
+            <div class="rule-list">
+                <div class="rule-item">
+                    <div class="rule-text">
+                        <strong>Name</strong>
+                        <span>Minimum 3 characters</span>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-text">
+                        <strong>Email</strong>
+                        <span>Must contain @company.com</span>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-text">
+                        <strong>Age</strong>
+                        <span>Min 18, max 65</span>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-text">
+                        <strong>Salary</strong>
+                        <span>Minimum $ 5.000.000</span>
+                    </div>
+                </div>
+                <div class="rule-item">
+                    <div class="rule-text">
+                        <strong>Score</strong>
+                        <span>Range 0-100</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="validationDemo" class="datatables-gridsheet" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Age</th>
+                        <th>Salary</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-id="1">
+                        <td>John Doe</td>
+                        <td>john@company.com</td>
+                        <td>30</td>
+                        <td>160000</td>
+                        <td>85</td>
+                    </tr>
+                    <tr data-id="2">
+                        <td>Jane Smith</td>
+                        <td>jane@company.com</td>
+                        <td>28</td>
+                        <td>65000000</td>
+                        <td>92</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        $(document).ready(function () {
+            const gridsheet = new GridSheet({
+                tableSelector: '#validationDemo',
+                enableColumnNumber: true,
+
+                // Column configuration (v1.1.0+)
+                columns: {
+                    0: { name: 'name', type: 'text' },
+                    1: { name: 'email', type: 'email' },
+                    2: { name: 'age', type: 'number' },
+                    3: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', prefix: '$' } },
+                    4: { name: 'score', type: 'percentage', format: { suffix: '%' } }
+                },
+
+                dataTableOptions: { keys: true, paging: false, order: [] },
+                endpoints: {
+                    update: {
+                        endpoint: '../endpoints/update.php',
+                        preSave: function (payload) {
+                            // New payload structure: { operation, data: { id, fields }, meta }
+                            const fields = payload.data?.fields || {};
+
+                            // Name validation
+                            if (fields.name && fields.name.length < 3) {
+                                showToast('❌ Name minimum 3 characters!', 'error');
+                                return false;
+                            }
+
+                            // Email validation
+                            if (fields.email && !fields.email.includes('@company.com')) {
+                                showToast('❌ Email must use @company.com!', 'error');
+                                return false;
+                            }
+
+                            // Age validation
+                            if (fields.age) {
+                                const age = parseInt(fields.age);
+                                if (age < 18 || age > 65) {
+                                    showToast('❌ Age must be between 18-65!', 'error');
+                                    return false;
+                                }
+                            }
+
+                            // Salary validation
+                            if (fields.salary) {
+                                const salary = parseFloat(fields.salary);
+                                if (salary < 5000000) {
+                                    showToast('❌ Salary minimum $ 5.000.000!', 'error');
+                                    return false;
+                                }
+                            }
+
+                            // Score validation
+                            if (fields.score) {
+                                const score = parseFloat(fields.score);
+                                if (score < 0 || score > 100) {
+                                    showToast('❌ Score must be between 0-100!', 'error');
+                                    return false;
+                                }
+                            }
+
+                            return true;
+                        },
+                        postSave: function (result) {
+                            showToast('✅ Data saved successfully!', 'success');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

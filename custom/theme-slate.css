@@ -1,0 +1,1353 @@
+/**
+ * GridSheet Theme: Slate
+ * Minimal and professional neutral tones
+ * Version: 1.0.0
+ * 
+ * Usage (2 files only):
+ * <link rel="stylesheet" href="datatables-gridsheet/css/gridsheet.css">
+ * <link rel="stylesheet" href="datatables-gridsheet/custom/theme-slate.css">
+ */
+
+/* ============================================
+   🎨 COLOR VARIABLES
+   ============================================ */
+:root {
+    /* Primary Colors */
+    --dt-primary: #64748b;
+    --dt-primary-hover: #475569;
+    --dt-primary-light: rgba(100, 116, 139, 0.08);
+
+    /* Selection Colors */
+    --dt-bg-selected: #f1f5f9;
+    --dt-bg-selected-dark: #e2e8f0;
+
+    /* Focus & Shadows */
+    --dt-focus-shadow: 0 0 0 3px rgba(100, 116, 139, 0.15);
+
+    /* Design Tokens */
+    --gs-header-bg: var(--dt-primary);
+    --gs-header-text: #ffffff;
+    --gs-border-radius: 12px;
+    --gs-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --gs-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --gs-row-hover: #f8fafc;
+    --gs-row-stripe: #f8fafc;
+    --gs-border-color: #e2e8f0;
+
+    /* Typography */
+    --gs-font-size: 14px;
+    --gs-font-size-sm: 11px;
+    --dt-text-primary: #202124;
+    --dt-text-secondary: #474747;
+    --dt-text-light: #dedfdf;
+
+}
+
+/* ============================================
+   ✨ MODERN TABLE DESIGN
+   ============================================ */
+
+/* Table Container */
+.datatables-gridsheet,
+.datatables-gridsheet * {
+    font-family: inherit !important;
+}
+
+.datatables-gridsheet {
+    border-radius: var(--gs-border-radius) !important;
+    overflow: hidden;
+    box-shadow: var(--gs-shadow) !important;
+    border: 1px solid var(--gs-border-color) !important;
+    transition: box-shadow 0.3s ease;
+}
+
+.datatables-gridsheet:hover {
+    box-shadow: var(--gs-shadow-hover) !important;
+}
+
+/* Layout Rows Spacing */
+div.dt-container div.dt-layout-row {
+    padding: 4px 0 !important;
+}
+
+/* Page Length & Search Input - Light Mode */
+div.dt-container .dt-length select.dt-input,
+div.dt-container .dt-search input.dt-input {
+    color: #202124 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 6px !important;
+    padding: 6px 10px !important;
+    font-size: var(--gs-font-size) !important;
+    cursor: pointer;
+}
+
+div.dt-container .dt-length select.dt-input {
+    padding-right: 28px !important;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23475569'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 6px center;
+    background-size: 16px;
+}
+
+div.dt-container .dt-length select.dt-input:focus,
+div.dt-container .dt-search input.dt-input:focus {
+    outline: none;
+    border-color: var(--dt-primary) !important;
+    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.15) !important;
+}
+
+/* Header */
+.datatables-gridsheet thead th,
+.datatables-gridsheet thead th .dt-column-title,
+.datatables-gridsheet thead th span {
+    color: #ffffff !important;
+}
+
+.datatables-gridsheet thead th {
+    background: var(--gs-header-bg) !important;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    padding: 14px 16px !important;
+    border-bottom: none !important;
+    position: relative;
+}
+
+.datatables-gridsheet thead th:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Rows */
+.datatables-gridsheet tbody tr {
+    transition: all 0.15s ease;
+}
+
+.datatables-gridsheet tbody tr:hover {
+    background: var(--gs-row-hover) !important;
+}
+
+.datatables-gridsheet tbody tr:nth-child(even) {
+    background: var(--gs-row-stripe);
+}
+
+.datatables-gridsheet tbody tr:nth-child(even):hover {
+    background: var(--gs-row-hover) !important;
+}
+
+/* Cells */
+.datatables-gridsheet tbody td {
+    padding: 12px 16px !important;
+    border-color: var(--gs-border-color) !important;
+    font-size: var(--gs-font-size);
+    vertical-align: middle;
+}
+
+.datatables-gridsheet tbody tr:last-child td:first-child {
+    border-bottom-left-radius: calc(var(--gs-border-radius) - 1px);
+}
+
+.datatables-gridsheet tbody tr:last-child td:last-child {
+    border-bottom-right-radius: calc(var(--gs-border-radius) - 1px);
+}
+
+/* Selection & Focus */
+.datatables-gridsheet td.gs-selected {
+    background: var(--dt-bg-selected) !important;
+}
+
+.datatables-gridsheet td.focus {
+    box-shadow: inset 0 0 0 2px var(--dt-primary) !important;
+}
+
+/* Cell Range Selection - remove the 2px focus outline, but allow dt-range-* edge borders */
+/* For cells in range, we unset the focus box-shadow so gridsheet.css dt-range-* rules can apply */
+.datatables-gridsheet td.focus.dt-range-top:not(.dt-range-bottom):not(.dt-range-left):not(.dt-range-right) {
+    box-shadow: inset 0 1px 0 0 var(--dt-primary) !important;
+}
+
+.datatables-gridsheet td.focus.dt-range-bottom:not(.dt-range-top):not(.dt-range-left):not(.dt-range-right) {
+    box-shadow: inset 0 -1px 0 0 var(--dt-primary) !important;
+}
+
+.datatables-gridsheet td.focus.dt-range-left:not(.dt-range-top):not(.dt-range-bottom):not(.dt-range-right) {
+    box-shadow: inset 1px 0 0 0 var(--dt-primary) !important;
+}
+
+.datatables-gridsheet td.focus.dt-range-right:not(.dt-range-top):not(.dt-range-bottom):not(.dt-range-left) {
+    box-shadow: inset -1px 0 0 0 var(--dt-primary) !important;
+}
+
+/* Bottom-right corner (last cell in range) */
+.datatables-gridsheet td.focus.dt-range-bottom.dt-range-right:not(.dt-range-top):not(.dt-range-left) {
+    box-shadow: inset -1px -1px 0 0 var(--dt-primary) !important;
+}
+
+/* Top-left corner */
+.datatables-gridsheet td.focus.dt-range-top.dt-range-left:not(.dt-range-bottom):not(.dt-range-right) {
+    box-shadow: inset 1px 1px 0 0 var(--dt-primary) !important;
+}
+
+/* Top-right corner */
+.datatables-gridsheet td.focus.dt-range-top.dt-range-right:not(.dt-range-bottom):not(.dt-range-left) {
+    box-shadow: inset -1px 1px 0 0 var(--dt-primary) !important;
+}
+
+/* Bottom-left corner */
+.datatables-gridsheet td.focus.dt-range-bottom.dt-range-left:not(.dt-range-top):not(.dt-range-right) {
+    box-shadow: inset 1px -1px 0 0 var(--dt-primary) !important;
+}
+
+/* Single ROW selection (horizontal) - has top+bottom edges */
+/* Middle cells in horizontal selection */
+.datatables-gridsheet td.focus.dt-range-top.dt-range-bottom:not(.dt-range-left):not(.dt-range-right) {
+    box-shadow: inset 0 1px 0 0 var(--dt-primary), inset 0 -1px 0 0 var(--dt-primary) !important;
+}
+
+/* First cell in horizontal selection (left edge) */
+.datatables-gridsheet td.focus.dt-range-top.dt-range-bottom.dt-range-left:not(.dt-range-right) {
+    box-shadow: inset 1px 1px 0 0 var(--dt-primary), inset 1px -1px 0 0 var(--dt-primary) !important;
+}
+
+/* Last cell in horizontal selection (right edge) */
+.datatables-gridsheet td.focus.dt-range-top.dt-range-bottom.dt-range-right:not(.dt-range-left) {
+    box-shadow: inset -1px 1px 0 0 var(--dt-primary), inset -1px -1px 0 0 var(--dt-primary) !important;
+}
+
+/* Single COLUMN selection (vertical) - has left+right edges */
+/* Middle cells in vertical selection */
+.datatables-gridsheet td.focus.dt-range-left.dt-range-right:not(.dt-range-top):not(.dt-range-bottom) {
+    box-shadow: inset 1px 0 0 0 var(--dt-primary), inset -1px 0 0 0 var(--dt-primary) !important;
+}
+
+/* First cell in vertical selection (top edge) */
+.datatables-gridsheet td.focus.dt-range-top.dt-range-left.dt-range-right:not(.dt-range-bottom) {
+    box-shadow: inset 1px 1px 0 0 var(--dt-primary), inset -1px 1px 0 0 var(--dt-primary) !important;
+}
+
+/* Last cell in vertical selection (bottom edge) */
+.datatables-gridsheet td.focus.dt-range-bottom.dt-range-left.dt-range-right:not(.dt-range-top) {
+    box-shadow: inset 1px -1px 0 0 var(--dt-primary), inset -1px -1px 0 0 var(--dt-primary) !important;
+}
+
+/* Single cell in range (all 4 edges) */
+.datatables-gridsheet td.focus.dt-range-top.dt-range-bottom.dt-range-left.dt-range-right {
+    box-shadow: inset 0 0 0 1px var(--dt-primary) !important;
+}
+
+/* Inputs */
+.datatables-gridsheet .gs-checkbox {
+    accent-color: var(--dt-primary);
+}
+
+/* Dropdown */
+.gs-dropdown {
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid var(--gs-border-color) !important;
+    animation: gs-fadeIn 0.15s ease;
+}
+
+.gs-dropdown-item:hover {
+    background: var(--dt-primary-light) !important;
+}
+
+.gs-dropdown-item.selected {
+    background: var(--dt-primary) !important;
+    color: white !important;
+}
+
+/* Context Menu */
+.gs-context-menu {
+    border-radius: 10px !important;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+    animation: gs-fadeIn 0.12s ease;
+}
+
+.gs-context-menu-item:hover {
+    background: var(--dt-primary) !important;
+    color: white !important;
+}
+
+/* ============================================
+   📦 BATCH MODE BUTTONS
+   ============================================ */
+.dt-batch-save-btn {
+    background: var(--dt-primary) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+.dt-batch-save-btn:hover {
+    background: var(--dt-primary-hover) !important;
+    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.3) !important;
+}
+
+.dt-batch-clear-btn {
+    background: #9aa6b5 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+}
+
+.dt-batch-clear-btn:hover {
+    background: #727981 !important;
+}
+
+/* ============================================
+   🔧 DATATABLE ELEMENTS STYLING
+   Select, Textarea, Tooltip - Consistent Font
+   ============================================ */
+
+/* Custom Select/Dropdown */
+.dt-select-content,
+.dt-searchable-dropdown,
+.dt-dropdown-search,
+.dt-dropdown-options,
+.dt-dropdown-option,
+.dt-dropdown-options div,
+.dt-input,
+select {
+    font-family: inherit !important;
+    font-size: var(--gs-font-size) !important;
+    color: var(--dt-text-primary) !important;
+}
+
+.dt-select-arrow {
+    color: var(--dt-text-light) !important;
+    font-size: var(--gs-font-size-sm) !important;
+}
+
+.dt-dropdown-options {
+    border-radius: 8px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid var(--gs-border-color) !important;
+    background: #fff !important;
+}
+
+.dt-dropdown-option:hover,
+.dt-dropdown-options div:hover {
+    background: var(--dt-primary-light) !important;
+}
+
+/* Inline Textarea Edit Mode - NOT for modal */
+.dt-inline-textarea {
+    font-family: inherit !important;
+    font-size: var(--gs-font-size) !important;
+    color: var(--dt-text-primary) !important;
+    border: 2px solid var(--dt-primary) !important;
+    border-radius: 0 !important;
+    padding: 4px 6px !important;
+    background: #fff !important;
+    line-height: 1.4 !important;
+}
+
+/* Inline textarea specific - plain, no shadow, all borders visible */
+.dt-inline-textarea {
+    margin-top: 2px !important;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
+    box-shadow: none !important;
+    /* Reduce width to show right border - offset for margins */
+    width: calc(100% - 4px) !important;
+    max-width: calc(100% - 4px) !important;
+}
+
+.dt-inline-textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Textarea Modal - Ocean theme overrides */
+.dt-textarea-modal {
+    border-radius: 16px !important;
+}
+
+.dt-textarea-btn-save {
+    background: var(--dt-primary) !important;
+}
+
+.dt-textarea-btn-save:hover {
+    background: var(--dt-primary-hover) !important;
+}
+
+/* Tooltip */
+.dt-tooltip {
+    font-family: inherit !important;
+    font-size: var(--gs-font-size) !important;
+    font-weight: 400 !important;
+    color: var(--dt-text-primary) !important;
+    background: #fff !important;
+    border: 1px solid var(--gs-border-color) !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Context Menu - Ocean Theme */
+.dt-context-menu {
+    font-family: inherit !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    border: 1px solid var(--gs-border-color) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+    padding: 6px 0 !important;
+    min-width: 180px !important;
+}
+
+.dt-context-menu-item {
+    font-family: inherit !important;
+    font-size: var(--gs-font-size) !important;
+    color: var(--dt-text-primary) !important;
+    transition: background 0.15s ease !important;
+}
+
+.dt-context-menu-item:not(.dt-context-menu-disabled):hover {
+    background: var(--dt-primary-light) !important;
+}
+
+.dt-context-menu-danger:not(.dt-context-menu-disabled) {
+    color: #ef4444 !important;
+}
+
+.dt-context-menu-danger:not(.dt-context-menu-disabled):hover {
+    background: #fef2f2 !important;
+}
+
+.dt-context-menu-disabled {
+    color: #9ca3af !important;
+    cursor: not-allowed !important;
+}
+
+/* Dark Mode - Textarea Modal */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .dt-textarea-modal {
+        background: rgba(30, 41, 59, 0.95) !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-textarea-modal-header {
+        background: #374151 !important;
+        color: #e2e8f0 !important;
+        border-bottom: 1px solid #4b5563 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-textarea-editor {
+        background: #374151 !important;
+        color: #e2e8f0 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-textarea-modal-footer {
+        background: #374151 !important;
+        border-top: 1px solid #4b5563 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-textarea-modal-footer::before {
+        color: #94a3b8 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-textarea-btn-cancel {
+        background: #4b5563 !important;
+        color: #e2e8f0 !important;
+        border-color: #475569 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-textarea-char-count {
+        background: #4b5563 !important;
+        color: #94a3b8 !important;
+    }
+}
+
+/* Dark Mode - Textarea Modal (data-theme="dark") */
+[data-theme="dark"] .dt-textarea-modal {
+    background: rgba(30, 41, 59, 0.95) !important;
+}
+
+[data-theme="dark"] .dt-textarea-modal-header {
+    background: #374151 !important;
+    color: #e2e8f0 !important;
+    border-bottom: 1px solid #4b5563 !important;
+}
+
+[data-theme="dark"] .dt-textarea-editor {
+    background: #374151 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .dt-textarea-modal-footer {
+    background: #374151 !important;
+    border-top: 1px solid #4b5563 !important;
+}
+
+[data-theme="dark"] .dt-textarea-modal-footer::before {
+    color: #94a3b8 !important;
+}
+
+[data-theme="dark"] .dt-textarea-btn-cancel {
+    background: #4b5563 !important;
+    color: #e2e8f0 !important;
+    border-color: #475569 !important;
+}
+
+[data-theme="dark"] .dt-textarea-char-count {
+    background: #4b5563 !important;
+    color: #94a3b8 !important;
+}
+
+/* Dark Mode - Context Menu */
+[data-theme="dark"] .dt-context-menu {
+    background: rgba(30, 41, 59, 0.98) !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] .dt-context-menu-item {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .dt-context-menu-item:not(.dt-context-menu-disabled):hover {
+    background: rgba(148, 163, 184, 0.15) !important;
+}
+
+[data-theme="dark"] .dt-context-menu-danger:not(.dt-context-menu-disabled) {
+    color: #f87171 !important;
+}
+
+[data-theme="dark"] .dt-context-menu-danger:not(.dt-context-menu-disabled):hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+}
+
+[data-theme="dark"] .dt-context-menu-disabled {
+    color: #64748b !important;
+}
+
+/* Dark Mode - DataTable Elements (data-theme="dark") */
+/* DataTables 2.x uses dt-container, dt-info, dt-paging, dt-paging-button */
+html[data-theme="dark"] div.dt-container,
+html[data-theme="dark"] div.dt-container div.dt-layout-row,
+html[data-theme="dark"] div.dt-container .dt-info,
+html[data-theme="dark"] div.dt-container .dt-length,
+html[data-theme="dark"] div.dt-container .dt-length label,
+html[data-theme="dark"] div.dt-container .dt-search,
+html[data-theme="dark"] div.dt-container .dt-search label,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_info,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_length,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_filter {
+    color: #e2e8f0 !important;
+}
+
+/* DataTables 2.x: Select and Input */
+html[data-theme="dark"] div.dt-container .dt-length select,
+html[data-theme="dark"] div.dt-container .dt-search input,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_length select,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_filter input {
+    background: #374151 !important;
+    color: #e2e8f0 !important;
+    border-color: #4b5563 !important;
+}
+
+/* DataTables 2.x: Pagination buttons */
+html[data-theme="dark"] div.dt-container .dt-paging .dt-paging-button,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: #e2e8f0 !important;
+}
+
+html[data-theme="dark"] div.dt-container .dt-paging .dt-paging-button:hover,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #4b5563 !important;
+    color: #e2e8f0 !important;
+}
+
+html[data-theme="dark"] div.dt-container .dt-paging .dt-paging-button.disabled,
+html[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+    color: #64748b !important;
+}
+
+/* Extra: Body and wrapper text for dark mode */
+html[data-theme="dark"] body,
+html[data-theme="dark"] .dataTables_wrapper,
+html[data-theme="dark"] div.dt-container {
+    color: #e2e8f0;
+}
+
+/* ============================================
+   🌙 DARK MODE
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --dt-primary: #94a3b8;
+        --dt-primary-hover: #7dd3fc;
+        --dt-primary-light: rgba(148, 163, 184, 0.15);
+        --dt-bg-selected: #1f2937;
+        --gs-header-bg: #374151;
+        --gs-row-hover: #374151;
+        --gs-row-stripe: #1f2937;
+        --gs-border-color: #4b5563;
+    }
+
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody td {
+        background: #374151;
+        color: #e2e8f0;
+    }
+
+    /* Dark mode: DataTable info, length, filter text (DataTables 2.x) */
+    :root:not([data-theme="light"]) div.dt-container,
+    :root:not([data-theme="light"]) div.dt-container div.dt-layout-row,
+    :root:not([data-theme="light"]) div.dt-container .dt-info,
+    :root:not([data-theme="light"]) div.dt-container .dt-length,
+    :root:not([data-theme="light"]) div.dt-container .dt-length label,
+    :root:not([data-theme="light"]) div.dt-container .dt-search,
+    :root:not([data-theme="light"]) div.dt-container .dt-search label,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_info,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_length,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_filter {
+        color: #e2e8f0 !important;
+    }
+
+    /* Dark mode: DataTable select/input (DataTables 2.x) */
+    :root:not([data-theme="light"]) div.dt-container .dt-length select,
+    :root:not([data-theme="light"]) div.dt-container .dt-search input,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_length select,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_filter input {
+        background: #374151 !important;
+        color: #e2e8f0 !important;
+        border-color: #4b5563 !important;
+    }
+
+    /* Dark mode: Pagination buttons (DataTables 2.x) */
+    :root:not([data-theme="light"]) div.dt-container .dt-paging .dt-paging-button,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_paginate .paginate_button {
+        color: #e2e8f0 !important;
+    }
+
+    :root:not([data-theme="light"]) div.dt-container .dt-paging .dt-paging-button:hover,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: #4b5563 !important;
+        color: #e2e8f0 !important;
+    }
+
+    :root:not([data-theme="light"]) div.dt-container .dt-paging .dt-paging-button.disabled,
+    :root:not([data-theme="light"]) .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+        color: #64748b !important;
+    }
+
+    /* Dark mode: Cell Selection/Focus - TARGET CORRECT CLASS .dt-cell-selected */
+    :root:not([data-theme="light"]) .dt-cell-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet .dt-cell-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr td.dt-cell-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:not(:hover) td.dt-cell-selected {
+        background-color: #1f2937 !important;
+        color: #e2e8f0 !important;
+    }
+
+    /* Dark mode: Also support .focus and .gs-selected (legacy) */
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr td.focus,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr td.gs-selected {
+        background-color: #1f2937 !important;
+        color: #e2e8f0 !important;
+    }
+
+    /* Dark mode: Ensure all cells in focused/selected row have consistent dark bg */
+    /* This should be the SAME whether hovered or not */
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:has(.dt-cell-selected) td,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:has(td.focus) td,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:hover:has(.dt-cell-selected) td,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:hover:has(td.focus) td {
+        background-color: #374151 !important;
+    }
+
+    /* Dark mode: Row Hover (only for rows WITHOUT selection) */
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:hover:not(:has(.dt-cell-selected)):not(:has(td.focus)) td {
+        background-color: #4b5563 !important;
+    }
+
+    /* Dark mode: Selected/Focused cell always has this specific background */
+    /* Use same color as range-selected for consistency */
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr td.dt-cell-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:hover td.dt-cell-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr td.focus,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:hover td.focus {
+        background-color: #374151 !important;
+        /* Same as range-selected */
+    }
+
+    /* Dark mode: Cell Range Selection - remove individual outline */
+    :root:not([data-theme="light"]) .datatables-gridsheet td.dt-cell-selected.dt-cell-range-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet td.dt-cell-selected.dt-range-top,
+    :root:not([data-theme="light"]) .datatables-gridsheet td.dt-cell-selected.dt-range-bottom,
+    :root:not([data-theme="light"]) .datatables-gridsheet td.dt-cell-selected.dt-range-left,
+    :root:not([data-theme="light"]) .datatables-gridsheet td.dt-cell-selected.dt-range-right {
+        outline: none !important;
+    }
+
+    :root:not([data-theme="light"]) .datatables-gridsheet td.dt-cell-range-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody td.dt-cell-range-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr td.dt-cell-range-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:hover td.dt-cell-range-selected,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr:has(td.dt-cell-range-selected) td.dt-cell-range-selected {
+        background-color: #374151 !important;
+        /* Solid dark gray tint - override stripe */
+        outline: none !important;
+    }
+
+    /* Dark mode: Row Selection */
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody tr.selected td {
+        background-color: #374151 !important;
+        /* Solid dark gray tint */
+    }
+
+    /* Dark mode: Row Highlight / Multi-row Selection - SOLID COLOR to override stripe */
+    :root:not([data-theme="light"]) .datatables-gridsheet tr.row-highlight td,
+    :root:not([data-theme="light"]) .datatables-gridsheet tr.dt-row-selected td {
+        background-color: #374151 !important;
+        /* Solid dark gray tint - same as 0.15 alpha on #374151 */
+    }
+
+    /* Dark mode: First cell in row selection */
+    :root:not([data-theme="light"]) .datatables-gridsheet tr.row-highlight td:first-child,
+    :root:not([data-theme="light"]) .datatables-gridsheet tr.dt-row-selected td:first-child {
+        background-color: #94a3b8 !important;
+        color: #1f2937 !important;
+    }
+
+    /* Dark mode: Column highlight - SOLID COLOR to override stripe */
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody td.dt-column-highlight,
+    :root:not([data-theme="light"]) .datatables-gridsheet tbody td.column-highlight {
+        background-color: #374151 !important;
+        /* Solid dark gray tint */
+    }
+}
+
+[data-theme="dark"] {
+    --dt-primary: #94a3b8;
+    --dt-primary-hover: #7dd3fc;
+    --dt-bg-selected: #1f2937;
+    --gs-header-bg: #374151;
+    --gs-row-hover: #374151;
+    --gs-row-stripe: #1f2937;
+    --gs-border-color: #4b5563;
+}
+
+[data-theme="dark"] .datatables-gridsheet tbody td {
+    background: #374151;
+    color: #e2e8f0;
+}
+
+/* Dark mode: Cell Selection/Focus - TARGET CORRECT CLASS .dt-cell-selected */
+html[data-theme="dark"] .dt-cell-selected,
+html[data-theme="dark"] .datatables-gridsheet .dt-cell-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:not(:hover) td.dt-cell-selected,
+[data-theme="dark"] .dt-cell-selected,
+[data-theme="dark"] .datatables-gridsheet .dt-cell-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr:not(:hover) td.dt-cell-selected {
+    background-color: #1f2937 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Dark mode: Also support .focus and .gs-selected (legacy/alternative) */
+html[data-theme="dark"] .datatables-gridsheet tbody tr td.focus,
+html[data-theme="dark"] .datatables-gridsheet tbody tr td.gs-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr td.focus,
+[data-theme="dark"] .datatables-gridsheet tbody tr td.gs-selected {
+    background-color: #1f2937 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Dark mode: Ensure all cells in focused/selected row have consistent dark bg */
+/* This should be the SAME whether hovered or not */
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(.dt-cell-selected) td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.focus) td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(.dt-cell-selected) td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(td.focus) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(.dt-cell-selected) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.focus) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(.dt-cell-selected) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(td.focus) td {
+    background-color: #374151 !important;
+}
+
+/* Dark mode: Row Hover (only for rows WITHOUT selection) */
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover:not(:has(.dt-cell-selected)):not(:has(td.focus)) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover:not(:has(.dt-cell-selected)):not(:has(td.focus)) td {
+    background-color: #4b5563 !important;
+}
+
+/* Dark mode: Selected/Focused cell always has this specific background */
+/* Use same color as range-selected for consistency */
+html[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.dt-cell-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr td.focus,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.focus,
+[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.dt-cell-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr td.focus,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.focus {
+    background-color: #374151 !important;
+    /* Same as range-selected */
+}
+
+/* Dark mode: Cell Range Selection - remove individual outline */
+html[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-top,
+html[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-bottom,
+html[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-left,
+html[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-right,
+[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-top,
+[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-bottom,
+[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-left,
+[data-theme="dark"] .datatables-gridsheet td.dt-cell-selected.dt-range-right {
+    outline: none !important;
+}
+
+html[data-theme="dark"] .datatables-gridsheet td.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody td.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.dt-cell-range-selected) td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.dt-cell-range-selected) td.dt-cell-range-selected {
+    background-color: #374151 !important;
+    /* Solid dark gray tint - override stripe */
+    outline: none !important;
+}
+
+/* Light mode: Cell Range Selection - remove individual outline */
+.datatables-gridsheet td.dt-cell-selected.dt-cell-range-selected,
+.datatables-gridsheet td.dt-cell-selected.dt-range-top,
+.datatables-gridsheet td.dt-cell-selected.dt-range-bottom,
+.datatables-gridsheet td.dt-cell-selected.dt-range-left,
+.datatables-gridsheet td.dt-cell-selected.dt-range-right {
+    outline: none !important;
+}
+
+.datatables-gridsheet td.dt-cell-range-selected {
+    outline: none !important;
+}
+
+/* Dark mode: Row Selection (.dt-row-selected, .row-highlight) - used in multi-row selection */
+/* MUST have same styling as .row-highlight for consistency - SOLID COLOR to override stripe */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:hover td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.selected td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.selected:hover td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:hover td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.selected td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.selected:hover td {
+    background-color: #374151 !important;
+    /* Solid dark gray tint */
+    /* No box-shadow by default - only outer edges */
+}
+
+/* Dark mode: Row selection - First cell (No. column) */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight td:first-child,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td:first-child,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight td:first-child,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td:first-child {
+    background-color: #94a3b8 !important;
+    color: #1f2937 !important;
+}
+
+/* Dark mode: Column highlight - SOLID COLOR to override stripe */
+html[data-theme="dark"] .datatables-gridsheet tbody td.dt-column-highlight,
+html[data-theme="dark"] .datatables-gridsheet tbody td.column-highlight,
+[data-theme="dark"] .datatables-gridsheet tbody td.dt-column-highlight,
+[data-theme="dark"] .datatables-gridsheet tbody td.column-highlight {
+    background-color: #374151 !important;
+    /* Solid dark gray tint */
+}
+
+/* Dark mode: Row Selection - First row in multi-selection (has top border) */
+/* First selected row: has TOP border only */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:not(.dt-row-selected + .dt-row-selected) td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:not(.dt-row-selected + .row-highlight) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:not(.dt-row-selected + .dt-row-selected) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:not(.dt-row-selected + .row-highlight) td {
+    box-shadow: inset 0 1px 0 0 var(--dt-primary) !important;
+}
+
+/* Dark mode: Row Selection - Last row in multi-selection (has bottom border) */
+/* Last selected row: has BOTTOM border only (row NOT followed by another selected row) */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td {
+    box-shadow: inset 0 -1px 0 0 var(--dt-primary) !important;
+}
+
+/* Dark mode: Row Selection - Single row or first AND last (has both borders) */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:not(.dt-row-selected + .dt-row-selected):not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:not(.dt-row-selected + .row-highlight):not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:not(.dt-row-selected + .dt-row-selected):not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight:not(.dt-row-selected + .row-highlight):not(:has(+ .dt-row-selected)):not(:has(+ .row-highlight)) td {
+    box-shadow: inset 0 1px 0 0 var(--dt-primary), inset 0 -1px 0 0 var(--dt-primary) !important;
+}
+
+/* Dark mode: Row Selection - First cell (No. column) */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td:first-child,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover td:first-child,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td:first-child,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover td:first-child {
+    background-color: var(--dt-primary) !important;
+    color: #1f2937 !important;
+    font-weight: 700 !important;
+}
+
+/* Dark mode: Row Selection - Readonly cells */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected .dt-readonly-cell,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tbody tr.dt-row-selected:hover .dt-readonly-cell {
+    background-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+/* Dark mode: Readonly cells should follow row styling */
+html[data-theme="dark"] .datatables-gridsheet td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet .dt-readonly-cell,
+html[data-theme="dark"] .datatables-gridsheet tr[data-readonly-row="true"] td,
+[data-theme="dark"] .datatables-gridsheet td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tr[data-readonly-row="true"] td {
+    background-color: #374151 !important;
+    color: #94a3b8 !important;
+}
+
+/* Dark mode: Readonly cells in selected row should follow row styling */
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(.dt-cell-selected) td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(.dt-cell-selected) .dt-readonly-cell,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.focus) td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.focus) .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(.dt-cell-selected) td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(.dt-cell-selected) .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.focus) td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.focus) .dt-readonly-cell {
+    background-color: #374151 !important;
+}
+
+/* Dark mode: Readonly cells hover consistent with row */
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover:not(:has(.dt-cell-selected)):not(:has(td.focus)) td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover:not(:has(.dt-cell-selected)):not(:has(td.focus)) .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover:not(:has(.dt-cell-selected)):not(:has(td.focus)) td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover:not(:has(.dt-cell-selected)):not(:has(td.focus)) .dt-readonly-cell {
+    background-color: #4b5563 !important;
+}
+
+/* Dark mode: Row Highlight (selected entire row) - CONSISTENT hover/non-hover */
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight td,
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight td,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td {
+    background-color: rgba(148, 163, 184, 0.2) !important;
+    box-shadow: inset 0 1px 0 0 var(--dt-primary), inset 0 -1px 0 0 var(--dt-primary);
+}
+
+/* Dark mode: Row Highlight - First cell (No. column) */
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight td:first-child,
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td:first-child,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight td:first-child,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td:first-child {
+    background-color: var(--dt-primary) !important;
+    color: #1f2937 !important;
+    font-weight: 700 !important;
+}
+
+/* Dark mode: Row Highlight - Last cell */
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight td:last-child,
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td:last-child,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight td:last-child,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td:last-child {
+    box-shadow: inset 0 1px 0 0 var(--dt-primary), inset -1px -1px 0 0 var(--dt-primary);
+}
+
+/* Dark mode: Row Highlight - Readonly cells should follow */
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight .dt-readonly-cell,
+html[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tr.row-highlight:hover .dt-readonly-cell {
+    background-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+/* Dark mode: Multi-cell Range Selection - CONSISTENT hover/non-hover */
+html[data-theme="dark"] .datatables-gridsheet td.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover td.dt-cell-range-selected {
+    background-color: rgba(148, 163, 184, 0.15) !important;
+    color: #e2e8f0 !important;
+}
+
+/* Dark mode: Rows containing range-selected cells - CONSISTENT */
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.dt-cell-range-selected) td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(td.dt-cell-range-selected) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.dt-cell-range-selected) td,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(td.dt-cell-range-selected) td {
+    background-color: #374151 !important;
+}
+
+/* Dark mode: Override - range-selected cells in the row */
+html[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.dt-cell-range-selected) td.dt-cell-range-selected,
+html[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(td.dt-cell-range-selected) td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr:has(td.dt-cell-range-selected) td.dt-cell-range-selected,
+[data-theme="dark"] .datatables-gridsheet tbody tr:hover:has(td.dt-cell-range-selected) td.dt-cell-range-selected {
+    background-color: rgba(148, 163, 184, 0.15) !important;
+}
+
+/* Dark mode: Multi-row selection (Shift+click on row numbers) - same as single row */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight td,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight td,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover td {
+    background-color: rgba(148, 163, 184, 0.2) !important;
+    box-shadow: inset 0 1px 0 0 var(--dt-primary), inset 0 -1px 0 0 var(--dt-primary);
+}
+
+/* Dark mode: Multi-row - First cell for adjacent rows */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight td:first-child,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover td:first-child,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight td:first-child,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover td:first-child {
+    background-color: var(--dt-primary) !important;
+    color: #1f2937 !important;
+    font-weight: 700 !important;
+}
+
+/* Dark mode: Multi-row - Readonly cells for adjacent rows */
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover td[data-readonly="true"],
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight .dt-readonly-cell,
+html[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover td[data-readonly="true"],
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight .dt-readonly-cell,
+[data-theme="dark"] .datatables-gridsheet tbody tr.row-highlight+tr.row-highlight:hover .dt-readonly-cell {
+    background-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+/* Dark mode: uniform row background (no striping) */
+
+/* Page Length & Search Input - Dark Mode */
+[data-theme="dark"] .dt-length select.dt-input,
+[data-theme="dark"] .dt-search input.dt-input,
+[data-theme="dark"] div.dt-container .dt-length select.dt-input,
+[data-theme="dark"] div.dt-container .dt-search input.dt-input {
+    color: #e2e8f0 !important;
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] .dt-length select.dt-input,
+[data-theme="dark"] div.dt-container .dt-length select.dt-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] .dt-length select.dt-input option {
+    background-color: #374151 !important;
+    color: #e2e8f0 !important;
+}
+
+/* Dark mode: Date/Time Input Icons */
+html[data-theme="dark"] .datatables-gridsheet input[type="date"],
+html[data-theme="dark"] .datatables-gridsheet input[type="time"],
+html[data-theme="dark"] .datatables-gridsheet input[type="datetime-local"],
+html[data-theme="dark"] .datatables-gridsheet .dt-date-editor,
+[data-theme="dark"] .datatables-gridsheet input[type="date"],
+[data-theme="dark"] .datatables-gridsheet input[type="time"],
+[data-theme="dark"] .datatables-gridsheet input[type="datetime-local"],
+[data-theme="dark"] .datatables-gridsheet .dt-date-editor {
+    color: #e2e8f0 !important;
+    background-color: transparent !important;
+    color-scheme: dark;
+}
+
+/* Dark mode: Date/Time picker icons (webkit browsers) */
+html[data-theme="dark"] .datatables-gridsheet input[type="date"]::-webkit-calendar-picker-indicator,
+html[data-theme="dark"] .datatables-gridsheet input[type="time"]::-webkit-calendar-picker-indicator,
+html[data-theme="dark"] .datatables-gridsheet input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+[data-theme="dark"] .datatables-gridsheet input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="dark"] .datatables-gridsheet input[type="time"]::-webkit-calendar-picker-indicator,
+[data-theme="dark"] .datatables-gridsheet input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) brightness(1.5);
+    cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    :root:not([data-theme="light"]) .dt-length select.dt-input,
+    :root:not([data-theme="light"]) .dt-search input.dt-input,
+    :root:not([data-theme="light"]) div.dt-container .dt-length select.dt-input,
+    :root:not([data-theme="light"]) div.dt-container .dt-search input.dt-input {
+        color: #e2e8f0 !important;
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-length select.dt-input,
+    :root:not([data-theme="light"]) div.dt-container .dt-length select.dt-input {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2394a3b8'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    }
+
+    :root:not([data-theme="light"]) .dt-length select.dt-input option {
+        background-color: #374151 !important;
+        color: #e2e8f0 !important;
+    }
+}
+
+/* GridSheet Select Cell Dropdown - Dark Mode */
+/* Note: Dropdown options may be appended to body, so we use html-level selectors */
+
+/* For html-level dark mode */
+html[data-theme="dark"] .dt-searchable-dropdown,
+html[data-theme="dark"] .dt-dropdown-options,
+html[data-theme="dark"] body .dt-dropdown-options {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+html[data-theme="dark"] .dt-dropdown-search {
+    background-color: #1f2937 !important;
+    color: #e2e8f0 !important;
+    border-color: #4b5563 !important;
+}
+
+html[data-theme="dark"] .dt-dropdown-search::placeholder {
+    color: #94a3b8 !important;
+}
+
+html[data-theme="dark"] .dt-dropdown-option {
+    color: #e2e8f0 !important;
+    background-color: transparent !important;
+}
+
+html[data-theme="dark"] .dt-dropdown-option:hover {
+    background-color: #4b5563 !important;
+}
+
+html[data-theme="dark"] .dt-dropdown-option.selected {
+    background-color: var(--dt-primary) !important;
+    color: #ffffff !important;
+}
+
+/* Existing container-level selectors (kept for compatibility) */
+[data-theme="dark"] .dt-searchable-dropdown,
+[data-theme="dark"] .dt-dropdown-options {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-theme="dark"] .dt-dropdown-search {
+    background-color: #1f2937 !important;
+    color: #e2e8f0 !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] .dt-dropdown-option {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .dt-dropdown-option:hover {
+    background-color: #4b5563 !important;
+}
+
+[data-theme="dark"] .dt-dropdown-option.selected {
+    background-color: var(--dt-primary) !important;
+    color: #ffffff !important;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    :root:not([data-theme="light"]) .dt-searchable-dropdown,
+    :root:not([data-theme="light"]) .dt-dropdown-options,
+    body .dt-dropdown-options {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-dropdown-search,
+    body .dt-dropdown-search {
+        background-color: #1f2937 !important;
+        color: #e2e8f0 !important;
+        border-color: #4b5563 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-dropdown-option,
+    body .dt-dropdown-option {
+        color: #e2e8f0 !important;
+        background-color: transparent !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-dropdown-option:hover,
+    body .dt-dropdown-option:hover {
+        background-color: #4b5563 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-dropdown-option.selected,
+    body .dt-dropdown-option.selected {
+        background-color: var(--dt-primary) !important;
+        color: #ffffff !important;
+    }
+}
+
+/* Dark Mode Overrides for Inputs & Form Elements - CORRECTLY SCOPED */
+@media (prefers-color-scheme: dark) {
+
+    :root:not([data-theme="light"]) .dt-select-content,
+    :root:not([data-theme="light"]) select,
+    :root:not([data-theme="light"]) input,
+    :root:not([data-theme="light"]) .dt-input,
+    :root:not([data-theme="light"]) .datatables-gridsheet tr input,
+    :root:not([data-theme="light"]) .datatables-gridsheet tr select {
+        color: #e2e8f0 !important;
+        background-color: transparent !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-select-arrow {
+        color: #e2e8f0 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-dropdown-options {
+        background-color: #374151 !important;
+        border-color: #4b5563 !important;
+        color: #e2e8f0 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-dropdown-option,
+    :root:not([data-theme="light"]) .dt-dropdown-options div {
+        color: #e2e8f0 !important;
+    }
+
+    :root:not([data-theme="light"]) .dt-dropdown-option:hover,
+    :root:not([data-theme="light"]) .dt-dropdown-options div:hover {
+        background-color: #4b5563 !important;
+    }
+
+    :root:not([data-theme="light"]) textarea,
+    :root:not([data-theme="light"]) .dt-inline-textarea,
+    :root:not([data-theme="light"]) .datatables-gridsheet tr textarea {
+        background-color: #374151 !important;
+        color: #e2e8f0 !important;
+        border-color: #4b5563 !important;
+    }
+
+    :root:not([data-theme="light"]) .datatables-gridsheet td.focus {
+        background-color: rgba(148, 163, 184, 0.1) !important;
+    }
+}
+
+/* Explicit Dark Theme Selector - Always active regardless of system pref */
+[data-theme="dark"] .dt-select-content,
+[data-theme="dark"] select,
+[data-theme="dark"] input,
+[data-theme="dark"] .dt-input,
+[data-theme="dark"] .datatables-gridsheet tr input,
+[data-theme="dark"] .datatables-gridsheet tr select {
+    color: #e2e8f0 !important;
+    background-color: transparent !important;
+}
+
+[data-theme="dark"] .dt-select-arrow {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .dt-dropdown-options {
+    background-color: #374151 !important;
+    border-color: #4b5563 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .dt-dropdown-option,
+[data-theme="dark"] .dt-dropdown-options div {
+    color: #e2e8f0 !important;
+}
+
+[data-theme="dark"] .dt-dropdown-option:hover,
+[data-theme="dark"] .dt-dropdown-options div:hover {
+    background-color: #4b5563 !important;
+}
+
+[data-theme="dark"] textarea,
+[data-theme="dark"] .dt-inline-textarea,
+[data-theme="dark"] .datatables-gridsheet tr textarea {
+    background-color: #374151 !important;
+    color: #e2e8f0 !important;
+    border-color: #4b5563 !important;
+}
+
+[data-theme="dark"] .datatables-gridsheet td.focus {
+    box-shadow: inset 0 0 0 2px var(--dt-primary) !important;
+    background-color: #2d3748 !important;
+    /* Solid version of rgba(148, 163, 184, 0.1) */
+}
+
+/* ============================================
+   📱 RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    .datatables-gridsheet thead th {
+        padding: 10px 12px !important;
+        font-size: 11px;
+    }
+
+    .datatables-gridsheet tbody td {
+        padding: 10px 12px !important;
+        font-size: 13px;
+    }
+
+    :root {
+        --gs-border-radius: 8px;
+    }
+}
+
+/* ============================================
+   🎭 ANIMATIONS
+   ============================================ */
+@keyframes gs-fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

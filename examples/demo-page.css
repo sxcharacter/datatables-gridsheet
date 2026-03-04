@@ -1,0 +1,1440 @@
+/**
+ * GridSheet Demo Page Styles
+ * Shared CSS for all example/demo pages
+ * Separate from the plugin CSS
+ */
+
+/* ============================================
+   Reset & Base
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f8f9fa;
+    color: #202124;
+    line-height: 1.6;
+}
+
+/* ============================================
+   Container
+   ============================================ */
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* ============================================
+   Page Header
+   ============================================ */
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 24px;
+    font-weight: 500;
+    color: #202124;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-header p {
+    color: #5f6368;
+    font-size: 14px;
+}
+
+/* ============================================
+   Mode Badges
+   ============================================ */
+.mode-badge {
+    font-size: 12px;
+    font-weight: 600;
+    background: #34A853;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mode-badge.batch {
+    background: #22c55e;
+}
+
+.mode-badge.empty {
+    background: #16a34a;
+}
+
+.new-badge {
+    font-size: 11px;
+    font-weight: 600;
+    background: #34A853;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-left: 8px;
+}
+
+/* Mode Description Box */
+.mode-desc {
+    margin-top: 8px;
+    padding: 10px 14px;
+    background: #f0fdf4;
+    border-radius: 6px;
+    border-left: 3px solid #34a853;
+    font-size: 13px;
+}
+
+.mode-desc strong {
+    color: #34A853;
+}
+
+.mode-desc.batch {
+    background: #f0fdf4;
+    border-left-color: #22c55e;
+}
+
+.mode-desc.batch strong {
+    color: #22c55e;
+}
+
+.mode-desc.empty {
+    background: #ecfdf5;
+    border-left-color: #16a34a;
+}
+
+.mode-desc.empty strong {
+    color: #16a34a;
+}
+
+/* ============================================
+   Back Button
+   ============================================ */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #34A853;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    padding: 8px 16px;
+    background: #f0fdf4;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.back-btn span {
+    padding-right: 7px;
+}
+
+/* ============================================
+   Collapsible Info Box
+   ============================================ */
+.info-box {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+/* When used as div (not details) - simple info message */
+div.info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #f0fdf4;
+    border: 1px solid #d1fae5;
+}
+
+div.info-box svg {
+    flex-shrink: 0;
+    color: #34A853;
+}
+
+div.info-box p {
+    margin: 0;
+    font-size: 13px;
+    color: #202124;
+    line-height: 1.5;
+}
+
+.info-box summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f0fdf4;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: #34A853;
+}
+
+.info-box summary::-webkit-details-marker {
+    display: none;
+}
+
+.info-box summary:hover {
+    background: #dcfce7;
+}
+
+.summary-icon {
+    font-size: 16px;
+}
+
+.summary-text {
+    flex: 1;
+}
+
+.summary-arrow {
+    font-size: 10px;
+    transition: transform 0.2s ease;
+}
+
+.info-box[open] .summary-arrow {
+    transform: rotate(180deg);
+}
+
+.info-content {
+    padding: 16px;
+    background: #fafbfc;
+    border-top: 1px solid #e0e0e0;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.info-section h4 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5f6368;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-section li {
+    font-size: 13px;
+    color: #202124;
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-section code {
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    min-width: 70px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* ============================================
+   Table Container
+   ============================================ */
+.table-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-x: auto;
+}
+
+/* ============================================
+   Feature Cards (for documentation pages)
+   ============================================ */
+.feature-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: #5f6368;
+    margin-bottom: 12px;
+}
+
+.feature-card pre {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+.feature-card code {
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* ============================================
+   Code Blocks
+   ============================================ */
+.code-block {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.code-block .keyword {
+    color: #569cd6;
+}
+
+.code-block .string {
+    color: #ce9178;
+}
+
+.code-block .number {
+    color: #b5cea8;
+}
+
+.code-block .comment {
+    color: #6a9955;
+}
+
+/* ============================================
+   Generic Tables in Section Content
+   ============================================ */
+.section-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.section-content table th,
+.section-content table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.section-content table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #5f6368;
+}
+
+.section-content table tr:last-child td {
+    border-bottom: none;
+}
+
+.section-content table code {
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Parameter Table */
+.param-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.param-table th,
+.param-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.param-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #5f6368;
+}
+
+.param-name {
+    font-family: monospace;
+    font-weight: 600;
+    color: #34A853;
+}
+
+.param-type {
+    font-size: 11px;
+    background: #f0fdf4;
+    color: #166534;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.param-default {
+    font-family: monospace;
+    font-size: 12px;
+    color: #5f6368;
+}
+
+/* ============================================
+   Keyboard Shortcuts Table
+   ============================================ */
+.shortcuts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+}
+
+.shortcuts-table th,
+.shortcuts-table td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.shortcuts-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    font-size: 13px;
+    color: #5f6368;
+}
+
+.shortcuts-table td {
+    font-size: 14px;
+}
+
+.shortcuts-table kbd {
+    background: #f1f3f4;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   Badge (for feature docs)
+   ============================================ */
+.badge {
+    font-size: 12px;
+    font-weight: 600;
+    background: #34A853;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+/* ============================================
+   Section (for documentation pages)
+   ============================================ */
+.section {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 16px 20px;
+    background: #f0fdf4;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #34A853;
+    margin: 0;
+}
+
+.section-header p {
+    font-size: 13px;
+    color: #5f6368;
+    margin-top: 4px;
+}
+
+.section-content {
+    padding: 20px;
+}
+
+/* ============================================
+   Navigation (for feature docs)
+   ============================================ */
+.nav-section {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.nav-link {
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #5f6368;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: #34A853;
+    color: white;
+    border-color: #34A853;
+}
+
+/* ============================================
+   Parameter Table (for configuration docs)
+   ============================================ */
+.param-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.param-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #5f6368;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.param-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e8e8e8;
+    vertical-align: top;
+}
+
+.param-table tr:hover {
+    background: #f8f9fa;
+}
+
+.param-name {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #d63384;
+    font-weight: 500;
+}
+
+.param-type {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #0d6efd;
+    font-size: 12px;
+}
+
+.param-default {
+    font-family: 'Consolas', 'Monaco', monospace;
+    color: #198754;
+    font-size: 12px;
+}
+
+/* ============================================
+   Code Block Enhancements
+   ============================================ */
+.code-block pre {
+    margin: 0;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #d4d4d4;
+}
+
+.code-block .property {
+    color: #9cdcfe;
+}
+
+.code-block .value {
+    color: #b5cea8;
+}
+
+.code-block .boolean {
+    color: #569cd6;
+}
+
+/* Code Header */
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.code-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5f6368;
+}
+
+.copy-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    background: #34A853;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.copy-btn:hover {
+    background: #16a34a;
+}
+
+/* ============================================
+   Type Cards (for column-types docs)
+   ============================================ */
+.type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.type-card {
+    background: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.2s;
+}
+
+.type-card:hover {
+    border-color: #34A853;
+    box-shadow: 0 2px 8px rgba(52, 168, 83, 0.15);
+}
+
+.type-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #34A853;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.type-card h3 code {
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.type-card p {
+    font-size: 13px;
+    color: #5f6368;
+    margin-bottom: 12px;
+}
+
+.type-card .example {
+    background: #1e1e1e;
+    color: #d4d4d4;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+.type-card .example .tag {
+    color: #569cd6;
+}
+
+.type-card .example .attr {
+    color: #9cdcfe;
+}
+
+.type-card .example .string {
+    color: #ce9178;
+}
+
+/* ============================================
+   Attribute Table
+   ============================================ */
+.attr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 16px;
+}
+
+.attr-table th {
+    background: #f8f9fa;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #5f6368;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.attr-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.attr-table code {
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* ============================================
+   Tips Box
+   ============================================ */
+.tip {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+}
+
+.tip strong {
+    color: #856404;
+}
+
+/* ============================================
+   Legend (for formula-footer demos)
+   ============================================ */
+.legend {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.legend-color {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.legend-color.editable {
+    background: #f0fdf4;
+    border: 2px solid #34A853;
+}
+
+.legend-color.readonly {
+    background: #f1f5f9;
+    border: 2px solid #64748b;
+}
+
+.legend-color.server-field {
+    background: #fef3c7;
+    border: 2px solid #d97706;
+}
+
+/* ============================================
+   Demo Link Button
+   ============================================ */
+.demo-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #34A853;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.demo-link-btn:hover {
+    background: #16a34a;
+}
+
+/* ============================================
+   Theme Demo Page Styles
+   ============================================ */
+.theme-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.theme-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.theme-btn:hover {
+    border-color: #34A853;
+}
+
+.theme-btn.active {
+    border-color: #34A853;
+    background: #f0fdf4;
+}
+
+.color-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.theme-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.theme-tab {
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.theme-tab:hover {
+    border-color: #34A853;
+}
+
+.theme-tab.active {
+    background: #34A853;
+    color: white;
+    border-color: #34A853;
+}
+
+.column-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.type-badge {
+    padding: 4px 10px;
+    background: #f0fdf4;
+    border: 1px solid #d1fae5;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #166534;
+}
+
+/* Theme Grid (for themes.html) */
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.theme-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.theme-card:hover {
+    border-color: #34A853;
+    box-shadow: 0 2px 8px rgba(52, 168, 83, 0.15);
+}
+
+.theme-preview {
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 13px;
+    color: white;
+}
+
+.theme-info {
+    padding: 12px;
+}
+
+.theme-info h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 4px;
+}
+
+.theme-info p {
+    font-size: 12px;
+    color: #5f6368;
+    margin-bottom: 8px;
+}
+
+.theme-info code {
+    display: inline-block;
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+/* ============================================
+   Validation Rules Box
+   ============================================ */
+.rules-box {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.rules-box h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 12px;
+}
+
+.rule-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.rule-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.rule-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rule-text strong {
+    color: #34A853;
+    font-weight: 600;
+}
+
+.rule-text span {
+    color: #5f6368;
+}
+
+/* ============================================
+   Toast Notifications
+   ============================================ */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 9999;
+    animation: slideUp 0.3s ease;
+}
+
+.toast.success {
+    background: #34A853;
+    color: white;
+}
+
+.toast.error {
+    background: #dc2626;
+    color: white;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   Endpoint Page Styles
+   ============================================ */
+.endpoint-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.endpoint-table th,
+.endpoint-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.endpoint-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #5f6368;
+}
+
+.endpoint-table code {
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+/* Mode badges for endpoints */
+.mode-badge.mode-direct {
+    background: #34A853;
+}
+
+.mode-badge.mode-batch {
+    background: #16a34a;
+}
+
+/* Method badges */
+.method-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+}
+
+.method-badge.method-post {
+    background: #34A853;
+    color: white;
+}
+
+.method-badge.method-get {
+    background: #22c55e;
+    color: white;
+}
+
+/* Warning tip style */
+.tip.warning {
+    background: #fef3c7;
+    border-left-color: #d97706;
+}
+
+.tip.warning strong {
+    color: #92400e;
+}
+
+/* Info style */
+.info {
+    background: #f0fdf4;
+    border-left: 4px solid #34A853;
+    padding: 12px 16px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+}
+
+.info strong {
+    color: #166534;
+}
+
+/* ============================================
+   Language Page Styles
+   ============================================ */
+.lang-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.lang-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.lang-card:hover {
+    border-color: #34A853;
+    box-shadow: 0 2px 8px rgba(52, 168, 83, 0.15);
+}
+
+.lang-flag {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.lang-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 4px;
+}
+
+.lang-card p {
+    font-size: 13px;
+    color: #5f6368;
+    margin-bottom: 8px;
+}
+
+.lang-card code {
+    display: inline-block;
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* ============================================
+   Feature Grid (for copy-paste overview)
+   ============================================ */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+}
+
+.feature-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.feature-card:hover {
+    border-color: #34A853;
+    box-shadow: 0 2px 8px rgba(52, 168, 83, 0.15);
+}
+
+.feature-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #34A853;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 13px;
+    color: #5f6368;
+    margin: 0;
+}
+
+/* ============================================
+   Steps (for copy-paste guide)
+   ============================================ */
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #34A853;
+}
+
+.step-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 4px;
+}
+
+.step-content p {
+    font-size: 13px;
+    color: #5f6368;
+    margin: 0;
+}
+
+/* Keyboard key styling */
+.kbd {
+    display: inline-block;
+    background: #f0fdf4;
+    border: 1px solid #d1fae5;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #34A853;
+    font-family: monospace;
+}
+
+/* ============================================
+   Method Grid (for selection guide)
+   ============================================ */
+.method-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.method-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.method-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #34A853;
+    margin-bottom: 12px;
+}
+
+.action {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.action:last-child {
+    border-bottom: none;
+}
+
+.action-key {
+    flex-shrink: 0;
+    background: #f0fdf4;
+    color: #34A853;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.action-desc {
+    font-size: 13px;
+    color: #5f6368;
+}
+
+/* Selection indicators */
+.indicator {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+.indicator.cell {
+    border: 2px solid #34A853;
+}
+
+.indicator.row {
+    background: #fef3c7;
+}
+
+.indicator.multi {
+    background: #dbeafe;
+}
+
+/* ============================================
+   FAQ Styles
+   ============================================ */
+.faq-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.faq-question {
+    padding: 14px 16px;
+    font-weight: 600;
+    color: #202124;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.faq-question:hover {
+    background: #f0fdf4;
+    color: #34A853;
+}
+
+.faq-answer {
+    padding: 0 16px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item.open .faq-answer {
+    padding: 16px;
+    max-height: 500px;
+}
+
+.faq-answer p {
+    margin: 0 0 8px 0;
+    font-size: 13px;
+    color: #5f6368;
+}
+
+.faq-answer pre {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    overflow-x: auto;
+    margin: 8px 0;
+}
+
+/* ============================================
+   Troubleshooting Styles
+   ============================================ */
+.troubleshoot-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.troubleshoot-item h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #202124;
+    margin-bottom: 8px;
+}
+
+.troubleshoot-item p {
+    font-size: 13px;
+    color: #5f6368;
+    margin-bottom: 8px;
+}
+
+.solution {
+    background: #f0fdf4;
+    border-left: 3px solid #34A853;
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #166534;
+    border-radius: 0 6px 6px 0;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 20px 15px;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+        flex-wrap: wrap;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .table-container {
+        padding: 15px;
+    }
+
+    .type-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-section {
+        gap: 8px;
+    }
+}

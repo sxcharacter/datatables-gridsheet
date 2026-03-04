@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Theme Demo</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <link rel="stylesheet" href="../../custom/theme-classic.css" id="themeStylesheet">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>
+                Theme Demo
+                <span class="badge" id="themeBadge">Classic Green</span>
+            </h1>
+            <p>Interactive preview of GridSheet themes. Switch between themes and Light/Dark mode.</p>
+        </div>
+
+        <!-- Theme Selector -->
+        <div class="theme-selector">
+            <button class="theme-btn active" onclick="setColorTheme('classic')" style="color: #34A853;">
+                <span class="color-dot" style="background: linear-gradient(135deg, #34A853, #2D9249);"></span>
+                Classic
+            </button>
+            <button class="theme-btn" onclick="setColorTheme('ocean')" style="color: #0ea5e9;">
+                <span class="color-dot" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);"></span>
+                Ocean
+            </button>
+            <button class="theme-btn" onclick="setColorTheme('emerald')" style="color: #10b981;">
+                <span class="color-dot" style="background: linear-gradient(135deg, #10b981, #059669);"></span>
+                Emerald
+            </button>
+            <button class="theme-btn" onclick="setColorTheme('clean')" style="color: #94a3b8;">
+                <span class="color-dot"
+                    style="background: linear-gradient(135deg, #f8fafc, #e2e8f0); border: 1px solid #cbd5e1;"></span>
+                Clean
+            </button>
+            <button class="theme-btn" onclick="setColorTheme('slate')" style="color: #64748b;">
+                <span class="color-dot" style="background: linear-gradient(135deg, #64748b, #475569);"></span>
+                Slate
+            </button>
+        </div>
+
+        <!-- Theme Mode Tabs -->
+        <div class="theme-tabs">
+            <button class="theme-tab active" data-mode="light" onclick="setTheme('light')">
+                Light Mode
+            </button>
+            <button class="theme-tab" data-mode="dark" onclick="setTheme('dark')">
+                Dark Mode
+            </button>
+        </div>
+
+        <!-- Info Box -->
+        <div class="info-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <p>
+                This demo shows all column types available in GridSheet. Click on any cell to edit.
+                Use <code>data-theme="dark"</code> on <code>&lt;html&gt;</code> to enable dark mode in your application.
+            </p>
+        </div>
+
+        <!-- Table Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Employee Data (All Column Types)</h2>
+            </div>
+            <div class="section-content">
+                <table id="themeDemo" class="datatables-gridsheet" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Office</th>
+                            <th>Birthdate</th>
+                            <th>Check-in</th>
+                            <th>Active</th>
+                            <th>Salary</th>
+                            <th>Score</th>
+                            <th>Notes</th>
+                            <th>Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-id="1">
+                            <td>Christopher Morrison</td>
+                            <td>chris@gmail.com</td>
+                            <td>New York</td>
+                            <td>15/05/1992</td>
+                            <td>09:00</td>
+                            <td>true</td>
+                            <td>120000</td>
+                            <td>85</td>
+                            <td>Senior developer with 10 years experience</td>
+                            <td>2024-01-15</td>
+                        </tr>
+                        <tr data-id="2">
+                            <td>Daniel August</td>
+                            <td>daniel@gmail.com</td>
+                            <td>London</td>
+                            <td>20/08/1995</td>
+                            <td>08:30</td>
+                            <td>false</td>
+                            <td>65000</td>
+                            <td>72</td>
+                            <td>Junior frontend developer</td>
+                            <td>2024-02-20</td>
+                        </tr>
+                        <tr data-id="3">
+                            <td>Ferguso Sutrisno</td>
+                            <td>sutrisno@gmail.com</td>
+                            <td>Tokyo</td>
+                            <td>10/03/1988</td>
+                            <td>10:15</td>
+                            <td>true</td>
+                            <td>160000</td>
+                            <td>95</td>
+                            <td>Team lead, manages 5 developers</td>
+                            <td>2023-06-10</td>
+                        </tr>
+                        <tr data-id="4">
+                            <td>John Williams</td>
+                            <td>john.w@gmail.com</td>
+                            <td>Tokyo</td>
+                            <td>25/11/1990</td>
+                            <td>09:45</td>
+                            <td>true</td>
+                            <td>160000</td>
+                            <td>88</td>
+                            <td>Backend specialist</td>
+                            <td>2023-08-15</td>
+                        </tr>
+                        <tr data-id="5">
+                            <td>Robert Clark</td>
+                            <td>robert.c@gmail.com</td>
+                            <td>Paris</td>
+                            <td>08/07/1993</td>
+                            <td>07:30</td>
+                            <td>true</td>
+                            <td>55000000</td>
+                            <td>78</td>
+                            <td>DevOps engineer</td>
+                            <td>2024-01-05</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Theme Mode Switching (Light/Dark)
+        function setTheme(mode) {
+            document.documentElement.setAttribute('data-theme', mode);
+
+            // Update tab active state
+            document.querySelectorAll('.theme-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.mode === mode);
+            });
+        }
+
+        // Color Theme Switching (Classic/Ocean/Emerald/Clean/Slate)
+        const themeNames = {
+            classic: 'Classic Green',
+            ocean: 'Ocean Blue',
+            emerald: 'Emerald Green',
+            clean: 'Clean White',
+            slate: 'Slate'
+        };
+
+        function setColorTheme(themeName) {
+            // Update stylesheet
+            const stylesheet = document.getElementById('themeStylesheet');
+            stylesheet.href = `../../custom/theme-${themeName}.css`;
+
+            // Update badge
+            document.getElementById('themeBadge').textContent = themeNames[themeName];
+
+            // Update button active states
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.trim().toLowerCase() === themeName) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            // Initialize GridSheet
+            new GridSheet({
+                tableSelector: '#themeDemo',
+                enableColumnNumber: true,
+
+                // Column configuration (v1.1.0+)
+                columns: {
+                    0: { name: 'name', type: 'text' },
+                    1: { name: 'email', type: 'email' },
+                    2: {
+                        name: 'office', type: 'select', options: [
+                            { id: 'New York', text: 'New York' },
+                            { id: 'London', text: 'London' },
+                            { id: 'Tokyo', text: 'Tokyo' },
+                            { id: 'Paris', text: 'Paris' },
+                            { id: 'Sydney', text: 'Sydney' },
+                            { id: 'Berlin', text: 'Berlin' }
+                        ]
+                    },
+                    3: { name: 'birthdate', type: 'date', format: { format: 'DD/MM/YYYY' } },
+                    4: { name: 'checkin', type: 'time' },
+                    5: { name: 'active', type: 'checkbox' },
+                    6: { name: 'salary', type: 'currency', format: { thousandSeparator: ',', prefix: '$', decimalPlaces: 0 } },
+                    7: { name: 'score', type: 'percentage', format: { suffix: '%' } },
+                    8: { name: 'notes', type: 'textarea' },
+                    9: { name: 'created', type: 'readonly', readonly: true }
+                },
+
+                dataTableOptions: {
+                    keys: true,
+                    paging: true,
+                    pageLength: 10,
+                    lengthMenu: [5, 10, 25, 50],
+                    searching: true,
+                    info: true
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

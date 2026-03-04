@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Language & Localization Guide</title>
+    <link rel="stylesheet" href="../vendor/datatables/datatables.min.css">
+    <link rel="stylesheet" href="../../css/gridsheet.css">
+    <script src="../vendor/jquery/jquery-3.7.1.js"></script>
+    <script src="../vendor/datatables/datatables.js"></script>
+    <script src="../vendor/datatables-keytable/keytable.js"></script>
+    <script src="../../js/gridsheet.js"></script>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Language & Localization <span class="badge">Developer Docs</span></h1>
+            <p>Complete guide to translating GridSheet interface to any language</p>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link">Configuration</a>
+            <a href="column-types.html" class="nav-link">Column Types</a>
+            <a href="formats.html" class="nav-link">Formats</a>
+            <a href="validation.html" class="nav-link">Validation</a>
+            <a href="endpoints.html" class="nav-link">Endpoints</a>
+            <a href="formula.html" class="nav-link">Formula</a>
+            <a href="theming.html" class="nav-link">Themes</a>
+            <a href="language.html" class="nav-link active">Language</a>
+        </div>
+
+        <!-- Quick Start -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Quick Start</h2>
+                <p>Change GridSheet language in 2 steps</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Step 1: Include language file</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="comment">&lt;!-- Core GridSheet --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="string">"gridsheet/js/gridsheet.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+
+<span class="comment">&lt;!-- Language file (after gridsheet.js) --&gt;</span>
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="string">"gridsheet/custom/gridsheet.lang.js"</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+                </div>
+
+                <div class="code-header">
+                    <span class="code-title">Step 2: Set language in configuration</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> GridSheet({
+    tableSelector: <span class="string">'#myTable'</span>,
+    
+    <span class="comment">// Add language option</span>
+    <span class="property">language</span>: GridSheetLang.<span class="value">id</span>,  <span class="comment">// Indonesian</span>
+    
+    <span class="comment">// ... other options</span>
+});</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>That's it!</strong> All context menus, buttons, and dialogs will now display in
+                    Indonesian.
+                </div>
+            </div>
+        </div>
+
+        <!-- Available Languages -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Available Languages</h2>
+                <p>Pre-built language packs included with GridSheet</p>
+            </div>
+            <div class="section-content">
+                <div class="lang-grid">
+                    <div class="lang-card">
+                        <div class="lang-flag">🇬🇧</div>
+                        <h3>English</h3>
+                        <p>Default language</p>
+                        <code>GridSheetLang.en</code>
+                    </div>
+                    <div class="lang-card">
+                        <div class="lang-flag">🇮🇩</div>
+                        <h3>Indonesian</h3>
+                        <p>Bahasa Indonesia</p>
+                        <code>GridSheetLang.id</code>
+                    </div>
+                </div>
+
+                <div class="info">
+                    <strong>Add More Languages:</strong> You can easily add new languages by editing
+                    <code>gridsheet.lang.js</code>. Follow the template provided in the file.
+                </div>
+            </div>
+        </div>
+
+        <!-- Translatable Strings -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Translatable Strings</h2>
+                <p>All text that can be translated</p>
+            </div>
+            <div class="section-content">
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Default (English)</th>
+                            <th>Indonesian</th>
+                            <th>Used In</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>copyRow</code></td>
+                            <td>Copy Row</td>
+                            <td>Salin Baris</td>
+                            <td>Context Menu</td>
+                        </tr>
+                        <tr>
+                            <td><code>pasteRow</code></td>
+                            <td>Paste Row</td>
+                            <td>Tempel Baris</td>
+                            <td>Context Menu</td>
+                        </tr>
+                        <tr>
+                            <td><code>clearRow</code></td>
+                            <td>Clear Row</td>
+                            <td>Hapus Baris</td>
+                            <td>Context Menu</td>
+                        </tr>
+                        <tr>
+                            <td><code>insertAbove</code></td>
+                            <td>Insert Row Above</td>
+                            <td>Sisip di Atas</td>
+                            <td>Context Menu</td>
+                        </tr>
+                        <tr>
+                            <td><code>insertBelow</code></td>
+                            <td>Insert Row Below</td>
+                            <td>Sisip di Bawah</td>
+                            <td>Context Menu</td>
+                        </tr>
+                        <tr>
+                            <td><code>saveAll</code></td>
+                            <td>Save</td>
+                            <td>Simpan</td>
+                            <td>Batch Button</td>
+                        </tr>
+                        <tr>
+                            <td><code>reset</code></td>
+                            <td>Reset</td>
+                            <td>Atur Ulang</td>
+                            <td>Batch Button</td>
+                        </tr>
+                        <tr>
+                            <td><code>cancel</code></td>
+                            <td>Cancel</td>
+                            <td>Batal</td>
+                            <td>Modal Dialog</td>
+                        </tr>
+                        <tr>
+                            <td><code>noResult</code></td>
+                            <td>No results found</td>
+                            <td>Tidak ada hasil</td>
+                            <td>Dropdown</td>
+                        </tr>
+                        <tr>
+                            <td><code>restoreTitle</code></td>
+                            <td>Restore unsaved changes?</td>
+                            <td>Pulihkan perubahan?</td>
+                            <td>Restore Modal</td>
+                        </tr>
+                        <tr>
+                            <td><code>clearTitle</code></td>
+                            <td>Clear all changes?</td>
+                            <td>Hapus semua perubahan?</td>
+                            <td>Clear Modal</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Custom Override -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Custom Override</h2>
+                <p>Override individual strings without using language file</p>
+            </div>
+            <div class="section-content">
+                <div class="code-header">
+                    <span class="code-title">Override specific strings inline</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> GridSheet({
+    tableSelector: <span class="string">'#myTable'</span>,
+    
+    <span class="comment">// Override only specific strings</span>
+    <span class="property">language</span>: {
+        <span class="property">saveAll</span>: <span class="string">'Submit All Data'</span>,
+        <span class="property">reset</span>: <span class="string">'Clear Form'</span>,
+        <span class="property">copyRow</span>: <span class="string">'Duplicate This Row'</span>
+    }
+});</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>Tip:</strong> You can combine language file with inline overrides.
+                    Inline overrides take priority.
+                </div>
+
+                <div class="code-header">
+                    <span class="code-title">Combine language file with overrides</span>
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                </div>
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> GridSheet({
+    tableSelector: <span class="string">'#myTable'</span>,
+    
+    <span class="comment">// Use Indonesian, but override Save button</span>
+    <span class="property">language</span>: {
+        ...GridSheetLang.<span class="value">id</span>,         <span class="comment">// Spread Indonesian</span>
+        <span class="property">saveAll</span>: <span class="string">'Kirim ke Server'</span>    <span class="comment">// Custom override</span>
+    }
+});</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Adding New Language -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Adding a New Language</h2>
+                <p>Step-by-step guide to add your own language</p>
+            </div>
+            <div class="section-content">
+                <h3 style="margin-bottom: 12px;">Step 1: Edit gridsheet.lang.js</h3>
+                <p style="margin-bottom: 16px; color: #5f6368;">
+                    Open <code>custom/gridsheet.lang.js</code> and add your language following the template:
+                </p>
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> GridSheetLang = {
+    <span class="comment">// Existing languages...</span>
+    id: { ... },
+    en: { ... },
+    
+    <span class="comment">// Add your new language</span>
+    <span class="property">fr</span>: {
+        <span class="comment">// Context Menu</span>
+        <span class="property">copyRow</span>: <span class="string">'Copier la ligne'</span>,
+        <span class="property">pasteRow</span>: <span class="string">'Coller la ligne'</span>,
+        <span class="property">clearRow</span>: <span class="string">'Effacer la ligne'</span>,
+        <span class="property">insertAbove</span>: <span class="string">'Insérer au-dessus'</span>,
+        <span class="property">insertBelow</span>: <span class="string">'Insérer en-dessous'</span>,
+        <span class="property">readonlyRow</span>: <span class="string">'Ligne en lecture seule'</span>,
+        
+        <span class="comment">// Buttons</span>
+        <span class="property">saveAll</span>: <span class="string">'Sauvegarder'</span>,
+        <span class="property">reset</span>: <span class="string">'Réinitialiser'</span>,
+        <span class="property">cancel</span>: <span class="string">'Annuler'</span>,
+        <span class="property">discard</span>: <span class="string">'Rejeter'</span>,
+        <span class="property">restore</span>: <span class="string">'Restaurer'</span>,
+        <span class="property">clear</span>: <span class="string">'Effacer'</span>,
+        
+        <span class="comment">// Dropdown</span>
+        <span class="property">noResult</span>: <span class="string">'Aucun résultat'</span>,
+        
+        <span class="comment">// Modal</span>
+        <span class="property">restoreTitle</span>: <span class="string">'Restaurer les modifications?'</span>,
+        <span class="property">restoreMessage</span>: <span class="string">'Vous avez des modifications:'</span>,
+        <span class="property">restoreNewRow</span>: <span class="string">'nouvelle ligne'</span>,
+        <span class="property">clearTitle</span>: <span class="string">'Effacer toutes les modifications?'</span>,
+        <span class="property">clearMessage</span>: <span class="string">'Cela supprimera toutes les modifications.'</span>
+    }
+};</pre>
+                </div>
+
+                <h3 style="margin-bottom: 12px; margin-top: 24px;">Step 2: Use your new language</h3>
+                <div class="code-block">
+                    <pre><span class="keyword">const</span> gridsheet = <span class="keyword">new</span> GridSheet({
+    tableSelector: <span class="string">'#myTable'</span>,
+    <span class="property">language</span>: GridSheetLang.<span class="value">fr</span>  <span class="comment">// French</span>
+});</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- File Location -->
+        <div class="section">
+            <div class="section-header">
+                <h2>File Location</h2>
+                <p>Where to find and edit language files</p>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre>datatables-gridsheet/
+├── js/
+│   └── gridsheet.js          <span class="comment"># Core (don't edit)</span>
+├── custom/
+│   └── gridsheet.lang.js     <span class="comment"># Edit this file</span>
+└── examples/
+    └── batch.html            <span class="comment"># Example usage</span></pre>
+                </div>
+
+                <div class="info">
+                    <strong>Safe to Edit:</strong> The <code>custom/</code> folder is designed for your
+                    customizations
+                    and won't be overwritten during updates.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.section-content').querySelector('.code-block pre');
+            const text = codeBlock.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

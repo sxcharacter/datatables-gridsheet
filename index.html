@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="gridsheet-logo.png">
+    <title>GridSheet - Interactive DataTables Extension</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #34A853;
+            --primary-light: #4aba68;
+            --text: #1e3a5f;
+            --text-muted: #64748b;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 40px 24px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        /* Section */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            padding-left: 4px;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        /* Demo Card */
+        .demo-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .demo-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .demo-card .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .demo-card .icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .demo-card .info h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .demo-card .info p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Feature Card - Compact */
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-card .icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--primary);
+        }
+
+        .feature-card .icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .feature-card span {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* Icon Style - Green background with white icon */
+        .icon-green,
+        .icon-green-dark,
+        .icon-green-light,
+        .icon-teal,
+        .icon-emerald,
+        .icon-mint,
+        .icon-sage,
+        .icon-forest {
+            background: #34A853;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            margin-top: 48px;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 24px 16px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="gridsheet-logo.png" alt="GridSheet">
+                <h1>GridSheet</h1>
+            </div>
+            <p class="tagline">Interactive DataTables extension for spreadsheet-like editing</p>
+            <div
+                style="max-width: 600px; margin: 0 auto 32px auto; padding: 12px 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; color: #166534; font-size: 14px; display: flex; align-items: flex-start; gap: 10px; text-align: left;">
+                <svg style="width: 20px; height: 20px; flex-shrink: 0; color: #16a34a; margin-top: 2px;"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <div>
+                    <strong>Note:</strong> Run this via <strong>PHP server (e.g., XAMPP)</strong> to test the
+                    Save/Update demos.
+                </div>
+            </div>
+            <span class="badge">DataTables 2.x Compatible</span>
+        </header>
+
+        <!-- Demos Section -->
+        <section class="section">
+            <h2 class="section-title">Demos</h2>
+            <div class="grid-2">
+                <a href="examples/basic.html" class="demo-card">
+                    <div class="icon icon-green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                        </svg>
+                    </div>
+                    <div class="info">
+                        <h3>Real-time Sync</h3>
+                        <p>Auto-save every change immediately</p>
+                    </div>
+                </a>
+
+
+                <a href="examples/batch.html" class="demo-card">
+                    <div class="icon icon-emerald">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                    </div>
+                    <div class="info">
+                        <h3>Batch Mode</h3>
+                        <p>Collect changes, submit at once</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Additional Demos Section -->
+        <section class="section">
+            <h2 class="section-title">Additional Demos</h2>
+            <div class="grid-4">
+                <a href="examples/demos/themes.html" class="demo-card">
+                    <div class="icon icon-sage">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"></path>
+                        </svg>
+                    </div>
+                    <div class="info">
+                        <h3>Theme Demo</h3>
+                        <p>Light/Dark mode</p>
+                    </div>
+                </a>
+
+                <a href="examples/demos/formula-footer.html" class="demo-card">
+                    <div class="icon icon-mint">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 22V2l7 7 7-7v20"></path>
+                        </svg>
+                    </div>
+                    <div class="info">
+                        <h3>Formula & Footer</h3>
+                        <p>SUM, AVG, COUNT</p>
+                    </div>
+                </a>
+
+                <a href="examples/demos/readonly-columns.html" class="demo-card">
+                    <div class="icon icon-teal">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div class="info">
+                        <h3>Readonly Columns</h3>
+                        <p>Non-editable cells</p>
+                    </div>
+                </a>
+
+                <a href="examples/demos/custom-validation.html" class="demo-card">
+                    <div class="icon icon-forest">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                            </path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="info">
+                        <h3>Custom Validation</h3>
+                        <p>preSave callbacks</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Developer Docs Section -->
+        <section class="section">
+            <h2 class="section-title">Developer Docs</h2>
+            <div class="grid-4">
+                <a href="examples/features/configuration.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83"></path>
+                        </svg>
+                    </div>
+                    <span>Configuration</span>
+                </a>
+
+                <a href="examples/features/column-types.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 3v18"></path>
+                            <rect x="4" y="8" width="6" height="12" rx="1"></rect>
+                            <rect x="14" y="4" width="6" height="16" rx="1"></rect>
+                        </svg>
+                    </div>
+                    <span>Column Types</span>
+                </a>
+
+                <a href="examples/features/formats.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <span>Formats</span>
+                </a>
+
+                <a href="examples/features/validation.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <span>Validation</span>
+                </a>
+
+                <a href="examples/features/endpoints.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                            </path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <span>Endpoints</span>
+                </a>
+
+                <a href="examples/features/formula.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 22V2l7 7 7-7v20"></path>
+                        </svg>
+                    </div>
+                    <span>Formula</span>
+                </a>
+
+                <a href="examples/features/theming.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10"></path>
+                        </svg>
+                    </div>
+                    <span>Themes</span>
+                </a>
+
+                <a href="examples/features/language.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                        </svg>
+                    </div>
+                    <span>Language</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- User Guide Section -->
+        <section class="section">
+            <h2 class="section-title">👤 User Guide</h2>
+            <div class="grid-4">
+                <a href="examples/features/copy-paste.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </div>
+                    <span>Copy & Paste</span>
+                </a>
+                <a href="examples/features/selection.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 3h4"></path>
+                            <path d="M11 3h2"></path>
+                            <path d="M17 3h4v4"></path>
+                            <path d="M21 11v2"></path>
+                            <path d="M21 17v4h-4"></path>
+                            <path d="M13 21h-2"></path>
+                            <path d="M7 21H3v-4"></path>
+                            <path d="M3 13v-2"></path>
+                        </svg>
+                    </div>
+                    <span>Selection</span>
+                </a>
+                <a href="examples/features/keyboard.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                            <line x1="6" y1="16" x2="18" y2="16"></line>
+                        </svg>
+                    </div>
+                    <span>Keyboard</span>
+                </a>
+                <a href="examples/features/context-menu.html" class="feature-card">
+                    <div class="icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                        </svg>
+                    </div>
+                    <span>Context Menu</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>GridSheet v1.0.3 • <a href="https://github.com/gridsheet" target="_blank">GitHub</a></p>
+        </footer>
+    </div>
+</body>
+
+</html>

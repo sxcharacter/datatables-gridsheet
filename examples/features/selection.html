@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Selection Guide</title>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Selection <span class="badge">User Guide</span></h1>
+            <p>Guide to cell and row selection</p>
+        </div>
+        <div class="nav-section">
+            <a href="copy-paste.html" class="nav-link">Copy & Paste</a>
+            <a href="selection.html" class="nav-link active">Selection</a>
+            <a href="keyboard.html" class="nav-link">Keyboard</a>
+            <a href="context-menu.html" class="nav-link">Context Menu</a>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Selection Types</h2>
+            </div>
+            <div class="section-content">
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Indicator</th>
+                        <th>Activation Method</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Single Cell</strong></td>
+                        <td><span class="indicator cell"></span>Blue border</td>
+                        <td>Click any cell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Single Row</strong></td>
+                        <td><span class="indicator row"></span>Yellow background</td>
+                        <td>Click No. column</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-Cell</strong></td>
+                        <td><span class="indicator multi"></span>Light blue background</td>
+                        <td>Drag from cell to cell</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-Row</strong></td>
+                        <td><span class="indicator row"></span>Multiple yellow rows</td>
+                        <td>Shift+Click or drag on No. column</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Single Row Selection</h2>
+            </div>
+            <div class="section-content">
+                <div class="method-grid">
+                    <div class="method-card">
+                        <h3>With Mouse</h3>
+                        <div class="action">
+                            <span class="action-key">Click</span>
+                            <span class="action-desc">Click number in No. column</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Multi-Row Selection</h2>
+            </div>
+            <div class="section-content">
+                <div class="method-grid">
+                    <div class="method-card">
+                        <h3>With Mouse (Drag)</h3>
+                        <div class="action">
+                            <span class="action-key">Drag</span>
+                            <span class="action-desc">Drag mouse from first row to last row in No. column</span>
+                        </div>
+                    </div>
+                    <div class="method-card">
+                        <h3>With Shift+Click</h3>
+                        <div class="action">
+                            <span class="action-key">Click Row 1</span>
+                            <span class="action-desc">Click first row in No. column</span>
+                        </div>
+                        <div class="action">
+                            <span class="action-key">Shift + Click Row N</span>
+                            <span class="action-desc">Hold Shift, click last row</span>
+                        </div>
+                    </div>
+                    <div class="method-card">
+                        <h3>With Keyboard</h3>
+                        <div class="action">
+                            <span class="action-key">Click Row</span>
+                            <span class="action-desc">Click first row in No. column</span>
+                        </div>
+                        <div class="action">
+                            <span class="action-key">Shift + ↑↓</span>
+                            <span class="action-desc">Extend selection with arrow keys</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Multi-Cell Selection</h2>
+            </div>
+            <div class="section-content">
+                <div class="method-grid">
+                    <div class="method-card">
+                        <h3>With Mouse (Drag)</h3>
+                        <div class="action">
+                            <span class="action-key">Drag</span>
+                            <span class="action-desc">Click and drag from start cell to end cell</span>
+                        </div>
+                    </div>
+                    <div class="method-card">
+                        <h3>With Shift+Click</h3>
+                        <div class="action">
+                            <span class="action-key">Click Cell</span>
+                            <span class="action-desc">Click first cell</span>
+                        </div>
+                        <div class="action">
+                            <span class="action-key">Shift + Click</span>
+                            <span class="action-desc">Hold Shift, click last cell</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2>Keyboard Shortcuts</h2>
+            </div>
+            <div class="section-content">
+                <table>
+                    <tr>
+                        <th>Shortcut</th>
+                        <th>Function</th>
+                    </tr>
+                    <tr>
+                        <td><span class="kbd">Arrow Keys</span></td>
+                        <td>Navigate between cells</td>
+                    </tr>
+                    <tr>
+                        <td><span class="kbd">Shift + Arrow</span></td>
+                        <td>Extend row selection</td>
+                    </tr>
+                    <tr>
+                        <td><span class="kbd">Shift + Click</span></td>
+                        <td>Extend selection to target</td>
+                    </tr>
+                    <tr>
+                        <td><span class="kbd">Escape</span></td>
+                        <td>Clear selection</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

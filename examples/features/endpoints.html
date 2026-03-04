@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="../../gridsheet-logo.png">
+    <title>GridSheet - Endpoints Reference</title>
+    <link rel="stylesheet" href="../demo-page.css">
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="page-header">
+            <a href="../../index.html" class="back-btn"><span>&#10094;</span>Back to Home</a>
+            <h1>Endpoints <span class="badge">Developer Docs</span></h1>
+            <p>API endpoints configuration for save, update, delete, and batch operations</p>
+        </div>
+        <div class="nav-section">
+            <a href="configuration.html" class="nav-link">Configuration</a>
+            <a href="column-types.html" class="nav-link">Column Types</a>
+            <a href="formats.html" class="nav-link">Formats</a>
+            <a href="validation.html" class="nav-link">Validation</a>
+            <a href="endpoints.html" class="nav-link active">Endpoints</a>
+            <a href="formula.html" class="nav-link">Formula</a>
+            <a href="theming.html" class="nav-link">Themes</a>
+            <a href="language.html" class="nav-link">Language</a>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Overview</h2>
+                <p>GridSheet supports 4 endpoints with consistent payload structure</p>
+            </div>
+            <div class="section-content">
+                <table class="endpoint-table">
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Mode</th>
+                        <th>Function</th>
+                    </tr>
+                    <tr>
+                        <td><code>save</code></td>
+                        <td><span class="mode-badge mode-direct">Direct</span></td>
+                        <td>Insert new row (single or batch)</td>
+                    </tr>
+                    <tr>
+                        <td><code>update</code></td>
+                        <td><span class="mode-badge mode-direct">Direct</span></td>
+                        <td>Update cell/row (single or batch)</td>
+                    </tr>
+                    <tr>
+                        <td><code>delete</code></td>
+                        <td><span class="mode-badge mode-direct">Direct</span></td>
+                        <td>Delete row</td>
+                    </tr>
+                    <tr>
+                        <td><code>batch</code></td>
+                        <td><span class="mode-badge mode-batch">Batch</span></td>
+                        <td>All operations in one call (insert + update + delete)</td>
+                    </tr>
+                </table>
+
+                <div class="tip">
+                    <strong>Payload Structure:</strong> All requests use consistent format:
+                    <code>{ operation, data, meta }</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Section -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Endpoint Configuration</h2>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre><span class="property">endpoints</span>: {
+    <span class="comment">// Direct Mode: Insert new row</span>
+    <span class="property">save</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/employees/save'</span>,
+        <span class="property">preSave</span>: <span class="keyword">function</span>(payload) { <span class="comment">/* validate */</span> <span class="keyword">return true</span>; },
+        <span class="property">postSave</span>: <span class="keyword">function</span>(response) { <span class="comment">/* handle response */</span> }
+    },
+    <span class="comment">// Direct Mode: Update cell/row</span>
+    <span class="property">update</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/employees/update'</span>,
+        <span class="property">preSave</span>: <span class="keyword">function</span>(payload) { <span class="keyword">return true</span>; },
+        <span class="property">postSave</span>: <span class="keyword">function</span>(response) { }
+    },
+    <span class="comment">// Direct Mode: Delete row</span>
+    <span class="property">delete</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/employees/delete'</span>,
+        <span class="property">preDelete</span>: <span class="keyword">function</span>(rowId) { <span class="keyword">return</span> confirm(<span class="string">'Delete?'</span>); },
+        <span class="property">postDelete</span>: <span class="keyword">function</span>(response, rowId) { }
+    },
+    <span class="comment">// Batch Mode: All operations in one call</span>
+    <span class="property">batch</span>: {
+        <span class="property">endpoint</span>: <span class="string">'api/employees/batch'</span>,
+        <span class="property">preSave</span>: <span class="keyword">function</span>(summary) { <span class="keyword">return true</span>; },
+        <span class="property">postSave</span>: <span class="keyword">function</span>(response) { }
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Endpoint -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Save Endpoint <span class="mode-badge mode-direct">Direct Mode</span></h2>
+                <p>Insert new row to database</p>
+            </div>
+            <div class="section-content">
+                <h3><span class="method-badge method-post">POST</span> Request Payload</h3>
+                <div class="code-block">
+                    <pre>{
+    <span class="string">"operation"</span>: <span class="string">"insert"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"row"</span>: {
+            <span class="string">"name"</span>: <span class="string">"John Doe"</span>,
+            <span class="string">"email"</span>: <span class="string">"john@example.com"</span>,
+            <span class="string">"salary"</span>: <span class="string">"120000"</span>
+        }
+    },
+    <span class="string">"meta"</span>: {
+        <span class="string">"tempId"</span>: <span class="string">"temp_1704567890_abc"</span>,
+        <span class="string">"timestamp"</span>: <span class="value">1704567890000</span>
+    }
+}</pre>
+                </div>
+
+                <h3><span class="method-badge method-post">POST</span> Multiple Rows Insert (Paste/Fill Handle)</h3>
+                <div class="code-block">
+                    <pre><span class="comment">// operation: "insert_batch" - for multiple new rows</span>
+{
+    <span class="string">"operation"</span>: <span class="string">"insert_batch"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"rows"</span>: [
+            { <span class="string">"_tempId"</span>: <span class="string">"temp_123"</span>, <span class="string">"name"</span>: <span class="string">"John"</span>, <span class="string">"email"</span>: <span class="string">"john@test.com"</span> },
+            { <span class="string">"_tempId"</span>: <span class="string">"temp_456"</span>, <span class="string">"name"</span>: <span class="string">"Jane"</span>, <span class="string">"email"</span>: <span class="string">"jane@test.com"</span> }
+        ]
+    },
+    <span class="string">"meta"</span>: {
+        <span class="string">"rowCount"</span>: <span class="value">2</span>,
+        <span class="string">"timestamp"</span>: <span class="value">1704567890000</span>
+    }
+}</pre>
+                </div>
+
+                <h3>Expected Response (Success)</h3>
+                <div class="tip">
+                    <strong>CRITICAL for Inserts:</strong> Return the mapped database `id` for every `tempId` you
+                    inserted. GridSheet requires this mapping to update the table row's ID locally!
+                </div>
+                <div class="code-block">
+                    <pre>{
+    <span class="string">"status"</span>: <span class="string">"ok"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"inserted"</span>: [
+            { <span class="string">"tempId"</span>: <span class="string">"temp_123"</span>, <span class="string">"id"</span>: <span class="value">100</span> },
+            { <span class="string">"tempId"</span>: <span class="string">"temp_456"</span>, <span class="string">"id"</span>: <span class="value">101</span> }
+        ]
+    }
+}</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>When is insert_batch used?</strong><br>
+                    - Paste multiple new rows (Ctrl+V on empty rows)<br>
+                    - Saves all new rows in a single API call instead of individual calls
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Endpoint -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Update Endpoint <span class="mode-badge mode-direct">Direct Mode</span></h2>
+                <p>Update cell or multiple fields</p>
+            </div>
+            <div class="section-content">
+                <h3><span class="method-badge method-post">POST</span> Single/Multiple Fields Update</h3>
+                <div class="code-block">
+                    <pre><span class="comment">// operation: "update" - for single row</span>
+{
+    <span class="string">"operation"</span>: <span class="string">"update"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"id"</span>: <span class="string">"123"</span>,
+        <span class="string">"fields"</span>: {
+            <span class="string">"name"</span>: <span class="string">"John Doe Updated"</span>,
+            <span class="string">"salary"</span>: <span class="string">"55000000"</span>
+        }
+    },
+    <span class="string">"meta"</span>: {
+        <span class="string">"fieldCount"</span>: <span class="value">2</span>,
+        <span class="string">"timestamp"</span>: <span class="value">1704567890000</span>
+    }
+}</pre>
+                </div>
+
+                <h3><span class="method-badge method-post">POST</span> Multiple Rows Update (Paste/Fill Handle)</h3>
+                <div class="code-block">
+                    <pre><span class="comment">// operation: "update_batch" - for multiple rows</span>
+{
+    <span class="string">"operation"</span>: <span class="string">"update_batch"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"rows"</span>: [
+            { <span class="string">"id"</span>: <span class="string">"123"</span>, <span class="string">"fields"</span>: { <span class="string">"salary"</span>: <span class="string">"55000000"</span> } },
+            { <span class="string">"id"</span>: <span class="string">"124"</span>, <span class="string">"fields"</span>: { <span class="string">"salary"</span>: <span class="string">"60000000"</span> } }
+        ]
+    },
+    <span class="string">"meta"</span>: {
+        <span class="string">"rowCount"</span>: <span class="value">2</span>,
+        <span class="string">"timestamp"</span>: <span class="value">1704567890000</span>
+    }
+}</pre>
+                </div>
+
+                <h3>Response</h3>
+                <div class="code-block">
+                    <pre>{
+    <span class="string">"status"</span>: <span class="string">"ok"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"updated"</span>: <span class="value">2</span>
+    }
+}</pre>
+                </div>
+
+                <div class="tip">
+                    <strong>When is update_batch used?</strong><br>
+                    - Paste multiple rows (Ctrl+V on multi-row selection)<br>
+                    - Fill handle drag across multiple rows
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Endpoint -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Delete Endpoint <span class="mode-badge mode-direct">Direct Mode</span></h2>
+                <p>Delete row from database</p>
+            </div>
+            <div class="section-content">
+                <h3><span class="method-badge method-post">POST</span> Request Payload</h3>
+                <div class="code-block">
+                    <pre>{
+    <span class="string">"operation"</span>: <span class="string">"delete"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"id"</span>: <span class="string">"123"</span>
+    },
+    <span class="string">"meta"</span>: {
+        <span class="string">"timestamp"</span>: <span class="value">1704567890000</span>
+    }
+}</pre>
+                </div>
+
+                <h3>Response</h3>
+                <div class="code-block">
+                    <pre>{
+    <span class="string">"status"</span>: <span class="string">"ok"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"deleted"</span>: <span class="value">1</span>
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Batch Endpoint -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Batch Endpoint <span class="mode-badge mode-batch">Batch Mode</span></h2>
+                <p>All operations in a single API call (for Batch Mode)</p>
+            </div>
+            <div class="section-content">
+                <div class="tip warning">
+                    <strong>Batch Mode Requirement:</strong> The endpoint handles inserts, updates, and deletes
+                    simultaneously.
+                    If new records are inserted locally, they must map standard DB ID's back to GridSheet's internal
+                    <code>_tempId</code> to track the rows moving forward.
+                </div>
+
+                <h3><span class="method-badge method-post">POST</span> Request Payload</h3>
+                <div class="code-block">
+                    <pre>{
+    <span class="string">"operation"</span>: <span class="string">"batch"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"insert"</span>: [
+            { <span class="string">"_tempId"</span>: <span class="string">"temp_1708892_xyz"</span>, <span class="string">"name"</span>: <span class="string">"John"</span>, <span class="string">"email"</span>: <span class="string">"john@test.com"</span> }
+        ],
+        <span class="string">"update"</span>: [
+            { <span class="string">"id"</span>: <span class="string">"10"</span>, <span class="string">"fields"</span>: { <span class="string">"name"</span>: <span class="string">"Updated Name"</span> } }
+        ],
+        <span class="string">"delete"</span>: [<span class="string">"20"</span>, <span class="string">"25"</span>]
+    },
+    <span class="string">"meta"</span>: {
+        <span class="string">"insertCount"</span>: <span class="value">1</span>,
+        <span class="string">"updateCount"</span>: <span class="value">1</span>,
+        <span class="string">"deleteCount"</span>: <span class="value">2</span>,
+        <span class="string">"timestamp"</span>: <span class="value">1704567890000</span>
+    }
+}</pre>
+                </div>
+
+                <h3>Expected Response</h3>
+                <div class="tip">
+                    <strong>CRITICAL for Inserts:</strong> You MUST return an array in <code>inserted</code> that maps
+                    the
+                    client-side <code>tempId</code> to the new server-generated database <code>id</code>.
+                    GridSheet uses this to magically swap the temporary HTML `tr id` to your DB's primary key!
+                </div>
+                <div class="code-block">
+                    <pre>{
+    <span class="string">"status"</span>: <span class="string">"ok"</span>,
+    <span class="string">"data"</span>: {
+        <span class="string">"inserted"</span>: [
+            <span class="comment">// Must match EXACTLY what was given by the frontend _tempId</span>
+            { <span class="string">"tempId"</span>: <span class="string">"temp_1708892_xyz"</span>, <span class="string">"id"</span>: <span class="value">100</span> }
+        ],
+        <span class="string">"updated"</span>: <span class="value">1</span>,   <span class="comment">// Just return the total count of success updates</span>
+        <span class="string">"deleted"</span>: <span class="value">2</span>    <span class="comment">// Just return the total count of success deletions</span>
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHP Example -->
+        <div class="section">
+            <div class="section-header">
+                <h2>PHP Backend Example</h2>
+                <p>Handle all operations with consistent payload</p>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre><span class="keyword">&lt;?php</span>
+header(<span class="string">'Content-Type: application/json'</span>);
+<span class="keyword">$payload</span> = json_decode(file_get_contents(<span class="string">'php://input'</span>), <span class="keyword">true</span>);
+
+<span class="keyword">$operation</span> = <span class="keyword">$payload</span>[<span class="string">'operation'</span>] ?? <span class="string">''</span>;
+<span class="keyword">$data</span> = <span class="keyword">$payload</span>[<span class="string">'data'</span>] ?? [];
+<span class="keyword">$meta</span> = <span class="keyword">$payload</span>[<span class="string">'meta'</span>] ?? [];
+
+<span class="keyword">switch</span> (<span class="keyword">$operation</span>) {
+    <span class="keyword">case</span> <span class="string">'insert'</span>:
+        <span class="comment">// INSERT new row</span>
+        <span class="keyword">$row</span> = <span class="keyword">$data</span>[<span class="string">'row'</span>];
+        <span class="comment">// $stmt = $pdo->prepare("INSERT INTO ...");</span>
+        <span class="comment">// $newId = $pdo->lastInsertId();</span>
+        echo json_encode([<span class="string">'status'</span> => <span class="string">'ok'</span>, <span class="string">'data'</span> => [<span class="string">'id'</span> => <span class="keyword">$newId</span>]]);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string">'update'</span>:
+        <span class="comment">// UPDATE single row</span>
+        <span class="keyword">$id</span> = <span class="keyword">$data</span>[<span class="string">'id'</span>];
+        <span class="keyword">$fields</span> = <span class="keyword">$data</span>[<span class="string">'fields'</span>];
+        <span class="comment">// UPDATE table SET ... WHERE id = $id</span>
+        echo json_encode([<span class="string">'status'</span> => <span class="string">'ok'</span>, <span class="string">'data'</span> => [<span class="string">'updated'</span> => <span class="value">1</span>]]);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string">'update_batch'</span>:
+        <span class="comment">// UPDATE multiple rows</span>
+        <span class="keyword">foreach</span> (<span class="keyword">$data</span>[<span class="string">'rows'</span>] <span class="keyword">as</span> <span class="keyword">$row</span>) {
+            <span class="comment">// UPDATE table SET ... WHERE id = $row['id']</span>
+        }
+        echo json_encode([<span class="string">'status'</span> => <span class="string">'ok'</span>, <span class="string">'data'</span> => [<span class="string">'updated'</span> => count(<span class="keyword">$data</span>[<span class="string">'rows'</span>])]]);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string">'insert_batch'</span>:
+        <span class="comment">// INSERT multiple new rows</span>
+        <span class="keyword">$inserted</span> = [];
+        <span class="keyword">foreach</span> (<span class="keyword">$data</span>[<span class="string">'rows'</span>] <span class="keyword">as</span> <span class="keyword">$row</span>) {
+            <span class="keyword">$tempId</span> = <span class="keyword">$row</span>[<span class="string">'_tempId'</span>];
+            unset(<span class="keyword">$row</span>[<span class="string">'_tempId'</span>]);
+            <span class="comment">// INSERT INTO table ...</span>
+            <span class="keyword">$inserted</span>[] = [<span class="string">'tempId'</span> => <span class="keyword">$tempId</span>, <span class="string">'id'</span> => <span class="keyword">$newId</span>];
+        }
+        echo json_encode([<span class="string">'status'</span> => <span class="string">'ok'</span>, <span class="string">'data'</span> => [<span class="string">'inserted'</span> => <span class="keyword">$inserted</span>]]);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string">'delete'</span>:
+        <span class="comment">// DELETE row</span>
+        <span class="keyword">$id</span> = <span class="keyword">$data</span>[<span class="string">'id'</span>];
+        <span class="comment">// DELETE FROM table WHERE id = $id</span>
+        echo json_encode([<span class="string">'status'</span> => <span class="string">'ok'</span>, <span class="string">'data'</span> => [<span class="string">'deleted'</span> => <span class="value">1</span>]]);
+        <span class="keyword">break</span>;
+
+    <span class="keyword">case</span> <span class="string">'batch'</span>:
+        <span class="comment">// BATCH: insert + update + delete</span>
+        <span class="keyword">$inserted</span> = []; <span class="keyword">$updatedCount</span> = <span class="value">0</span>; <span class="keyword">$deletedCount</span> = <span class="value">0</span>;
+        
+        <span class="keyword">foreach</span> (<span class="keyword">$data</span>[<span class="string">'insert'</span>] ?? [] <span class="keyword">as</span> <span class="keyword">$row</span>) {
+            <span class="comment">// INSERT and track tempId => newId</span>
+            <span class="keyword">$inserted</span>[] = [<span class="string">'tempId'</span> => <span class="keyword">$row</span>[<span class="string">'_tempId'</span>], <span class="string">'id'</span> => <span class="keyword">$newId</span>];
+        }
+        <span class="keyword">foreach</span> (<span class="keyword">$data</span>[<span class="string">'update'</span>] ?? [] <span class="keyword">as</span> <span class="keyword">$update</span>) {
+            <span class="comment">// UPDATE row</span>
+            <span class="keyword">$updatedCount</span>++;
+        }
+        <span class="keyword">foreach</span> (<span class="keyword">$data</span>[<span class="string">'delete'</span>] ?? [] <span class="keyword">as</span> <span class="keyword">$id</span>) {
+            <span class="comment">// DELETE row</span>
+            <span class="keyword">$deletedCount</span>++;
+        }
+        
+        echo json_encode([
+            <span class="string">'status'</span> => <span class="string">'ok'</span>,
+            <span class="string">'data'</span> => [
+                <span class="string">'inserted'</span> => <span class="keyword">$inserted</span>,
+                <span class="string">'updated'</span> => <span class="keyword">$updatedCount</span>,
+                <span class="string">'deleted'</span> => <span class="keyword">$deletedCount</span>
+            ]
+        ]);
+        <span class="keyword">break</span>;
+}
+<span class="keyword">?&gt;</span></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra Headers -->
+        <div class="section">
+            <div class="section-header">
+                <h2>Extra Headers</h2>
+                <p>Add auth token or custom headers to all requests</p>
+            </div>
+            <div class="section-content">
+                <div class="code-block">
+                    <pre><span class="property">extraHeaders</span>: {
+    <span class="string">'Authorization'</span>: <span class="string">'Bearer your-jwt-token'</span>,
+    <span class="string">'X-CSRF-Token'</span>: <span class="string">'csrf-token'</span>,
+    <span class="string">'X-Custom-Header'</span>: <span class="string">'value'</span>
+}</pre>
+                </div>
+                <div class="tip">
+                    <strong>Tip:</strong> Headers will be sent in all requests to endpoints (save, update, delete,
+                    batch, selectOptions).
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
