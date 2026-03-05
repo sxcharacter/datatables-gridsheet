@@ -21,7 +21,7 @@
  * - Direct save mode with API calls
  * 
  * @class GridSheet
- * @version 1.0.0
+ * @version 1.1.0
  * @author sxcharacter
  */
 class GridSheet {

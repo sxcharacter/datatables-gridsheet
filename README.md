@@ -4,7 +4,7 @@
 
 # GridSheet
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 GridSheet is a powerful DataTables extension that brings Excel-like interactive editing capabilities straight into your web tables. Built with productivity in mind, it supports seamless copy/paste operations (including directly from Excel), multi-row selections, formula calculations, and an intuitive right-click context menu.

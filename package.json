@@ -1,6 +1,6 @@
 {
   "name": "datatables-gridsheet",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "GridSheet - DataTables extension for interactive Excel-like editing with copy/paste support",
   "main": "js/gridsheet.js",
   "scripts": {},
