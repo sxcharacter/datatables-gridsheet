@@ -19,6 +19,14 @@ GridSheet is a powerful DataTables extension that brings Excel-like interactive 
 - **Triple Modes**: Supports *Direct Save* (save on edit), *Batch Save* (edit locally, save all), and *Basic Mode* (UI-only, no persistence).
 - **Theming**: Fully customizable CSS variables with 5 pre-built themes and automatic Dark Mode support.
 
+## Live Demo
+
+Experience GridSheet in action without any local setup:
+**[Interactive Live Demo](https://sxcharacter.github.io/datatables-gridsheet/)**
+
+> [!IMPORTANT]
+> **Static Environment Limitation**: This demo is hosted on GitHub Pages (static hosting). Features that require a backend (e.g., saving data via PHP endpoints) are not functional in the live demo. To explore full persistence capabilities, please clone the repository and run it in a local environment with PHP support (XAMPP, Laragon, etc.).
+
 ## Interactive Documentation & Live Examples
 
 The best way to learn GridSheet is by trying it out. 
