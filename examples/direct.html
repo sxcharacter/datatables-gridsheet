@@ -238,8 +238,8 @@
                             // Custom business logic example - check salary in fields
                             if (payload.data?.fields?.salary) {
                                 const salary = parseFloat(payload.data.fields.salary);
-                                if (salary < 1000000) {
-                                    alert('Salary minimum $ 1.000.000');
+                                if (salary < 50) {
+                                    alert('Salary minimum $ 50');
                                     return false;
                                 }
                             }
