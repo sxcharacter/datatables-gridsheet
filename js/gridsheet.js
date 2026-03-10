@@ -1204,8 +1204,18 @@ class GridSheet {
         const dataType = th ? th.getAttribute('data-type') : null;
 
 
-        // Clean value based on type first
-        const cleanedValue = this._cleanValueForType(value, dataType);
+        // Clean value based on type first (pass cellNode and colIndex for invalid tracking)
+        const cleanedValue = this._cleanValueForType(value, dataType, cellNode, colIndex);
+
+        // Apply visual indicator for invalid cells (date/time format error)
+        const isInvalid = cellNode.getAttribute('data-invalid') === 'true';
+        if (isInvalid) {
+            cellNode.classList.add('dt-error');
+            cellNode.setAttribute('title', 'Invalid format');
+        } else {
+            cellNode.classList.remove('dt-error');
+            cellNode.removeAttribute('title');
+        }
 
         // Handle formatting based on type
         if (dataType === 'currency' || dataType === 'percentage' || dataType === 'number') {
@@ -1483,9 +1493,11 @@ class GridSheet {
      * Clean/validate value based on data type (CENTRALIZED)
      * @param {string|number} value - Raw input value
      * @param {string} dataType - Column data type
+     * @param {HTMLElement} cellNode - Cell element (for tracking invalid cells)
+     * @param {number} colIndex - Column index (for tracking invalid cells)
      * @returns {string} Cleaned value
      */
-    _cleanValueForType(value, dataType) {
+    _cleanValueForType(value, dataType, cellNode = null, colIndex = null) {
         if (value === null || value === undefined) return '';
 
         let cleaned = String(value).trim();
@@ -1539,15 +1551,53 @@ class GridSheet {
             case 'checkbox':
                 // Normalize to 'true' or 'false'
                 const lower = cleaned.toLowerCase();
-                return (lower === 'true' || lower === '1' || lower === 'yes') ? 'true' : 'false';
+                const isValidCheckbox = (lower === 'true' || lower === 'false' || lower === '1' || lower === '0' || lower === 'yes' || lower === 'no');
+                
+                if (isValidCheckbox) {
+                    return (lower === 'true' || lower === '1' || lower === 'yes') ? 'true' : 'false';
+                } else {
+                    // Invalid checkbox value - mark cell as invalid and return original
+                    if (cellNode) {
+                        cellNode.setAttribute('data-invalid', 'true');
+                    }
+                    return cleaned; // Return original value
+                }
 
             case 'select':
-                // Remove arrow indicators
+                // Remove arrow indicators - no validation, allow any value
                 return cleaned.replace(/[▼▲]/g, '').trim();
 
             case 'date':
                 // Parse various date formats to ISO (yyyy-mm-dd)
-                return this._parseDateToISO(cleaned);
+                const isoDate = this._parseDateToISO(cleaned);
+                // Validate: if result is not ISO format, mark as invalid but return original value
+                if (cleaned && !/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) {
+                    // Mark cell as invalid using DOM attribute (will be checked in _handleCellChange)
+                    if (cellNode) {
+                        cellNode.setAttribute('data-invalid', 'true');
+                    }
+                    return cleaned; // Return original value
+                }
+                return isoDate;
+
+            case 'time':
+                // Validate time format (HH:MM or HH:MM:SS)
+                const timeMatch = cleaned.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?$/);
+                if (timeMatch) {
+                    const hours = parseInt(timeMatch[1], 10);
+                    const minutes = parseInt(timeMatch[2], 10);
+                    const seconds = timeMatch[3] ? parseInt(timeMatch[3], 10) : 0;
+                    // Validate ranges
+                    if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59 && seconds >= 0 && seconds <= 59) {
+                        // Return normalized format (HH:MM)
+                        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+                    }
+                }
+                // Invalid time - return original value (don't change)
+                if (cellNode) {
+                    cellNode.setAttribute('data-invalid', 'true');
+                }
+                return cleaned; // Return original value
 
             case 'email':
                 // Just trim, validation done separately
@@ -1576,6 +1626,23 @@ class GridSheet {
         const fieldName = th ? th.getAttribute('data-name') : null;
 
         if (!fieldName) return;
+
+        // Check if this cell is marked as invalid (date/time format error)
+        const isInvalid = cellNode.getAttribute('data-invalid') === 'true';
+
+        // If invalid, don't save/track - just update UI
+        if (isInvalid) {
+            console.log('Invalid cell value - skipping save/track:', fieldName, value);
+            // Add visual indicator
+            cellNode.classList.add('dt-error');
+            cellNode.setAttribute('title', 'Invalid format');
+            return;
+        } else {
+            // Remove invalid indicator if value is now valid
+            cellNode.classList.remove('dt-error');
+            cellNode.removeAttribute('title');
+            cellNode.removeAttribute('data-invalid');
+        }
 
         // Handle batch mode
         if (this.emptyTable.enabled && this.emptyTable.saveMode === 'batch') {
@@ -4240,6 +4307,11 @@ class GridSheet {
         this._hideTooltip();
 
         const cellNode = cell.node();
+        
+        // Clear invalid state when entering edit mode
+        cellNode.removeAttribute('data-invalid');
+        cellNode.classList.remove('dt-error');
+        cellNode.removeAttribute('title');
 
         // Prevent double-activation: if cell is already in edit mode
         // But for dropdown, show options on re-click
@@ -5247,6 +5319,13 @@ class GridSheet {
             // Update footer totals after data change
             this._updateFooterTotals();
 
+            // Check if cell is invalid (date/time format error) - skip update if invalid
+            if (localCellNode.getAttribute('data-invalid') === 'true') {
+                console.log('Invalid cell format - skipping update:', fieldName, newValue);
+                this.savingCell = false;
+                return;
+            }
+
             // Route to appropriate save handler
             if (rowId !== 'new') {
                 // EXISTING ROW: Update via updateCell (handles both direct and batch mode)
@@ -5582,6 +5661,27 @@ class GridSheet {
         let updateConf = this.endpoints.update || {};
         let endpointUrl = updateConf.endpoint || '';
 
+        // Get row node to check for invalid cells
+        const rowNode = this.table.table().node().querySelector(`tr[data-id="${rowId}"]`);
+        
+        // Get column index to find the specific cell
+        const headers = this.table.table().node().querySelectorAll('thead th');
+        let colIndex = null;
+        headers.forEach((th, idx) => {
+            if (th.getAttribute('data-name') === fieldName) {
+                colIndex = idx;
+            }
+        });
+        
+        // Check if cell is invalid (date/time format error) - skip update if invalid
+        if (rowNode && colIndex !== null) {
+            const cell = rowNode.querySelector(`td:nth-child(${colIndex + 1})`);
+            if (cell && cell.getAttribute('data-invalid') === 'true') {
+                console.log('updateCell: Invalid cell format - skipping update:', fieldName, value);
+                return;
+            }
+        }
+
         // DEBUG: Log all conditions
 
         // allowedFields filter
@@ -5647,18 +5747,18 @@ class GridSheet {
             return;
         }
 
-        // Get row and column indexes for meta
-        const rowNode = this.table.table().node().querySelector(`tr[data-id="${rowId}"]`);
+        // Get row index for meta
         const rowIndex = rowNode ? this.table.row(rowNode).index() : null;
 
-        // Get column index from field name
-        const headers = this.table.table().node().querySelectorAll('thead th');
-        let colIndex = null;
-        headers.forEach((th, idx) => {
-            if (th.getAttribute('data-name') === fieldName) {
-                colIndex = idx;
-            }
-        });
+        // Get column index from field name (already declared earlier, but need to ensure it's set)
+        if (colIndex === null) {
+            const headers = this.table.table().node().querySelectorAll('thead th');
+            headers.forEach((th, idx) => {
+                if (th.getAttribute('data-name') === fieldName) {
+                    colIndex = idx;
+                }
+            });
+        }
 
         // Consistent payload structure
         const payload = {
@@ -7688,8 +7788,12 @@ class GridSheet {
                         }
 
                         // Collect field data (for both batch and direct modes)
+                        // But skip if cell is invalid (date/time format error)
                         if (fieldName) {
-                            rowData[fieldName] = value;
+                            const isInvalid = cellNode && cellNode.getAttribute('data-invalid') === 'true';
+                            if (!isInvalid) {
+                                rowData[fieldName] = value;
+                            }
                         }
                     }
                     valueIdx++;
@@ -7756,7 +7860,11 @@ class GridSheet {
                         newRowsToSave.push(rowNode);
                     } else if (rowId && rowId !== 'new' && !rowId.startsWith('temp_')) {
                         // Existing row from DB - collect for batch update
-                        existingRowsToUpdate.push({ id: rowId, fields: rowData });
+                        // But skip if row has any invalid cells
+                        const hasInvalidCells = rowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+                        if (!hasInvalidCells && Object.keys(rowData).length > 0) {
+                            existingRowsToUpdate.push({ id: rowId, fields: rowData });
+                        }
                     }
                 }
             }
@@ -7927,6 +8035,12 @@ class GridSheet {
                         // Use centralized helper to set cell value with formatting
                         this._setCellValueWithFormatting(cellNode, value, currentColIdx, true);
 
+                        // Skip collecting if cell is invalid (date/time format error)
+                        const isInvalid = cellNode.getAttribute('data-invalid') === 'true';
+                        if (isInvalid) {
+                            continue;
+                        }
+
                         // Get clean value after formatting
                         const cleanedValue = this._getCellRawValue(cellNode, currentColIdx);
 
@@ -7958,13 +8072,17 @@ class GridSheet {
                     const fieldName = th ? th.getAttribute('data-name') : null;
                     if (!fieldName) return;
 
+                    // Skip if row has any invalid cells
+                    const hasInvalidCells = rowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+                    if (hasInvalidCells) return;
+
                     if (!rowUpdates.has(rowId)) {
                         rowUpdates.set(rowId, { id: rowId, fields: {} });
                     }
                     rowUpdates.get(rowId).fields[fieldName] = value;
                 });
 
-                // Send updates for existing rows
+                // Send updates for existing rows (only rows without invalid cells)
                 if (rowUpdates.size === 1) {
                     // Single row - use updateRowBatch
                     const [rowId, data] = [...rowUpdates.entries()][0];
@@ -8069,6 +8187,12 @@ class GridSheet {
 
                         // Use centralized helper to set cell value with formatting
                         this._setCellValueWithFormatting(cellNode, value, c, true);
+                        
+                        // Clear invalid mark if value is now valid (for cases where user pastes valid value)
+                        if (!cellNode.hasAttribute('data-invalid')) {
+                            cellNode.classList.remove('dt-error');
+                            cellNode.removeAttribute('title');
+                        }
                     }
 
                     valueColIdx++;
@@ -8085,6 +8209,11 @@ class GridSheet {
                 if (!rowNode) return;
 
                 const rowId = rowNode.getAttribute('data-id');
+                
+                // Skip if row has any invalid cells
+                const hasInvalidCells = rowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+                if (hasInvalidCells) return;
+                
                 const rowData = this._getRowData(rowNode);
 
                 if (this.emptyTable.enabled && this.emptyTable.saveMode === 'batch') {
@@ -8384,6 +8513,12 @@ class GridSheet {
                     this._setCellValueWithFormatting(cell, value, colIdx, true);
 
                     valueIdx++;
+                }
+
+                // Skip processing if row has any invalid cells
+                const hasInvalidCells = currentRowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+                if (hasInvalidCells) {
+                    continue;
                 }
 
                 // Get row data using centralized helper
