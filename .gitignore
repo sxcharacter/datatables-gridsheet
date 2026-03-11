@@ -35,3 +35,8 @@ datatables-test/
 
 # ignore planning
 planning/
+bugs/
+
+# dev
+QWEN.md
+diff_output.txt

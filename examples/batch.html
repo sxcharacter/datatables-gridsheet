@@ -146,7 +146,7 @@
                     0: { name: 'name', type: 'text' },
                     1: { name: 'email', type: 'email' },
                     2: {
-                        name: 'office', type: 'select', options: [
+                        name: 'office', type: 'select', allowNewValues: false, options: [
                             { id: 'NY', text: 'New York' },
                             { id: 'LON', text: 'London' },
                             { id: 'TOK', text: 'Tokyo' },
@@ -175,7 +175,7 @@
                     autoRestore: false,
                 },
 
-                enableColumnNumber: true,
+                enableColumnNumber: false,
                 allowAddEmptyRow: true,
                 allowDeleteRow: true,
                 dataTableOptions: {

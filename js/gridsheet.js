@@ -1294,6 +1294,13 @@ class GridSheet {
             arrow.innerHTML = '▼';
             cellNode.appendChild(arrow);
             cellNode.setAttribute('data-select-cell', 'true');
+            
+            // Re-apply invalid indicator AFTER rendering (innerHTML clears it)
+            const isInvalid = cellNode.getAttribute('data-invalid') === 'true';
+            if (isInvalid) {
+                cellNode.classList.add('dt-error');
+                cellNode.setAttribute('title', 'Invalid format');
+            }
         } else if (dataType === 'time') {
             // Time type - store raw value for reading
             cellNode.setAttribute('data-raw-value', cleanedValue);
@@ -1564,8 +1571,69 @@ class GridSheet {
                 }
 
             case 'select':
-                // Remove arrow indicators - no validation, allow any value
-                return cleaned.replace(/[▼▲]/g, '').trim();
+                // Remove arrow indicators
+                cleaned = cleaned.replace(/[▼▲]/g, '').trim();
+
+                // Validate against options if allowNewValues is false
+                try {
+                    // Account for column number offset (enableColumnNumber adds "No." column at index 0)
+                    const configColIndex = this.enableColumnNumber ? colIndex - 1 : colIndex;
+                    const colConfig = configColIndex >= 0 ? this.columns?.[configColIndex] : null;
+                    const allowNewValues = colConfig?.allowNewValues !== false;  // Default: true
+
+                    if (!allowNewValues) {
+                        // Get options from selectOptions using field name
+                        const th = this.table.column(colIndex).header();
+                        const fieldName = th ? th.getAttribute('data-name') : null;
+                        let selectOptions = fieldName ? this.selectOptions?.[fieldName] : null;
+                        
+                        // Check if options are from endpoint (string URL)
+                        let optionsFromEndpoint = null;
+                        if (typeof selectOptions === 'string') {
+                            // Options from endpoint - check cache
+                            optionsFromEndpoint = this._selectOptionCache?.[selectOptions];
+                        }
+                        
+                        // Fallback to columns config if selectOptions not available
+                        let options = optionsFromEndpoint || selectOptions || colConfig?.options || [];
+                        
+                        // Skip validation if options is a string (endpoint URL) and cache not loaded
+                        if (typeof options === 'string') {
+                            // Check cache for this endpoint
+                            optionsFromEndpoint = this._selectOptionCache?.[options];
+                            if (optionsFromEndpoint) {
+                                options = optionsFromEndpoint;
+                            } else {
+                                // Options from endpoint but not loaded yet
+                                // For endpoint-based options, backend handles validation
+                                // Skip frontend validation to avoid false positives
+                                return cleaned;
+                            }
+                        }
+
+                        // Convert selectOptions object to array of texts for matching
+                        const optionTexts = optionsFromEndpoint ? Object.values(optionsFromEndpoint) : 
+                                          selectOptions ? Object.values(selectOptions) : 
+                                          options.map(opt => {
+                                              return typeof opt === 'object' ? opt.text : opt;
+                                          });
+
+                        const hasMatch = optionTexts.some(text => text === cleaned);
+
+                        if (!hasMatch) {
+                            // Mark as invalid - block save
+                            if (cellNode) {
+                                cellNode.setAttribute('data-invalid', 'true');
+                            }
+                            return value; // Return original value (will show invalid)
+                        }
+                    }
+                } catch (e) {
+                    // If validation fails, allow the value (don't block paste)
+                    console.warn('Select validation error:', e);
+                }
+
+                return cleaned;
 
             case 'date':
                 // Parse various date formats to ISO (yyyy-mm-dd)
@@ -5826,6 +5894,16 @@ class GridSheet {
      * });
      */
     updateRowBatch(rowId, fieldsData) {
+        // Check for invalid cells in this row
+        const rowNode = this.table.table().node().querySelector(`tr[data-id="${rowId}"]`);
+        if (rowNode) {
+            const hasInvalidCells = rowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+            if (hasInvalidCells) {
+                console.log('updateRowBatch: Skipping row with invalid cells');
+                return; // Don't send invalid data to server
+            }
+        }
+        
         let updateConf = this.endpoints.update || {};
         let endpointUrl = updateConf.endpoint || '';
 
@@ -5877,9 +5955,9 @@ class GridSheet {
             return;
         }
 
-        // Get row index for meta
-        const rowNode = this.table.table().node().querySelector(`tr[data-id="${rowId}"]`);
-        const rowIndex = rowNode ? this.table.row(rowNode).index() : null;
+        // Get row index for meta (re-query in case rowNode was null above)
+        const metaRowNode = this.table.table().node().querySelector(`tr[data-id="${rowId}"]`);
+        const rowIndex = metaRowNode ? this.table.row(metaRowNode).index() : null;
 
         // Consistent payload structure
         const payload = {
@@ -5946,6 +6024,24 @@ class GridSheet {
             return;
         }
 
+        // Filter out rows with invalid cells
+        const validRowsData = rowsData.filter(row => {
+            const rowNode = this.table.table().node().querySelector(`tr[data-id="${row.id}"]`);
+            if (rowNode) {
+                const hasInvalidCells = rowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+                if (hasInvalidCells) {
+                    console.log('updateMultipleRows: Skipping row with invalid cells:', row.id);
+                    return false;
+                }
+            }
+            return true;
+        });
+
+        if (validRowsData.length === 0) {
+            console.log('updateMultipleRows: No valid rows to update');
+            return;
+        }
+
         let updateConf = this.endpoints.update || {};
         let endpointUrl = updateConf.endpoint || '';
 
@@ -5966,7 +6062,7 @@ class GridSheet {
         }
 
         // Filter fields by allowedFields for each row
-        const filteredRowsData = rowsData.map(row => {
+        const filteredRowsData = validRowsData.map(row => {
             let filteredFields = row.fields;
             if (this.allowedFields && Array.isArray(this.allowedFields)) {
                 filteredFields = {};
@@ -7801,6 +7897,13 @@ class GridSheet {
 
                 // Handle batch mode - update _pendingData properly
                 if (this.emptyTable.enabled && this.emptyTable.saveMode === 'batch') {
+                    // Check if row has any invalid cells - skip if invalid
+                    const hasInvalidCells = rowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+                    if (hasInvalidCells) {
+                        console.log('Batch mode: Skipping row with invalid cells');
+                        continue; // Skip this row - don't save to localStorage
+                    }
+                    
                     let rowId = rowNode.getAttribute('data-id');
 
                     if (rowId === 'new') {
@@ -7854,6 +7957,13 @@ class GridSheet {
                 } else {
                     // DIRECT MODE - collect for batch update
                     const rowId = rowNode.getAttribute('data-id');
+                    
+                    // Check if row has any invalid cells - skip if invalid
+                    const hasInvalidCells = rowNode.querySelectorAll('td[data-invalid="true"]').length > 0;
+                    if (hasInvalidCells) {
+                        console.log('Direct mode (_pasteMultipleRows): Skipping row with invalid cells');
+                        continue; // Skip this row - don't send to endpoint
+                    }
 
                     if (rowId === 'new' && this.isRowRequiredFieldsFilled(rowNode)) {
                         // New row - queue for save
