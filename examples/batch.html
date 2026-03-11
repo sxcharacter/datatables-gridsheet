@@ -175,7 +175,7 @@
                     autoRestore: false,
                 },
 
-                enableColumnNumber: false,
+                enableColumnNumber: true,
                 allowAddEmptyRow: true,
                 allowDeleteRow: true,
                 dataTableOptions: {
@@ -227,7 +227,7 @@
                                 const insertedCount = data.inserted?.length || 0;
                                 const updatedCount = data.updated || 0;
                                 const deletedCount = data.deleted || 0;
-                                alert(`Saved successfully!\n\n✅ ${insertedCount} inserted\n✏️ ${updatedCount} updated\n🗑️ ${deletedCount} deleted`);
+                                alert(`Saved successfully!\n\n ${insertedCount} inserted\n ${updatedCount} updated\n ${deletedCount} deleted`);
                             }
                         }
                     }
